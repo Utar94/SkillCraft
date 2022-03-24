@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SkillCraft.Infrastructure;
 
 namespace SkillCraft.Web.Controllers
 {
@@ -6,7 +8,21 @@ namespace SkillCraft.Web.Controllers
   [Route("health")]
   public class HealthController : ControllerBase
   {
+    private readonly SkillCraftDbContext dbContext;
+
+    public HealthController(SkillCraftDbContext dbContext)
+    {
+      this.dbContext = dbContext;
+    }
+
     [HttpGet]
-    public IActionResult Get() => NoContent();
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken)
+    {
+      await dbContext.Users
+        .AsNoTracking()
+        .ToArrayAsync(cancellationToken);
+
+      return NoContent();
+    }
   }
 }
