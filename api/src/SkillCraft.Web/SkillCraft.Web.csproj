@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SkillCraft.Core\SkillCraft.Core.csproj" />
-    <ProjectReference Include="..\..\SkillCraft.Infrastructure\SkillCraft.Infrastructure.csproj" />
+    <ProjectReference Include="..\SkillCraft.Core\SkillCraft.Core.csproj" />
+    <ProjectReference Include="..\SkillCraft.Infrastructure\SkillCraft.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
