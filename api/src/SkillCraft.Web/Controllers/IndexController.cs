@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Logitar.WebApiToolKit.Configuration;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SkillCraft.Web.Controllers
 {
@@ -6,7 +7,14 @@ namespace SkillCraft.Web.Controllers
   [Route("")]
   public class IndexController : ControllerBase
   {
+    private readonly ApiSettings apiSettings;
+
+    public IndexController(ApiSettings apiSettings)
+    {
+      this.apiSettings = apiSettings;
+    }
+
     [HttpGet]
-    public IActionResult Get() => Ok("SkillCraft API v0");
+    public IActionResult Get() => Ok(apiSettings.Name);
   }
 }
