@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6555C2E9-7E74-4333-BBDF-2C66BB9E8A1F}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillCraft.Web", "src\SkillCraft.Web\SkillCraft.Web.csproj", "{F65BE8CF-3094-485B-8102-DBE683C6E0DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F65BE8CF-3094-485B-8102-DBE683C6E0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F65BE8CF-3094-485B-8102-DBE683C6E0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F65BE8CF-3094-485B-8102-DBE683C6E0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F65BE8CF-3094-485B-8102-DBE683C6E0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BD54E12-2F8C-4671-9E8D-88C0D1001D2F}
+	EndGlobalSection
+EndGlobal
