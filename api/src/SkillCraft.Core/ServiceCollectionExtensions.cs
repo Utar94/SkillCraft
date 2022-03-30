@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace SkillCraft.Core
 {
@@ -6,7 +7,9 @@ namespace SkillCraft.Core
   {
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
-      return services;
+      Assembly assembly = typeof(ServiceCollectionExtensions).Assembly;
+
+      return services.AddAutoMapper(assembly);
     }
   }
 }

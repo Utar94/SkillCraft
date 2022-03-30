@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using Logitar.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Infrastructure
 {
@@ -9,6 +10,8 @@ namespace SkillCraft.Infrastructure
     public SkillCraftDbContext(DbContextOptions<SkillCraftDbContext> options) : base(options)
     {
     }
+
+    public DbSet<World> Worlds { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
