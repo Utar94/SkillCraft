@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SkillCraft.Core.Models;
 
-namespace SkillCraft.Core.Mappings
+namespace SkillCraft.Core.Mapping
 {
   internal static class AggregateMappingExtensions
   {
