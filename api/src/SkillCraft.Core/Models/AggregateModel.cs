@@ -1,6 +1,6 @@
 ﻿namespace SkillCraft.Core.Models
 {
-  public class AggregateModel
+  public abstract class AggregateModel
   {
     public DateTime CreatedAt { get; set; }
     public bool Deleted { get; set; }

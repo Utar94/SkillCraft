@@ -5,9 +5,6 @@ using SkillCraft.Core.Natures;
 
 namespace SkillCraft.Core.Worlds
 {
-  /// <summary>
-  /// TODO(fpion): rename
-  /// </summary>
   public class World : Aggregate
   {
     public World(string alias, Guid userId) : base(userId)

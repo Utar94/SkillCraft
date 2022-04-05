@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Logitar;
+using Logitar.Identity.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,7 @@ namespace SkillCraft.Web.Controllers
     public async Task<ActionResult<WorldModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
       World? world = await dbContext.Worlds.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+
       if (world == null)
       {
         return NotFound();
@@ -124,7 +126,7 @@ namespace SkillCraft.Web.Controllers
         world = await query.SingleOrDefaultAsync(x => x.Key == key, cancellationToken);
       }
       else
-      {
+    {
         string alias = id.ToLowerInvariant();
         world = await query.SingleOrDefaultAsync(x => x.Alias == alias, cancellationToken);
       }
@@ -149,6 +151,7 @@ namespace SkillCraft.Web.Controllers
     )
     {
       World? world = await dbContext.Worlds.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+
       if (world == null)
       {
         return NotFound();
