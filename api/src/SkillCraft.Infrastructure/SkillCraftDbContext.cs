@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Disabilities;
+using SkillCraft.Core.Educations;
 using SkillCraft.Core.Gifts;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
@@ -21,6 +22,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Caste> Castes { get; set; }
     public DbSet<CasteTrait> CasteTraits { get; set; }
     public DbSet<Disability> Disabilities { get; set; }
+    public DbSet<Education> Educations { get; set; }
     public DbSet<Gift> Gifts { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
