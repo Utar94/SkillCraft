@@ -44,25 +44,6 @@ namespace SkillCraft.Web.Controllers
       return Created(uri, model);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<DisabilityModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
-    {
-      Disability? disability = await dbContext.Disabilities.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
-      if (disability == null)
-      {
-        return NotFound();
-      }
-      else if (disability.WorldId != userContext.World.Id)
-      {
-        return Forbid();
-      }
-
-      dbContext.Disabilities.Remove(disability);
-      await dbContext.SaveChangesAsync(cancellationToken);
-
-      return Ok(mapper.Map<DisabilityModel>(disability));
-    }
-
     [HttpGet]
     public async Task<ActionResult<ListModel<DisabilityModel>>> GetAsync(
       bool? deleted,
@@ -153,6 +134,26 @@ namespace SkillCraft.Web.Controllers
       disability.Update(userContext.Id);
 
       return Ok(await SaveAsync(disability, payload, cancellationToken));
+    }
+
+    [HttpPatch("{id}/delete")]
+    public async Task<ActionResult<DisabilityModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+      Disability? disability = await dbContext.Disabilities.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      if (disability == null)
+      {
+        return NotFound();
+      }
+      else if (disability.WorldId != userContext.World.Id)
+      {
+        return Forbid();
+      }
+
+      disability.Delete(userContext.Id);
+
+      await dbContext.SaveChangesAsync(cancellationToken);
+
+      return Ok(mapper.Map<DisabilityModel>(disability));
     }
 
     private async Task<DisabilityModel> SaveAsync(Disability disability, SaveDisabilityPayload payload, CancellationToken cancellationToken)

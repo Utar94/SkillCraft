@@ -3,13 +3,13 @@ using Logitar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SkillCraft.Core;
+using SkillCraft.Core.Gifts;
+using SkillCraft.Core.Models;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Natures.Models;
 using SkillCraft.Core.Natures.Payloads;
-using SkillCraft.Core.Models;
 using SkillCraft.Infrastructure;
-using SkillCraft.Core.Gifts;
-using SkillCraft.Core;
 using SkillCraft.Web.Filters;
 
 namespace SkillCraft.Web.Controllers
@@ -44,27 +44,6 @@ namespace SkillCraft.Web.Controllers
       var uri = new Uri($"/natures/{model.Id}", UriKind.Relative);
 
       return Created(uri, model);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<NatureModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
-    {
-      Nature? nature = await dbContext.Natures
-        .Include(x => x.Gift)
-        .SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
-      if (nature == null)
-      {
-        return NotFound();
-      }
-      else if (nature.WorldId != userContext.World.Id)
-      {
-        return Forbid();
-      }
-
-      dbContext.Natures.Remove(nature);
-      await dbContext.SaveChangesAsync(cancellationToken);
-
-      return Ok(mapper.Map<NatureModel>(nature));
     }
 
     [HttpGet]
@@ -163,14 +142,36 @@ namespace SkillCraft.Web.Controllers
       return Ok(await SaveAsync(nature, payload, cancellationToken));
     }
 
+    [HttpPatch("{id}/delete")]
+    public async Task<ActionResult<NatureModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+      Nature? nature = await dbContext.Natures
+        .Include(x => x.Gift)
+        .SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      if (nature == null)
+      {
+        return NotFound();
+      }
+      else if (nature.WorldId != userContext.World.Id)
+      {
+        return Forbid();
+      }
+
+      nature.Delete(userContext.Id);
+
+      await dbContext.SaveChangesAsync(cancellationToken);
+
+      return Ok(mapper.Map<NatureModel>(nature));
+    }
+
     private async Task<NatureModel> SaveAsync(Nature nature, SaveNaturePayload payload, CancellationToken cancellationToken)
     {
       Gift? gift = null;
       if (payload.GiftId.HasValue)
       {
-        gift = await dbContext.Gifts
+        nature = await dbContext.Natures
           .SingleOrDefaultAsync(x => x.Key == payload.GiftId.Value, cancellationToken)
-          ?? throw new EntityNotFoundException<Gift>(payload.GiftId.Value, nameof(payload.GiftId));
+          ?? throw new EntityNotFoundException<Nature>(payload.GiftId.Value, nameof(payload.GiftId));
       }
 
       nature.Attribute = payload.Attribute;

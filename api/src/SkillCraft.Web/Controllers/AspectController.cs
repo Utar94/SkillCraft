@@ -44,25 +44,6 @@ namespace SkillCraft.Web.Controllers
       return Created(uri, model);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<AspectModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
-    {
-      Aspect? aspect = await dbContext.Aspects.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
-      if (aspect == null)
-      {
-        return NotFound();
-      }
-      else if (aspect.WorldId != userContext.World.Id)
-      {
-        return Forbid();
-      }
-
-      dbContext.Aspects.Remove(aspect);
-      await dbContext.SaveChangesAsync(cancellationToken);
-
-      return Ok(mapper.Map<AspectModel>(aspect));
-    }
-
     [HttpGet]
     public async Task<ActionResult<ListModel<AspectModel>>> GetAsync(
       bool? deleted,
@@ -153,6 +134,26 @@ namespace SkillCraft.Web.Controllers
       aspect.Update(userContext.Id);
 
       return Ok(await SaveAsync(aspect, payload, cancellationToken));
+    }
+
+    [HttpPatch("{id}/delete")]
+    public async Task<ActionResult<AspectModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+      Aspect? aspect = await dbContext.Aspects.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      if (aspect == null)
+      {
+        return NotFound();
+      }
+      else if (aspect.WorldId != userContext.World.Id)
+      {
+        return Forbid();
+      }
+
+      aspect.Delete(userContext.Id);
+
+      await dbContext.SaveChangesAsync(cancellationToken);
+
+      return Ok(mapper.Map<AspectModel>(aspect));
     }
 
     private async Task<AspectModel> SaveAsync(Aspect aspect, SaveAspectPayload payload, CancellationToken cancellationToken)
