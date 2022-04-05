@@ -44,25 +44,6 @@ namespace SkillCraft.Web.Controllers
       return Created(uri, model);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<GiftModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
-    {
-      Gift? gift = await dbContext.Gifts.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
-      if (gift == null)
-      {
-        return NotFound();
-      }
-      else if (gift.WorldId != userContext.World.Id)
-      {
-        return Forbid();
-      }
-
-      dbContext.Gifts.Remove(gift);
-      await dbContext.SaveChangesAsync(cancellationToken);
-
-      return Ok(mapper.Map<GiftModel>(gift));
-    }
-
     [HttpGet]
     public async Task<ActionResult<ListModel<GiftModel>>> GetAsync(
       bool? deleted,
@@ -153,6 +134,26 @@ namespace SkillCraft.Web.Controllers
       gift.Update(userContext.Id);
 
       return Ok(await SaveAsync(gift, payload, cancellationToken));
+    }
+
+    [HttpPatch("{id}/delete")]
+    public async Task<ActionResult<GiftModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+      Gift? gift = await dbContext.Gifts.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      if (gift == null)
+      {
+        return NotFound();
+      }
+      else if (gift.WorldId != userContext.World.Id)
+      {
+        return Forbid();
+      }
+
+      gift.Delete(userContext.Id);
+
+      await dbContext.SaveChangesAsync(cancellationToken);
+
+      return Ok(mapper.Map<GiftModel>(gift));
     }
 
     private async Task<GiftModel> SaveAsync(Gift gift, SaveGiftPayload payload, CancellationToken cancellationToken)
