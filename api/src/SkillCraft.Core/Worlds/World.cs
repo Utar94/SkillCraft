@@ -1,4 +1,5 @@
 ﻿using SkillCraft.Core.Aspects;
+using SkillCraft.Core.Castes;
 using SkillCraft.Core.Disabilities;
 using SkillCraft.Core.Gifts;
 using SkillCraft.Core.Languages;
@@ -22,6 +23,7 @@ namespace SkillCraft.Core.Worlds
     public string Name { get; set; } = null!;
 
     public ICollection<Aspect> Aspects { get; set; } = new List<Aspect>();
+    public ICollection<Caste> Castes { get; set; } = new List<Caste>();
     public ICollection<Disability> Disabilities { get; set; } = new List<Disability>();
     public ICollection<Gift> Gifts { get; set; } = new List<Gift>();
     public ICollection<Language> Languages { get; set; } = new List<Language>();
