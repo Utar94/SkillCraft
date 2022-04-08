@@ -9,6 +9,9 @@ namespace SkillCraft.Core.Talents
       World = world ?? throw new ArgumentNullException(nameof(world));
       WorldId = world.Id;
     }
+    private Talent() : base()
+    {
+    }
 
     public string? Description { get; set; }
     public bool MultipleAcquisitions { get; set; }
