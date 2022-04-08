@@ -58,6 +58,7 @@ namespace SkillCraft.Web.Controllers
     {
       IQueryable<Talent> query = dbContext.Talents
         .AsNoTracking()
+        .Include(x => x.RequiredTalent)
         .Where(x => x.WorldId == userContext.World.Id);
 
       if (deleted.HasValue)
@@ -101,6 +102,7 @@ namespace SkillCraft.Web.Controllers
     {
       Talent? talent = await dbContext.Talents
         .AsNoTracking()
+        .Include(x => x.RequiredTalent)
         .SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
 
       if (talent == null)
@@ -122,7 +124,9 @@ namespace SkillCraft.Web.Controllers
       CancellationToken cancellationToken
     )
     {
-      Talent? talent = await dbContext.Talents.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      Talent? talent = await dbContext.Talents
+        .Include(x => x.RequiredTalent)
+        .SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
       if (talent == null)
       {
         return NotFound();
@@ -140,7 +144,9 @@ namespace SkillCraft.Web.Controllers
     [HttpPatch("{id}/delete")]
     public async Task<ActionResult<TalentModel>> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-      Talent? talent = await dbContext.Talents.SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
+      Talent? talent = await dbContext.Talents
+        .Include(x => x.RequiredTalent)
+        .SingleOrDefaultAsync(x => x.Key == id, cancellationToken);
       if (talent == null)
       {
         return NotFound();
