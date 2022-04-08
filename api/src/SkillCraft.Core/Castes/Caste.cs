@@ -21,5 +21,7 @@ namespace SkillCraft.Core.Castes
 
     public ICollection<CasteTrait> Traits { get; set; } = new List<CasteTrait>();
     public World? World { get; set; }
+
+    public override string ToString() => $"{Name} | {base.ToString()}";
   }
 }

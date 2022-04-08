@@ -8,6 +8,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Gifts;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Infrastructure
@@ -26,6 +27,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Gift> Gifts { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
+    public DbSet<Talent> Talents { get; set; }
     public DbSet<World> Worlds { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
