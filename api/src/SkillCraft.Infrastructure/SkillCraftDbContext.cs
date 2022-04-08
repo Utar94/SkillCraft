@@ -3,6 +3,7 @@ using Logitar.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Characters;
 using SkillCraft.Core.Disabilities;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Gifts;
@@ -22,6 +23,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Aspect> Aspects { get; set; }
     public DbSet<Caste> Castes { get; set; }
     public DbSet<CasteTrait> CasteTraits { get; set; }
+    public DbSet<Character> Characters { get; set; }
     public DbSet<Disability> Disabilities { get; set; }
     public DbSet<Education> Educations { get; set; }
     public DbSet<Gift> Gifts { get; set; }
