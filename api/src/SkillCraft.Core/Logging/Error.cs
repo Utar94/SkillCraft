@@ -25,6 +25,13 @@
     public static Error Warning(ErrorCode? code = null, string? message = null)
       => new(ErrorSeverity.Warning, code, message);
 
+    public static ErrorException CriticalException(ErrorCode? code = null, string? message = null)
+      => new(Critical(code, message));
+    public static ErrorException FailureException(ErrorCode? code = null, string? message = null)
+      => new(Failure(code, message));
+    public static ErrorException WarningException(ErrorCode? code = null, string? message = null)
+      => new(Warning(code, message));
+
     public override string ToString() => string.Join(' ', new[]
     {
       $"[{Severity}]",

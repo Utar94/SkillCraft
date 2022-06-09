@@ -20,5 +20,12 @@
       => new(ErrorSeverity.Failure, code, message, data, value);
     public static TypedError<T> Warning(ErrorCode? code = null, string? message = null, T? data = default, object? value = null)
       => new(ErrorSeverity.Warning, code, message, data, value);
+
+    public static ErrorException CriticalException(ErrorCode? code = null, string? message = null, T? data = default, object? value = null)
+      => new(Critical(code, message, data, value));
+    public static ErrorException FailureException(ErrorCode? code = null, string? message = null, T? data = default, object? value = null)
+      => new(Failure(code, message, data, value));
+    public static ErrorException WarningException(ErrorCode? code = null, string? message = null, T? data = default, object? value = null)
+      => new(Warning(code, message, data, value));
   }
 }

@@ -58,6 +58,12 @@ namespace SkillCraft.Web.Pipeline
 
         throw;
       }
+      catch (ErrorException exception)
+      {
+        eventLog.Errors.Add(exception.Error);
+
+        throw;
+      }
       catch (Exception exception)
       {
         if (exception is DbUpdateException)

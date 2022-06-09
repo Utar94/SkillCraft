@@ -3,6 +3,7 @@ using Logitar.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SkillCraft.Core;
+using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Worlds;
 
@@ -14,6 +15,7 @@ namespace SkillCraft.Infrastructure
     {
     }
 
+    public DbSet<Customization> Customizations { get; set; }
     public DbSet<EventLog> EventLogs { get; set; }
     public DbSet<World> Worlds { get; set; }
 
