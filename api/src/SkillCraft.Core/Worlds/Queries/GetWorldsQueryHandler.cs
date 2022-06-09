@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Logitar.Identity.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SkillCraft.Core.Models;
@@ -9,22 +8,22 @@ namespace SkillCraft.Core.Worlds.Queries
 {
   internal class GetWorldsQueryHandler : IRequestHandler<GetWorldsQuery, ListModel<WorldModel>>
   {
+    private readonly IApplicationContext _appContext;
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly IUserContext _userContext;
 
-    public GetWorldsQueryHandler(IDbContext dbContext, IMapper mapper, IUserContext userContext)
+    public GetWorldsQueryHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
     {
+      _appContext = appContext;
       _dbContext = dbContext;
       _mapper = mapper;
-      _userContext = userContext;
     }
 
     public async Task<ListModel<WorldModel>> Handle(GetWorldsQuery request, CancellationToken cancellationToken)
     {
       IQueryable<World> query = _dbContext.Worlds
         .AsNoTracking()
-        .Where(x => x.CreatedById == _userContext.Id);
+        .Where(x => x.CreatedById == _appContext.UserId);
 
       if (request.Search != null)
       {

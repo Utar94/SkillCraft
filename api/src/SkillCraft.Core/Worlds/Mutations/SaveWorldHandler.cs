@@ -7,14 +7,16 @@ namespace SkillCraft.Core.Worlds.Mutations
 {
   internal abstract class SaveWorldHandler
   {
-    private readonly IDbContext _dbContext;
-    private readonly IMapper _mapper;
-
-    protected SaveWorldHandler(IDbContext dbContext, IMapper mapper)
+    protected SaveWorldHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
     {
-      _dbContext = dbContext;
-      _mapper = mapper;
+      AppContext = appContext;
+      DbContext = dbContext;
+      Mapper = mapper;
     }
+
+    protected IApplicationContext AppContext { get; }
+    protected IDbContext DbContext { get; }
+    protected IMapper Mapper { get; }
 
     protected async Task<WorldModel> ExecuteAsync(World world, SaveWorldPayload payload, CancellationToken cancellationToken)
     {
@@ -24,9 +26,11 @@ namespace SkillCraft.Core.Worlds.Mutations
       world.Description = payload.Description?.CleanTrim();
       world.Name = payload.Name.Trim();
 
-      await _dbContext.SaveChangesAsync(cancellationToken);
+      await DbContext.SaveChangesAsync(cancellationToken);
 
-      return _mapper.Map<WorldModel>(world);
+      AppContext.SetEntity(world);
+
+      return Mapper.Map<WorldModel>(world);
     }
   }
 }
