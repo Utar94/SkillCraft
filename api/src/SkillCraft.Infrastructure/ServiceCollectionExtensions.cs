@@ -17,7 +17,7 @@ namespace SkillCraft.Infrastructure
     private static void ConfigureDbContext(IServiceProvider provider, DbContextOptionsBuilder builder)
     {
       var configuration = provider.GetRequiredService<IConfiguration>();
-      builder.UseNpgsql(configuration.GetConnectionString(nameof(SkillCraftDbContext)));
+      builder.UseNpgsql(configuration.GetValue<string>($"POSTGRESQLCONNSTR_{nameof(SkillCraftDbContext)}"));
     }
   }
 }

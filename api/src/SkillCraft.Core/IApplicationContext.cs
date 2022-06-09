@@ -5,6 +5,8 @@ namespace SkillCraft.Core
 {
   public interface IApplicationContext
   {
+    Guid UserId { get; }
+
     EventLog EventLog { get; }
     World World { get; }
 

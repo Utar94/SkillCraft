@@ -26,6 +26,10 @@ namespace SkillCraft.Web
     {
       base.ConfigureServices(services);
 
+      services.AddApplicationInsightsTelemetry();
+      services.AddHealthChecks()
+        .AddDbContextCheck<SkillCraftDbContext>();
+
       services.AddWebApiToolKit(_configuration, _options);
 
       services.AddDefaultIdentity(_configuration)
@@ -85,6 +89,8 @@ namespace SkillCraft.Web
         application.UseMiddleware<LoggingMiddleware>();
 
         application.MapControllers();
+
+        application.MapHealthChecks("/health");
         #endregion
       }
     }
