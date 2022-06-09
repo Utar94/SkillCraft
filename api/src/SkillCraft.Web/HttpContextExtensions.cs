@@ -24,6 +24,8 @@ namespace SkillCraft.Web
 
     public static bool SetEventLog(this HttpContext httpContext, EventLog? eventLog)
       => httpContext.SetItem(EventLogKey, eventLog);
+    public static bool SetWorld(this HttpContext httpContext, World? world)
+      => httpContext.SetItem(WorldKey, world);
     private static bool SetItem<T>(this HttpContext httpContext, object key, T? value)
     {
       if (httpContext.Items.ContainsKey(key))

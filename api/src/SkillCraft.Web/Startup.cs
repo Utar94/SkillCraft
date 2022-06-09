@@ -87,6 +87,7 @@ namespace SkillCraft.Web
         }
 
         application.UseMiddleware<LoggingMiddleware>();
+        application.UseMiddleware<WorldMiddleware>();
 
         application.MapControllers();
 
