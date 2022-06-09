@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <UserSecretsId>1f4e0352-6530-4738-b617-e369e89e6cd6</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Logitar.AspNetCore.Identity" Version="1.2.2" />
+    <PackageReference Include="Logitar.WebApiToolKit" Version="6.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkillCraft.Core\SkillCraft.Core.csproj" />
+    <ProjectReference Include="..\SkillCraft.Infrastructure\SkillCraft.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
