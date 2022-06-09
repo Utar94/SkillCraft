@@ -6,6 +6,7 @@ using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Logging;
+using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Infrastructure
@@ -19,6 +20,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Aspect> Aspects { get; set; }
     public DbSet<Customization> Customizations { get; set; }
     public DbSet<EventLog> EventLogs { get; set; }
+    public DbSet<Nature> Natures { get; set; }
     public DbSet<World> Worlds { get; set; }
 
     public void CancelChanges()

@@ -5,7 +5,7 @@ namespace SkillCraft.Core
 {
   internal class EntityNotFoundException<T> : NotFoundException
   {
-    public EntityNotFoundException(Guid id) : base(message: GetMessage(id))
+    public EntityNotFoundException(Guid id, string? paramName = null) : base(paramName, GetMessage(id))
     {
       Id = id;
     }

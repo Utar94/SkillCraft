@@ -1,6 +1,7 @@
 ﻿using Logitar;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Natures;
 
 namespace SkillCraft.Core.Worlds
 {
@@ -20,6 +21,7 @@ namespace SkillCraft.Core.Worlds
 
     public ICollection<Aspect> Aspects { get; set; } = new List<Aspect>();
     public ICollection<Customization> Customizations { get; set; } = new List<Customization>();
+    public ICollection<Nature> Natures { get; set; } = new List<Nature>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

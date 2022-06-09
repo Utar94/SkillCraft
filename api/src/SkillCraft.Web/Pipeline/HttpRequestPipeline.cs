@@ -66,11 +66,6 @@ namespace SkillCraft.Web.Pipeline
       }
       catch (Exception exception)
       {
-        if (exception is DbUpdateException)
-        {
-          _dbContext.CancelChanges();
-        }
-
         var exceptionData = new ExceptionData(exception);
         eventLog.Errors.Add(TypedError<ExceptionData>.Failure(message: exception.Message, data: exceptionData));
 

@@ -54,6 +54,11 @@ namespace SkillCraft.Web.Middlewares
       }
       finally
       {
+        if (eventLog.HasErrors)
+        {
+          dbContext.CancelChanges();
+        }
+
         if (eventLog.Name != null)
         {
           eventLog.Complete(httpContext.Response.StatusCode);
