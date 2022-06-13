@@ -7,33 +7,35 @@
     </div>
     <b-row>
       <search-field class="col" v-model="search" />
-      <!-- Sort -->
-      <!-- Count -->
+      <sort-select class="col" :desc="desc" :options="sortOptions" v-model="sort" @descInput="desc = $event" />
+      <count-select class="col" v-model="count" />
     </b-row>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col" v-t="'name.label'" />
-          <th scope="col" v-t="'world.alias.label'" />
-          <th scope="col" v-t="'updatedAt'" />
-          <th scope="col" />
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in items" :key="item.id">
-          <td>
-            <router-link :to="{ name: 'WorldEdit', params: { id: item.id } }" v-text="item.name" />
-          </td>
-          <td v-text="item.alias" />
-          <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
-          <td>
-            <icon-button disabled icon="trash-alt" text="actions.delete" variant="danger" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- Pager -->
-    <!-- No result -->
+    <template v-if="items.length">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" v-t="'name.label'" />
+            <th scope="col" v-t="'world.alias.label'" />
+            <th scope="col" v-t="'updatedAt'" />
+            <th scope="col" />
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in items" :key="item.id">
+            <td>
+              <router-link :to="{ name: 'WorldEdit', params: { id: item.id } }" v-text="item.name" />
+            </td>
+            <td v-text="item.alias" />
+            <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
+            <td>
+              <icon-button disabled icon="trash-alt" text="actions.delete" variant="danger" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <b-pagination :per-page="count" :total-rows="total" v-model="page" />
+    </template>
+    <p v-else v-t="'noResult'" />
   </b-container>
 </template>
 
@@ -48,7 +50,7 @@ export default {
     loading: false,
     page: 1,
     search: null,
-    sort: null,
+    sort: 'Name',
     total: 0
   }),
   computed: {
@@ -60,6 +62,11 @@ export default {
         index: (this.page - 1) * this.count,
         count: this.count
       }
+    },
+    sortOptions() {
+      return Object.entries(this.$i18n.t('worlds.sort'))
+        .map(([value, text]) => ({ text, value }))
+        .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     }
   },
   methods: {

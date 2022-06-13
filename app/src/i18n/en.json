@@ -12,6 +12,7 @@
   "aspects": {
     "title": "Aspects"
   },
+  "count": "Count",
   "description": {
     "label": "Description",
     "placeholder": "Enter a description"
@@ -28,6 +29,7 @@
     "label": "Name",
     "placeholder": "Enter a name"
   },
+  "noResult": "No result to display.",
   "notFound": {
     "help": "The requested page could not be found.",
     "lead": "Page Not Found",
@@ -62,6 +64,11 @@
     "submit": "Sign up",
     "success": "A message has been sent to your email. You may close this window now.",
     "title": "Sign Up"
+  },
+  "sort": {
+    "desc": "Descending",
+    "label": "Sort",
+    "placeholder": "Select a sort option"
   },
   "statusDetail": {
     "createdAt": "Created at {date}",
@@ -131,6 +138,11 @@
     }
   },
   "worlds": {
+    "sort": {
+      "Alias": "Alias",
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
     "title": "Worlds"
   }
 }

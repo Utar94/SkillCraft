@@ -15,7 +15,7 @@
             {{ $t('aspects.title') }}
           </b-nav-item>
           <b-nav-item :to="{ name: 'WorldList' }">
-            <font-awesome-icon icon="cog" />
+            <font-awesome-icon icon="globe" />
             {{ $t('worlds.title') }}
           </b-nav-item>
         </b-navbar-nav>
