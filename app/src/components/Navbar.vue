@@ -4,14 +4,13 @@
       <b-navbar-brand :to="{ name: 'Home' }">
         <img src="@/assets/logo.png" alt="SkillCraft Logo" height="32" />
         SkillCraft
-        <b-badge v-if="environment !== 'production'" variant="warning">{{ environment }}</b-badge>
+        <b-badge v-if="environment" variant="warning">{{ environment }}</b-badge>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="token">
-          <b-nav-text>{{ environment }}</b-nav-text>
           <b-nav-item :to="{ name: 'WorldList' }">
             <font-awesome-icon icon="globe" />
             {{ $t('worlds.title') }}
