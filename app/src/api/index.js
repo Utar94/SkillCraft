@@ -39,7 +39,7 @@ async function execute(method, url, data = null, token = null, world = null) {
     request.headers['Authorization'] = `${token_type} ${access_token}`
   }
   if (world) {
-    // request.headers['World'] = world.alias // TODO(fpion): uncomment
+    request.headers['World'] = world.alias
   }
   const response = await fetch(`${baseUrl}${url}`, request)
   const result = { data: null, status: response.status }
