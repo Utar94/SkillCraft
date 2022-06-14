@@ -150,6 +150,7 @@
       "title": "Delete world",
       "warning": "If the world is deleted, all its data will also be deleted. This action cannot be undone and the data will be lost forever."
     },
+    "select": "Select a world",
     "sort": {
       "Alias": "Alias",
       "Name": "Name",

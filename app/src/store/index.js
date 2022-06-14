@@ -12,14 +12,19 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     locale: null,
-    token: null
+    token: null,
+    world: null
   },
   actions: {
+    changeWorld({ commit }, world) {
+      commit('setWorld', world)
+    },
     signIn({ commit }, token) {
       commit('setToken', token)
     },
     signOut({ commit }) {
       commit('setToken', null)
+      commit('setWorld', null)
     },
     translate({ commit }, locale) {
       commit('setLocale', locale)
@@ -31,6 +36,9 @@ export default new Vuex.Store({
     },
     setToken(state, token) {
       state.token = token
+    },
+    setWorld(state, world) {
+      state.world = world
     }
   },
   plugins: [vuexLocal.plugin]

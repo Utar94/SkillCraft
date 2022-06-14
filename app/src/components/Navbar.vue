@@ -37,7 +37,12 @@
           </b-nav-item-dropdown> -->
 
           <template v-if="token">
-            <b-nav-item-dropdown v-if="token" right>
+            <b-form-select v-if="worlds.length" :options="worldOptions" :value="world ? world.alias : null" @input="_changeWorld">
+              <template #first>
+                <b-form-select-option :value="null" disabled>{{ $t('worlds.select') }}</b-form-select-option>
+              </template>
+            </b-form-select>
+            <b-nav-item-dropdown right>
               <template #button-content>
                 <img v-if="picture" :src="picture" alt="Avatar" class="rounded-circle" width="24" height="24" />
                 <v-gravatar v-else class="rounded-circle" :email="email" :size="24" />
@@ -70,17 +75,19 @@
 
 <script>
 import jwt from 'jsonwebtoken'
+import locales from '@/i18n/locales.json'
 import { localize } from 'vee-validate'
 import { mapActions, mapState } from 'vuex'
 import { signOut } from '@/api/identity'
-import locales from '@/i18n/locales.json'
+import { getWorlds } from '@/api/worlds'
 
 export default {
   data: () => ({
-    loading: false
+    loading: false,
+    worlds: []
   }),
   computed: {
-    ...mapState(['locale', 'token']),
+    ...mapState(['locale', 'token', 'world']),
     email() {
       return this.token ? jwt.decode(this.token.access_token).email : null
     },
@@ -101,10 +108,22 @@ export default {
     },
     picture() {
       return this.token ? jwt.decode(this.token.access_token).picture : null
+    },
+    worldOptions() {
+      return this.worlds.map(({ alias, name }) => ({
+        text: name,
+        value: alias
+      }))
     }
   },
   methods: {
-    ...mapActions(['translate']),
+    ...mapActions(['changeWorld', 'translate']),
+    _changeWorld(selected) {
+      const world = this.worlds.find(({ alias }) => alias === selected)
+      if (world) {
+        this.changeWorld(world)
+      }
+    },
     async doSignOut() {
       if (!this.loading) {
         this.loading = true
@@ -119,6 +138,16 @@ export default {
         } finally {
           this.loading = false
         }
+      }
+    }
+  },
+  async created() {
+    if (this.token) {
+      try {
+        const { data } = await getWorlds({ sort: 'Name', desc: false })
+        this.worlds = data.items
+      } catch (e) {
+        this.handleError(e)
       }
     }
   },

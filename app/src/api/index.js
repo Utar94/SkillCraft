@@ -5,8 +5,9 @@ const contentType = 'Content-Type'
 
 async function executeWithRenew(method, url, data = null) {
   let token = store.state.token
+  let world = store.state.world
   try {
-    return await execute(method, url, data, token)
+    return await execute(method, url, data, token, world)
   } catch (e) {
     const { status } = e
     if (status === 401 && token) {
@@ -17,14 +18,14 @@ async function executeWithRenew(method, url, data = null) {
         if (localStorage.getItem(process.env.VUE_APP_TOKEN_STORAGE_KEY)) {
           localStorage.setItem(process.env.VUE_APP_TOKEN_STORAGE_KEY, JSON.stringify(token))
         }
-        return await execute(method, url, data, token)
+        return await execute(method, url, data, token, world)
       }
     }
     throw e
   }
 }
 
-async function execute(method, url, data = null, token = null) {
+async function execute(method, url, data = null, token = null, world = null) {
   const request = {
     headers: {},
     method
@@ -36,6 +37,9 @@ async function execute(method, url, data = null, token = null) {
   if (token) {
     const { access_token, token_type } = token
     request.headers['Authorization'] = `${token_type} ${access_token}`
+  }
+  if (world) {
+    // request.headers['World'] = world.alias // TODO(fpion): uncomment
   }
   const response = await fetch(`${baseUrl}${url}`, request)
   const result = { data: null, status: response.status }
