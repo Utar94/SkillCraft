@@ -42,11 +42,7 @@
           </b-nav-item-dropdown> -->
 
           <template v-if="token">
-            <b-form-select v-if="worlds.length" :options="worldOptions" :value="world ? world.alias : null" @input="_changeWorld">
-              <template #first>
-                <b-form-select-option :value="null" disabled>{{ $t('worlds.select') }}</b-form-select-option>
-              </template>
-            </b-form-select>
+            <b-nav-text v-if="world">{{ world.name }}</b-nav-text>
             <b-nav-item-dropdown right>
               <template #button-content>
                 <img v-if="picture" :src="picture" alt="Avatar" class="rounded-circle" width="24" height="24" />
@@ -84,12 +80,10 @@ import locales from '@/i18n/locales.json'
 import { localize } from 'vee-validate'
 import { mapActions, mapState } from 'vuex'
 import { signOut } from '@/api/identity'
-import { getWorlds } from '@/api/worlds'
 
 export default {
   data: () => ({
-    loading: false,
-    worlds: []
+    loading: false
   }),
   computed: {
     ...mapState(['locale', 'token', 'world']),
@@ -113,22 +107,10 @@ export default {
     },
     picture() {
       return this.token ? jwt.decode(this.token.access_token).picture : null
-    },
-    worldOptions() {
-      return this.worlds.map(({ alias, name }) => ({
-        text: name,
-        value: alias
-      }))
     }
   },
   methods: {
-    ...mapActions(['changeWorld', 'translate']),
-    _changeWorld(selected) {
-      const world = this.worlds.find(({ alias }) => alias === selected)
-      if (world) {
-        this.changeWorld(world)
-      }
-    },
+    ...mapActions(['translate']),
     async doSignOut() {
       if (!this.loading) {
         this.loading = true
@@ -153,23 +135,6 @@ export default {
         if (locale) {
           this.$i18n.locale = locale
           localize(locale)
-        }
-      }
-    },
-    token: {
-      immediate: true,
-      async handler(token) {
-        // TODO(fpion): when a world is created?
-        // TODO(fpion): when a world is deleted?
-        // TODO(fpion): when a world is updated?
-        // TODO(fpion): refresh page when world changed?
-        if (token) {
-          try {
-            const { data } = await getWorlds({ sort: 'Name', desc: false })
-            this.worlds = data.items
-          } catch (e) {
-            this.handleError(e)
-          }
         }
       }
     }

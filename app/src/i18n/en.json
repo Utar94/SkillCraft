@@ -144,13 +144,14 @@
     "updated": "Your world has been saved."
   },
   "worlds": {
+    "current": "Current",
     "delete": {
       "confirm": "Do you really want to delete the following world?",
       "success": "Your world has been deleted.",
       "title": "Delete world",
       "warning": "If the world is deleted, all its data will also be deleted. This action cannot be undone and the data will be lost forever."
     },
-    "select": "Select a world",
+    "select": "Select",
     "sort": {
       "Alias": "Alias",
       "Name": "Name",

@@ -48,29 +48,6 @@
     "title": "Inscription"
   },
   "success": "Succès !",
-  "todos": {
-    "delete": {
-      "confirm": "Désirez-vous vraiment supprimer le Todo suivant ?",
-      "title": "Supprimer le Todo"
-    },
-    "description": {
-      "label": "Description",
-      "placeholder": "Entrez quelque chose à faire..."
-    },
-    "done": "Fait",
-    "edit": {
-      "editTitle": "Modifier le Todo",
-      "newTitle": "Nouveau Todo",
-      "updatedAt": "Dernière modification le {date}"
-    },
-    "none": "Aucun Todo à afficher.",
-    "title": "Todos",
-    "toast": {
-      "created": "Un nouveau Todo a été créé.",
-      "deleted": "Le Todo a été supprimé.",
-      "updated": "Le Todo a été enregistré."
-    }
-  },
   "user": {
     "changePassword": "Changer le mot de passe",
     "confirm": {

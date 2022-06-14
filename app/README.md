@@ -1,4 +1,4 @@
-# todo-app
+# SkillCraft
 
 ## Project setup
 

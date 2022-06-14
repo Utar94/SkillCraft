@@ -28,7 +28,9 @@
             <td v-text="item.alias" />
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
             <td>
-              <icon-button icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deleteWorld_${item.id}`" />
+              <b-badge v-if="world && world.id === item.id" class="mx-1" variant="primary">{{ $t('worlds.current') }}</b-badge>
+              <icon-button v-else class="mx-1" icon="globe" text="worlds.select" variant="primary" @click="changeWorld(item)" />
+              <icon-button class="mx-1" icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deleteWorld_${item.id}`" />
               <delete-modal
                 confirm="worlds.delete.confirm"
                 :disabled="loading"
@@ -51,6 +53,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 import { deleteWorld, getWorlds } from '@/api/worlds'
 
 export default {
@@ -65,6 +68,7 @@ export default {
     total: 0
   }),
   computed: {
+    ...mapState(['world']),
     params() {
       return {
         search: this.search,
@@ -81,6 +85,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['changeWorld']),
     async _delete({ id }, callback = null) {
       if (!this.loading) {
         this.loading = true
