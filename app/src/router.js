@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import store from './store'
 import AspectList from './components/Aspects/AspectList.vue'
 import Confirm from './components/Identity/Confirm.vue'
+import CustomizationEdit from './components/Customizations/CustomizationEdit.vue'
+import CustomizationList from './components/Customizations/CustomizationList.vue'
 import Home from './components/Home.vue'
 import NotFound from './components/NotFound.vue'
 import Profile from './components/Identity/Profile.vue'
@@ -71,6 +73,17 @@ const router = new VueRouter({
       name: 'AspectList',
       path: '/aspects',
       component: AspectList
+    },
+    // Customizations
+    {
+      name: 'CustomizationList',
+      path: '/customizations',
+      component: CustomizationList
+    },
+    {
+      name: 'CustomizationEdit',
+      path: '/customizations/:id',
+      component: CustomizationEdit
     },
     // Worlds
     {

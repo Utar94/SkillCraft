@@ -14,6 +14,31 @@
     "title": "Aspects"
   },
   "count": "Count",
+  "customization": {
+    "created": "Your customization has been created.",
+    "title": "New customization",
+    "type": {
+      "label": "Type",
+      "options": {
+        "Disability": "Disability",
+        "Feat": "Feat"
+      },
+      "placeholder": "Select a customization type"
+    },
+    "updated": "Your customization has been saved."
+  },
+  "customizations": {
+    "delete": {
+      "confirm": "Do you really want to delete the following customization?",
+      "success": "Your customization has been deleted.",
+      "title": "Delete customization"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Customizations"
+  },
   "description": {
     "label": "Description",
     "placeholder": "Enter a description"
@@ -73,6 +98,7 @@
   },
   "statusDetail": {
     "createdAt": "Created at {date}",
+    "deletedAt": "Deleted at {date}",
     "updatedAt": "Last updated at {date}"
   },
   "success": "Success!",

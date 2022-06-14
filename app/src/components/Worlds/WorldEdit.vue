@@ -74,6 +74,7 @@ export default {
               this.setModel(data)
               this.toast('success', 'world.created')
             }
+            this.$refs.form.reset()
           }
         } catch (e) {
           if (e.status === 409 && e.data?.field === 'Alias') {
