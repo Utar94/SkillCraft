@@ -133,11 +133,23 @@
   },
   "world": {
     "alias": {
-      "format": "Alias: {alias}",
-      "label": "Alias"
-    }
+      "conflict": "The alias is already used.",
+      "custom": "Custom",
+      "label": "Alias",
+      "placeholder": "Enter a world alias"
+    },
+    "created": "Your world has been created.",
+    "creationFailed": "World creation failed!",
+    "title": "New world",
+    "updated": "Your world has been saved."
   },
   "worlds": {
+    "delete": {
+      "confirm": "Do you really want to delete the following world?",
+      "success": "Your world has been deleted.",
+      "title": "Delete world",
+      "warning": "If the world is deleted, all its data will also be deleted. This action cannot be undone and the data will be lost forever."
+    },
     "sort": {
       "Alias": "Alias",
       "Name": "Name",

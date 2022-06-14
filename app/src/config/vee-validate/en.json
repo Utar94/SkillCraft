@@ -1,6 +1,7 @@
 {
   "code": "en",
   "messages": {
+    "alias": "The {_field_} must be composed of non-empty alphanumeric words.",
     "alpha_num": "The {_field_} can only contain letters and digits.",
     "confirmed": "The {target} and the {_field_} must match.",
     "email": "Please enter a valid email address.",

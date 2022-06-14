@@ -80,7 +80,12 @@ const router = new VueRouter({
     },
     {
       name: 'WorldEdit',
-      path: '/worlds/:id',
+      path: '/worlds/:alias',
+      component: WorldEdit
+    },
+    {
+      name: 'CreateWorld',
+      path: '/create-world',
       component: WorldEdit
     },
     {

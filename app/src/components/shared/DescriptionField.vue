@@ -45,7 +45,7 @@ export default {
     },
     rows: {
       type: Number,
-      default: 20
+      default: 15
     },
     rules: {
       type: Object,

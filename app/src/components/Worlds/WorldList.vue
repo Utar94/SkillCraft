@@ -3,7 +3,7 @@
     <h1 v-t="'worlds.title'" />
     <div class="my-2">
       <icon-button class="mx-1" :disabled="loading" icon="sync-alt" :loading="loading" text="actions.refresh" variant="primary" @click="refresh()" />
-      <icon-button class="mx-1" icon="plus" text="actions.create" variant="success" />
+      <icon-button class="mx-1" icon="plus" text="actions.create" :to="{ name: 'CreateWorld' }" variant="success" />
     </div>
     <b-row>
       <search-field class="col" v-model="search" />
@@ -23,12 +23,23 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>
-              <router-link :to="{ name: 'WorldEdit', params: { id: item.id } }" v-text="item.name" />
+              <router-link :to="{ name: 'WorldEdit', params: { alias: item.alias } }" v-text="item.name" />
             </td>
             <td v-text="item.alias" />
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
             <td>
-              <icon-button disabled icon="trash-alt" text="actions.delete" variant="danger" />
+              <icon-button icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deleteWorld_${item.id}`" />
+              <delete-modal
+                confirm="worlds.delete.confirm"
+                :disabled="loading"
+                :displayName="item.name"
+                :id="`deleteWorld_${item.id}`"
+                :loading="loading"
+                title="worlds.delete.title"
+                @ok="_delete(item, $event)"
+              >
+                <p><strong v-t="'worlds.delete.warning'" /></p>
+              </delete-modal>
             </td>
           </tr>
         </tbody>
@@ -40,7 +51,7 @@
 </template>
 
 <script>
-import { getWorlds } from '@/api/worlds'
+import { deleteWorld, getWorlds } from '@/api/worlds'
 
 export default {
   data: () => ({
@@ -70,6 +81,27 @@ export default {
     }
   },
   methods: {
+    async _delete({ id }, callback = null) {
+      if (!this.loading) {
+        this.loading = true
+        let refresh = false
+        try {
+          await deleteWorld(id)
+          refresh = true
+          this.toast('success', 'worlds.delete.success')
+          if (typeof callback === 'function') {
+            callback()
+          }
+        } catch (e) {
+          this.handleError(e)
+        } finally {
+          this.loading = false
+        }
+        if (refresh) {
+          await this.refresh()
+        }
+      }
+    },
     async refresh(params = null) {
       if (!this.loading) {
         this.loading = true
@@ -89,8 +121,13 @@ export default {
     params: {
       deep: true,
       immediate: true,
-      async handler(params) {
-        await this.refresh(params)
+      async handler(newValue, oldValue) {
+        if (newValue?.index && oldValue && (newValue.search !== oldValue.search || newValue.sort !== oldValue.sort || newValue.count !== oldValue.count)) {
+          this.page = 1
+          await this.refresh()
+        } else {
+          await this.refresh(newValue)
+        }
       }
     }
   }
