@@ -10,14 +10,18 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'AspectList' }">
-            <font-awesome-icon icon="cog" />
-            {{ $t('aspects.title') }}
-          </b-nav-item>
           <b-nav-item :to="{ name: 'WorldList' }">
             <font-awesome-icon icon="globe" />
             {{ $t('worlds.title') }}
           </b-nav-item>
+          <template v-if="world">
+            <!-- TODO(fpion): menu levels? -->
+            <b-nav-item :to="{ name: 'AspectList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('aspects.title') }}
+            </b-nav-item>
+          </template>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
@@ -30,6 +34,7 @@
             </b-input-group>
           </b-nav-form> -->
 
+          <!-- TODO(fpion): French -->
           <!-- <b-nav-item-dropdown v-if="otherLocales.length" :text="localeName" right>
             <b-dropdown-item v-for="locale in otherLocales" :key="locale.value" :active="locale.value === $i18n.locale" @click="translate(locale.value)">
               {{ locale.text }}
@@ -141,16 +146,6 @@ export default {
       }
     }
   },
-  async created() {
-    if (this.token) {
-      try {
-        const { data } = await getWorlds({ sort: 'Name', desc: false })
-        this.worlds = data.items
-      } catch (e) {
-        this.handleError(e)
-      }
-    }
-  },
   watch: {
     locale: {
       immediate: true,
@@ -158,6 +153,23 @@ export default {
         if (locale) {
           this.$i18n.locale = locale
           localize(locale)
+        }
+      }
+    },
+    token: {
+      immediate: true,
+      async handler(token) {
+        // TODO(fpion): when a world is created?
+        // TODO(fpion): when a world is deleted?
+        // TODO(fpion): when a world is updated?
+        // TODO(fpion): refresh page when world changed?
+        if (token) {
+          try {
+            const { data } = await getWorlds({ sort: 'Name', desc: false })
+            this.worlds = data.items
+          } catch (e) {
+            this.handleError(e)
+          }
         }
       }
     }
