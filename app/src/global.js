@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Gravatar from 'vue-gravatar'
+import AttributeSelect from './components/shared/AttributeSelect.vue'
 import CountSelect from './components/shared/CountSelect.vue'
 import DeleteModal from './components/shared/DeleteModal.vue'
 import DescriptionField from './components/shared/DescriptionField.vue'
@@ -17,6 +18,7 @@ import StatusDetail from './components/shared/StatusDetail.vue'
 
 Vue.component('v-gravatar', Gravatar)
 
+Vue.component('attribute-select', AttributeSelect)
 Vue.component('count-select', CountSelect)
 Vue.component('delete-modal', DeleteModal)
 Vue.component('description-field', DescriptionField)

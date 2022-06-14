@@ -13,6 +13,19 @@
   "aspects": {
     "title": "Aspects"
   },
+  "attribute": {
+    "label": "Attribute",
+    "options": {
+      "Agility": "Agility",
+      "Coordination": "Coordination",
+      "Intellect": "Intellect",
+      "Mind": "Mind",
+      "Presence": "Presence",
+      "Sensitivity": "Sensitivity",
+      "Vigor": "Vigor"
+    },
+    "placeholder": "Select an attribute"
+  },
   "count": "Count",
   "customization": {
     "created": "Your customization has been created.",
@@ -54,6 +67,27 @@
   "name": {
     "label": "Name",
     "placeholder": "Enter a name"
+  },
+  "nature": {
+    "created": "Your nature has been created.",
+    "feat": {
+      "label": "Feat",
+      "placeholder": "Select a feat"
+    },
+    "title": "New nature",
+    "updated": "Your nature has been saved."
+  },
+  "natures": {
+    "delete": {
+      "confirm": "Do you really want to delete the following nature?",
+      "success": "Your nature has been deleted.",
+      "title": "Delete nature"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Natures"
   },
   "noResult": "No result to display.",
   "notFound": {
