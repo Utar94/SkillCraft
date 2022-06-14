@@ -19,6 +19,9 @@ export default new Vuex.Store({
     changeWorld({ commit }, world) {
       commit('setWorld', world)
     },
+    resetWorld({ commit }) {
+      commit('setWorld', null)
+    },
     signIn({ commit }, token) {
       commit('setToken', token)
     },

@@ -88,13 +88,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['changeWorld']),
+    ...mapActions(['changeWorld', 'resetWorld']),
     async _delete({ id }, callback = null) {
       if (!this.loading) {
         this.loading = true
         let refresh = false
         try {
-          await deleteWorld(id)
+          const { data } = await deleteWorld(id)
+          if (this.world?.id === data.id) {
+            this.resetWorld()
+          }
           refresh = true
           this.toast('success', 'worlds.delete.success')
           if (typeof callback === 'function') {
