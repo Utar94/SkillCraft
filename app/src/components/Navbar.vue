@@ -93,7 +93,7 @@ export default {
       return this.token ? jwt.decode(this.token.access_token).email : null
     },
     environment() {
-      return process.env.NODE_ENV
+      return process.env.VUE_APP_ENV
     },
     localeName() {
       return locales[this.$i18n.locale]
