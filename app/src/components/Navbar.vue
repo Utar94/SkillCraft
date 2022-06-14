@@ -27,6 +27,11 @@
               <font-awesome-icon icon="cog" />
               {{ $t('customizations.title') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'NatureList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('natures.title') }}
+            </b-nav-item>
           </template>
         </b-navbar-nav>
 
