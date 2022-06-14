@@ -22,6 +22,11 @@
               <font-awesome-icon icon="cog" />
               {{ $t('aspects.title') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'CustomizationList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('customizations.title') }}
+            </b-nav-item>
           </template>
         </b-navbar-nav>
 
