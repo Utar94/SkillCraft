@@ -1,0 +1,163 @@
+{
+  "actions": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "create": "Create",
+    "delete": "Delete",
+    "edit": "Edit",
+    "refresh": "Refresh",
+    "search": "Search",
+    "save": "Save",
+    "view": "View"
+  },
+  "aspects": {
+    "title": "Aspects"
+  },
+  "count": "Count",
+  "description": {
+    "label": "Description",
+    "placeholder": "Enter a description"
+  },
+  "errorToast": {
+    "body": "An unexpected error occurred. Please try again later or contact our support team.",
+    "title": "Error!"
+  },
+  "home": {
+    "comingSoon": "Coming Soon!",
+    "title": "Home"
+  },
+  "name": {
+    "label": "Name",
+    "placeholder": "Enter a name"
+  },
+  "noResult": "No result to display.",
+  "notFound": {
+    "help": "The requested page could not be found.",
+    "lead": "Page Not Found",
+    "link": "Go to Home"
+  },
+  "recoverPassword": {
+    "description": "Enter your email address or your username in the input below. A message containing instructions to reset your password will be sent to your email.",
+    "submit": "Send",
+    "success": "A message has been sent to your email. You may close this window now.",
+    "title": "Password Recovery"
+  },
+  "resetPassword": {
+    "submit": "Reset",
+    "success": "Your password has been reset. You may now click the button below to sign in.",
+    "title": "Reset Password"
+  },
+  "search": {
+    "label": "Search",
+    "placeholder": "Type something to search"
+  },
+  "signIn": {
+    "failed": "Sign in failed!",
+    "invalidCredentials": "Please check you provided the correct email address/username and password.",
+    "notConfirmed": "Your email has not been confirmed yet. Please check your email messages and your spam folder or contact our support team.",
+    "recoverPassword": "I forgot my password",
+    "remember": "Remember me",
+    "submit": "Sign in",
+    "title": "Sign In"
+  },
+  "signUp": {
+    "duplicateEmail": "The email address is already taken.",
+    "submit": "Sign up",
+    "success": "A message has been sent to your email. You may close this window now.",
+    "title": "Sign Up"
+  },
+  "sort": {
+    "desc": "Descending",
+    "label": "Sort",
+    "placeholder": "Select a sort option"
+  },
+  "statusDetail": {
+    "createdAt": "Created at {date}",
+    "updatedAt": "Last updated at {date}"
+  },
+  "success": "Success!",
+  "updatedAt": "Updated at",
+  "user": {
+    "changePassword": "Change password",
+    "confirm": {
+      "success": "Your email has been verified. You may now click the button below to sign in.",
+      "title": "Email confirmation"
+    },
+    "confirmedAt": "Confirmed at",
+    "createdAt": "Created at",
+    "editProfile": "Edit profile",
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email address"
+    },
+    "emailOrUsername": {
+      "label": "Email address or username",
+      "placeholder": "Enter your email address or your username"
+    },
+    "firstName": {
+      "label": "First name",
+      "placeholder": "Enter your first name"
+    },
+    "fullName": "Name",
+    "lastName": {
+      "label": "Last name",
+      "placeholder": "Enter your last name"
+    },
+    "locale": {
+      "label": "Locale",
+      "placeholder": "Select your preferred locale"
+    },
+    "password": {
+      "changeFailed": "Password change failed!",
+      "changedAt": "Last changed at {date}",
+      "confirmation": {
+        "label": "Password confirmation",
+        "placeholder": "Enter your password again"
+      },
+      "current": {
+        "label": "Current password",
+        "placeholder": "Enter your current password"
+      },
+      "label": "Password",
+      "mismatch": "Please check you provided your correct current password.",
+      "placeholder": "Enter your password",
+      "success": "Your password has been changed."
+    },
+    "picture": {
+      "label": "Picture",
+      "placeholder": "Enter your picture URL"
+    },
+    "profileUpdated": "Your profile has been updated.",
+    "signOut": "Sign Out",
+    "title": "User profile",
+    "updatedAt": "Updated at"
+  },
+  "world": {
+    "alias": {
+      "conflict": "The alias is already used.",
+      "custom": "Custom",
+      "label": "Alias",
+      "placeholder": "Enter a world alias"
+    },
+    "created": "Your world has been created.",
+    "creationFailed": "World creation failed!",
+    "title": "New world",
+    "updated": "Your world has been saved."
+  },
+  "worlds": {
+    "current": "Current",
+    "delete": {
+      "confirm": "Do you really want to delete the following world?",
+      "success": "Your world has been deleted.",
+      "title": "Delete world",
+      "warning": "If the world is deleted, all its data will also be deleted. This action cannot be undone and the data will be lost forever."
+    },
+    "select": "Select",
+    "sort": {
+      "Alias": "Alias",
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Worlds"
+  }
+}
