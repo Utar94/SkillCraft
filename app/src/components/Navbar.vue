@@ -11,6 +11,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="token">
+          <b-nav-text>{{ environment }}</b-nav-text>
           <b-nav-item :to="{ name: 'WorldList' }">
             <font-awesome-icon icon="globe" />
             {{ $t('worlds.title') }}
