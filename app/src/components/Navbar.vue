@@ -4,12 +4,13 @@
       <b-navbar-brand :to="{ name: 'Home' }">
         <img src="@/assets/logo.png" alt="SkillCraft Logo" height="32" />
         SkillCraft
+        <b-badge v-if="environment !== 'production'" variant="warning">{{ environment }}</b-badge>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
+        <b-navbar-nav v-if="token">
           <b-nav-item :to="{ name: 'WorldList' }">
             <font-awesome-icon icon="globe" />
             {{ $t('worlds.title') }}
@@ -89,6 +90,9 @@ export default {
     ...mapState(['locale', 'token', 'world']),
     email() {
       return this.token ? jwt.decode(this.token.access_token).email : null
+    },
+    environment() {
+      return process.env.NODE_ENV
     },
     localeName() {
       return locales[this.$i18n.locale]

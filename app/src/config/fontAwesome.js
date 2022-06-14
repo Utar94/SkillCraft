@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+  faArrowLeft,
   faBan,
   faCog,
   faEdit,
@@ -14,6 +15,7 @@ import {
   faSearch,
   faSignInAlt,
   faSignOutAlt,
+  faStar,
   faSyncAlt,
   faTasks,
   faTrashAlt,
@@ -22,6 +24,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
+  faArrowLeft,
   faBan,
   faCog,
   faEdit,
@@ -35,6 +38,7 @@ library.add(
   faSearch,
   faSignInAlt,
   faSignOutAlt,
+  faStar,
   faSyncAlt,
   faTasks,
   faTrashAlt,

@@ -28,7 +28,10 @@
             <td v-text="item.alias" />
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
             <td>
-              <b-badge v-if="world && world.id === item.id" class="mx-1" variant="primary">{{ $t('worlds.current') }}</b-badge>
+              <b-badge v-if="world && world.id === item.id" class="mx-1" variant="primary">
+                <font-awesome-icon icon="star" />
+                {{ $t('worlds.current') }}
+              </b-badge>
               <icon-button v-else class="mx-1" icon="globe" text="worlds.select" variant="primary" @click="changeWorld(item)" />
               <icon-button class="mx-1" icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deleteWorld_${item.id}`" />
               <delete-modal

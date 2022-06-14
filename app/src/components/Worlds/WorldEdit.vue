@@ -14,7 +14,7 @@
         <div class="my-2">
           <icon-submit v-if="world" class="mx-1" :disabled="!hasChanges || loading" icon="save" :loading="loading" text="actions.save" variant="primary" />
           <icon-submit v-else class="mx-1" :disabled="!hasChanges || loading" icon="plus" :loading="loading" text="actions.create" variant="success" />
-          <icon-button class="mx-1" icon="ban" text="actions.cancel" :to="{ name: 'WorldList' }" />
+          <icon-button class="mx-1" icon="arrow-left" text="actions.back" :to="{ name: 'WorldList' }" />
         </div>
       </b-form>
     </validation-observer>
