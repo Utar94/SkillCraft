@@ -8,7 +8,7 @@
     />
     <validation-observer ref="form">
       <b-form @submit.prevent="submit">
-        <customization-type-select :disabled="Boolean(customization)" :required="!customization" v-model="type" />
+        <customization-type-select :disabled="Boolean(customization)" required v-model="type" />
         <name-field v-model="name" />
         <description-field v-model="description" />
         <div class="my-2">
