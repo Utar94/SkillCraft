@@ -44,6 +44,27 @@
     },
     "placeholder": "Select an attribute"
   },
+  "caste": {
+    "created": "Your caste has been created.",
+    "title": "New caste",
+    "updated": "Your caste has been saved.",
+    "wealthRoll": {
+      "label": "Wealth Roll",
+      "placeholder": "e.g., 8d6"
+    }
+  },
+  "castes": {
+    "delete": {
+      "confirm": "Do you really want to delete the following caste?",
+      "success": "Your caste has been deleted.",
+      "title": "Delete caste"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Castes"
+  },
   "count": "Count",
   "customization": {
     "created": "Your customization has been created.",
@@ -73,6 +94,24 @@
   "description": {
     "label": "Description",
     "placeholder": "Enter a description"
+  },
+  "education": {
+    "created": "Your education has been created.",
+    "title": "New education",
+    "updated": "Your education has been saved.",
+    "wealthMultiplier": "Wealth Multiplier"
+  },
+  "educations": {
+    "delete": {
+      "confirm": "Do you really want to delete the following education?",
+      "success": "Your education has been deleted.",
+      "title": "Delete education"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Educations"
   },
   "errorToast": {
     "body": "An unexpected error occurred. Please try again later or contact our support team.",
