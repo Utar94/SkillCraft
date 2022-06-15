@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './store'
+import AspectEdit from './components/Aspects/AspectEdit.vue'
 import AspectList from './components/Aspects/AspectList.vue'
 import Confirm from './components/Identity/Confirm.vue'
 import CustomizationEdit from './components/Customizations/CustomizationEdit.vue'
@@ -75,6 +76,11 @@ const router = new VueRouter({
       name: 'AspectList',
       path: '/aspects',
       component: AspectList
+    },
+    {
+      name: 'AspectEdit',
+      path: '/aspects/:id',
+      component: AspectEdit
     },
     // Customizations
     {

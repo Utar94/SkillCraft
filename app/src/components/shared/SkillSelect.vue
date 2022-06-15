@@ -25,15 +25,15 @@ export default {
     },
     id: {
       type: String,
-      default: 'attribute'
+      default: 'skill'
     },
     label: {
       type: String,
-      default: 'attribute.label'
+      default: 'skill.label'
     },
     placeholder: {
       type: String,
-      default: 'attribute.placeholder'
+      default: 'skill.placeholder'
     },
     required: {
       type: Boolean,
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     options() {
-      return Object.entries(this.$i18n.t('attribute.options'))
+      return Object.entries(this.$i18n.t('skill.options'))
         .filter(([value]) => !this.exclude.includes(value))
         .map(([value, text]) => ({ text, value }))
         .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))

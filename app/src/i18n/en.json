@@ -10,7 +10,25 @@
     "save": "Save",
     "view": "View"
   },
+  "aspect": {
+    "attribute": {
+      "mandatory": "Mandatory Attribute",
+      "optional": "Optional Attribute"
+    },
+    "created": "Your aspect has been created.",
+    "title": "New aspect",
+    "updated": "Your aspect has been saved."
+  },
   "aspects": {
+    "delete": {
+      "confirm": "Do you really want to delete the following aspect?",
+      "success": "Your aspect has been deleted.",
+      "title": "Delete aspect"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
     "title": "Aspects"
   },
   "attribute": {
@@ -124,6 +142,32 @@
     "submit": "Sign up",
     "success": "A message has been sent to your email. You may close this window now.",
     "title": "Sign Up"
+  },
+  "skill": {
+    "label": "Skill",
+    "options": {
+      "Acrobatics": "Acrobatics",
+      "AnimalHandling": "Animal Handling",
+      "Athletics": "Athletics",
+      "Craft": "Craft",
+      "Deception": "Deception",
+      "Diplomacy": "Diplomacy",
+      "Discipline": "Discipline",
+      "Fighting": "Fighting",
+      "Insight": "Insight",
+      "Investigation": "Investigation",
+      "Knowledge": "Knowledge",
+      "Linguistics": "Linguistics",
+      "Orientation": "Orientation",
+      "Perception": "Perception",
+      "Performance": "Performance",
+      "Resistance": "Resistance",
+      "SleightOfHand": "Sleight of Hand",
+      "Sorcery": "Sorcery",
+      "Stealth": "Stealth",
+      "Survival": "Survival"
+    },
+    "placeholder": "Select a skill"
   },
   "sort": {
     "desc": "Descending",
