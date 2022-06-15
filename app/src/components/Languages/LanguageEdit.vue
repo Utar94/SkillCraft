@@ -9,11 +9,8 @@
     />
     <validation-observer ref="form">
       <b-form @submit.prevent="submit">
-        <name-field v-model="name" />
-        <b-form-group>
-          <b-form-checkbox v-model="exotic">{{ $t('language.exotic') }}</b-form-checkbox>
-        </b-form-group>
         <b-row>
+          <name-field class="col" v-model="name" />
           <form-field
             class="col"
             id="script"
@@ -23,16 +20,18 @@
             placeholder="language.script.placeholder"
             v-model="script"
           />
-          <form-field
-            class="col"
-            id="typicalSpeakers"
-            label="language.typicalSpeakers.label"
-            :maxLength="100"
-            :minLength="0"
-            placeholder="language.typicalSpeakers.placeholder"
-            v-model="typicalSpeakers"
-          />
         </b-row>
+        <b-form-group>
+          <b-form-checkbox v-model="exotic">{{ $t('language.exotic') }}</b-form-checkbox>
+        </b-form-group>
+        <form-field
+          id="typicalSpeakers"
+          label="language.typicalSpeakers.label"
+          :maxLength="100"
+          :minLength="0"
+          placeholder="language.typicalSpeakers.placeholder"
+          v-model="typicalSpeakers"
+        />
         <description-field v-model="description" />
         <div class="my-2">
           <icon-submit v-if="language" class="mx-1" :disabled="!hasChanges || loading" icon="save" :loading="loading" text="actions.save" variant="primary" />

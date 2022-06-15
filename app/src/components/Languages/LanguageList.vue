@@ -24,6 +24,7 @@
           <tr v-for="item in items" :key="item.id">
             <td>
               <router-link :to="{ name: 'LanguageEdit', params: { id: item.id } }" v-text="item.name" />
+              <b-badge class="mx-1" v-if="item.exotic" variant="info">{{ $t('language.exotic') }}</b-badge>
             </td>
             <td v-text="item.script" />
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
