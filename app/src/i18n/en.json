@@ -82,6 +82,32 @@
     "comingSoon": "Coming Soon!",
     "title": "Home"
   },
+  "language": {
+    "created": "Your language has been created.",
+    "exotic": "Exotic",
+    "script": {
+      "label": "Script",
+      "placeholder": "Enter the language script, if any"
+    },
+    "title": "New language",
+    "typicalSpeakers": {
+      "label": "Typical Speakers",
+      "placeholder": "Enter the language typical speakers"
+    },
+    "updated": "Your language has been saved."
+  },
+  "languages": {
+    "delete": {
+      "confirm": "Do you really want to delete the following language?",
+      "success": "Your language has been deleted.",
+      "title": "Delete language"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Languages"
+  },
   "name": {
     "label": "Name",
     "placeholder": "Enter a name"

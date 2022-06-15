@@ -32,6 +32,11 @@
               <font-awesome-icon icon="cog" />
               {{ $t('natures.title') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'LanguageList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('languages.title') }}
+            </b-nav-item>
           </template>
         </b-navbar-nav>
 

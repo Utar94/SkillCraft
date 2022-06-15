@@ -7,6 +7,8 @@ import Confirm from './components/Identity/Confirm.vue'
 import CustomizationEdit from './components/Customizations/CustomizationEdit.vue'
 import CustomizationList from './components/Customizations/CustomizationList.vue'
 import Home from './components/Home.vue'
+import LanguageEdit from './components/Languages/LanguageEdit.vue'
+import LanguageList from './components/Languages/LanguageList.vue'
 import NatureEdit from './components/Natures/NatureEdit.vue'
 import NatureList from './components/Natures/NatureList.vue'
 import NotFound from './components/NotFound.vue'
@@ -92,6 +94,17 @@ const router = new VueRouter({
       name: 'CustomizationEdit',
       path: '/customizations/:id',
       component: CustomizationEdit
+    },
+    // Languages
+    {
+      name: 'LanguageList',
+      path: '/languages',
+      component: LanguageList
+    },
+    {
+      name: 'LanguageEdit',
+      path: '/languages/:id',
+      component: LanguageEdit
     },
     // Natures
     {
