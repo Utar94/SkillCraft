@@ -1,27 +1,27 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkillCraft.Core.Languages.Models;
+using SkillCraft.Core.Educations.Models;
 using SkillCraft.Core.Models;
 
-namespace SkillCraft.Core.Languages.Queries
+namespace SkillCraft.Core.Educations.Queries
 {
-  internal class GetLanguagesQueryHandler : IRequestHandler<GetLanguagesQuery, ListModel<LanguageModel>>
+  internal class GetEducationsQueryHandler : IRequestHandler<GetEducationsQuery, ListModel<EducationModel>>
   {
     private readonly IApplicationContext _appContext;
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public GetLanguagesQueryHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
+    public GetEducationsQueryHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
     {
       _appContext = appContext;
       _dbContext = dbContext;
       _mapper = mapper;
     }
 
-    public async Task<ListModel<LanguageModel>> Handle(GetLanguagesQuery request, CancellationToken cancellationToken)
+    public async Task<ListModel<EducationModel>> Handle(GetEducationsQuery request, CancellationToken cancellationToken)
     {
-      IQueryable<Language> query = _dbContext.Languages
+      IQueryable<Education> query = _dbContext.Educations
         .AsNoTracking()
         .Where(x => x.WorldId == _appContext.World.Id);
 
@@ -40,9 +40,9 @@ namespace SkillCraft.Core.Languages.Queries
       {
         query = request.Sort.Value switch
         {
-          LanguageSort.Name => request.Desc ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name),
-          LanguageSort.UpdatedAt => request.Desc ? query.OrderByDescending(x => x.UpdatedAt ?? x.CreatedAt) : query.OrderBy(x => x.UpdatedAt ?? x.CreatedAt),
-          _ => throw new ArgumentException($"The language sort \"{request.Sort}\" is not valid.", nameof(request)),
+          EducationSort.Name => request.Desc ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name),
+          EducationSort.UpdatedAt => request.Desc ? query.OrderByDescending(x => x.UpdatedAt ?? x.CreatedAt) : query.OrderBy(x => x.UpdatedAt ?? x.CreatedAt),
+          _ => throw new ArgumentException($"The education sort \"{request.Sort}\" is not valid.", nameof(request)),
         };
       }
 
@@ -55,10 +55,10 @@ namespace SkillCraft.Core.Languages.Queries
         query = query.Take(request.Count.Value);
       }
 
-      Language[] languages = await query.ToArrayAsync(cancellationToken);
+      Education[] educations = await query.ToArrayAsync(cancellationToken);
 
-      return new ListModel<LanguageModel>(
-        _mapper.Map<IEnumerable<LanguageModel>>(languages),
+      return new ListModel<EducationModel>(
+        _mapper.Map<IEnumerable<EducationModel>>(educations),
         total
       );
     }
