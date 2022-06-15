@@ -3,9 +3,13 @@ import VueRouter from 'vue-router'
 import store from './store'
 import AspectEdit from './components/Aspects/AspectEdit.vue'
 import AspectList from './components/Aspects/AspectList.vue'
+import CasteEdit from './components/Castes/CasteEdit.vue'
+import CasteList from './components/Castes/CasteList.vue'
 import Confirm from './components/Identity/Confirm.vue'
 import CustomizationEdit from './components/Customizations/CustomizationEdit.vue'
 import CustomizationList from './components/Customizations/CustomizationList.vue'
+import EducationEdit from './components/Educations/EducationEdit.vue'
+import EducationList from './components/Educations/EducationList.vue'
 import Home from './components/Home.vue'
 import LanguageEdit from './components/Languages/LanguageEdit.vue'
 import LanguageList from './components/Languages/LanguageList.vue'
@@ -84,6 +88,17 @@ const router = new VueRouter({
       path: '/aspects/:id',
       component: AspectEdit
     },
+    // Castes
+    {
+      name: 'CasteList',
+      path: '/castes',
+      component: CasteList
+    },
+    {
+      name: 'CasteEdit',
+      path: '/castes/:id',
+      component: CasteEdit
+    },
     // Customizations
     {
       name: 'CustomizationList',
@@ -94,6 +109,17 @@ const router = new VueRouter({
       name: 'CustomizationEdit',
       path: '/customizations/:id',
       component: CustomizationEdit
+    },
+    // Educations
+    {
+      name: 'EducationList',
+      path: '/educations',
+      component: EducationList
+    },
+    {
+      name: 'EducationEdit',
+      path: '/educations/:id',
+      component: EducationEdit
     },
     // Languages
     {

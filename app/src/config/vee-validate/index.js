@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
-import { alpha_num, confirmed, email, max, max_value, min, min_value, required } from 'vee-validate/dist/rules'
+import { alpha_num, confirmed, email, max, max_value, min, min_value, regex, required } from 'vee-validate/dist/rules'
 
 import alias from './rules/alias'
 import password from './rules/password'
@@ -21,6 +21,7 @@ extend('max_value', max_value)
 extend('min', min)
 extend('min_value', min_value)
 extend('password', password)
+extend('regex', regex)
 extend('required', required)
 extend('url', url)
 

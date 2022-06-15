@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
+using SkillCraft.Core.Castes;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
@@ -19,7 +21,9 @@ namespace SkillCraft.Infrastructure
     }
 
     public DbSet<Aspect> Aspects { get; set; }
+    public DbSet<Caste> Castes { get; set; }
     public DbSet<Customization> Customizations { get; set; }
+    public DbSet<Education> Educations { get; set; }
     public DbSet<EventLog> EventLogs { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
