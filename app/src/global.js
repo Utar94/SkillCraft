@@ -50,10 +50,7 @@ Vue.mixin({
       this.toast('errorToast.title', 'errorToast.body', 'danger')
     },
     orderBy(items, key = null) {
-      if (key) {
-        return items.sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0))
-      }
-      return items.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+      return key ? [...items].sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0)) : [...items].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     },
     toast(title, body = '', variant = 'success') {
       this.$bvToast.toast(this.$i18n.t(body), {

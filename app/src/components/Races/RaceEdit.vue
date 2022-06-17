@@ -97,7 +97,6 @@ export default {
     extraAttributes: 0,
     extraLanguages: 0,
     languages: [],
-    languageTags: [],
     languagesText: null,
     loading: false,
     name: null,
@@ -109,7 +108,8 @@ export default {
       Fly: 0,
       Swim: 0,
       Walk: 0
-    }
+    },
+    worldLanguages: []
   }),
   computed: {
     hasChanges() {
@@ -141,15 +141,23 @@ export default {
       )
     },
     languageIds() {
-      return this.languageTags.filter(({ variant }) => variant !== 'danger').map(({ value }) => value)
+      return this.languages.filter(({ status }) => status !== 'removed').map(({ id }) => id)
     },
     languageOptions() {
-      return this.languages
+      return this.worldLanguages
         .filter(({ id }) => !this.languageIds.includes(id))
         .map(({ id, name }) => ({
           text: name,
           value: id
         }))
+    },
+    languageTags() {
+      return this.orderBy(this.languages, 'name').map(({ id, name, status }) => ({
+        disabled: status === 'removed',
+        text: name,
+        value: id,
+        variant: status === 'added' ? 'success' : status === 'removed' ? 'danger' : ''
+      }))
     },
     payload() {
       const payload = {
@@ -176,36 +184,35 @@ export default {
   },
   methods: {
     addLanguage(value) {
-      const language = this.languages.find(({ id }) => id === value)
-      if (language) {
-        const index = this.languageTags.findIndex(tag => tag.value === value)
-        if (index >= 0) {
-          const tag = this.languageTags[index]
-          tag.disabled = false
-          tag.variant = ''
-          Vue.set(this.languageTags, index, tag)
-        } else {
-          this.languageTags.push({
-            text: language.name,
-            value: language.id,
-            variant: 'success'
-          })
+      const index = this.languages.findIndex(({ id }) => id === value)
+      if (index >= 0) {
+        const language = this.languages[index]
+        if (language.status === 'removed') {
+          delete language.status
+          Vue.set(this.languages, index, language)
+          return
         }
+      }
+      const language = this.worldLanguages.find(({ id }) => id === value)
+      if (language) {
+        this.languages.push({
+          ...language,
+          status: 'added'
+        })
       }
     },
     clean(values) {
       return values.filter(value => typeof value !== 'undefined' && value !== null)
     },
     removeLanguage({ value }) {
-      const index = this.languageTags.findIndex(tag => tag.value === value)
+      const index = this.languages.findIndex(({ id }) => id === value)
       if (index >= 0) {
-        const tag = this.languageTags[index]
-        if (tag.variant === 'success') {
-          Vue.delete(this.languageTags, index)
-        } else {
-          tag.disabled = true
-          tag.variant = 'danger'
-          Vue.set(this.languageTags, index, tag)
+        const language = this.languages[index]
+        if (language.status === 'added') {
+          Vue.delete(this.languages, index)
+        } else if (language.status !== 'removed') {
+          language.status = 'removed'
+          Vue.set(this.languages, index, language)
         }
       }
     },
@@ -225,10 +232,7 @@ export default {
       this.extraAttributes = model.extraAttributes
       this.attributesText = model.attributesText
       // Languages
-      this.languageTags = model.languages.map(({ id, name }) => ({
-        text: name,
-        value: id
-      }))
+      this.languages = [...model.languages]
       this.extraLanguages = model.extraLanguages
       this.languagesText = model.languagesText
       // Speeds
@@ -279,7 +283,7 @@ export default {
     }
     try {
       const { data } = await getLanguages({ deleted: false, sort: 'Name', desc: false })
-      this.languages = data.items
+      this.worldLanguages = data.items
     } catch (e) {
       this.handleError(e)
     }
