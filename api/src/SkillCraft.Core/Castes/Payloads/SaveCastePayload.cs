@@ -14,7 +14,7 @@ namespace SkillCraft.Core.Castes.Payloads
     [Enum(typeof(Skill))]
     public Skill Skill { get; set; }
 
-    [RegularExpression("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?")]
+    [RegularExpression("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?")] // TODO(fpion): refactor
     public string? WealthRoll { get; set; }
   }
 }
