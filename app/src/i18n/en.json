@@ -128,6 +128,10 @@
       "label": "Script",
       "placeholder": "Enter the language script, if any"
     },
+    "select": {
+      "label": "Language",
+      "placeholder": "Select a language"
+    },
     "title": "New language",
     "typicalSpeakers": {
       "label": "Typical Speakers",
@@ -177,6 +181,39 @@
     "help": "The requested page could not be found.",
     "lead": "Page Not Found",
     "link": "Go to Home"
+  },
+  "race": {
+    "attributes": {
+      "extra": "Extra attributes",
+      "tab": "Attributes",
+      "text": "Describe the attributes of your race"
+    },
+    "created": "Your race has been created.",
+    "general": "General",
+    "languages": {
+      "add": "Add a language",
+      "extra": "Extra languages",
+      "tab": "Languages",
+      "text": "Describe the languages of your race"
+    },
+    "speeds": {
+      "tab": "Speeds",
+      "text": "Describe the speeds of your race"
+    },
+    "title": "New race",
+    "updated": "Your race has been saved."
+  },
+  "races": {
+    "delete": {
+      "confirm": "Do you really want to delete the following race?",
+      "success": "Your race has been deleted.",
+      "title": "Delete race"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Races"
   },
   "recoverPassword": {
     "description": "Enter your email address or your username in the input below. A message containing instructions to reset your password will be sent to your email.",
@@ -239,12 +276,25 @@
     "label": "Sort",
     "placeholder": "Select a sort option"
   },
+  "speed": {
+    "types": {
+      "Burrow": "Burrow",
+      "Climb": "Climb",
+      "Fly": "Fly",
+      "Swim": "Swim",
+      "Walk": "Walk"
+    }
+  },
   "statusDetail": {
     "createdAt": "Created at {date}",
     "deletedAt": "Deleted at {date}",
     "updatedAt": "Last updated at {date}"
   },
   "success": "Success!",
+  "tags": {
+    "label": "Tags",
+    "placeholder": "(empty)"
+  },
   "updatedAt": "Updated at",
   "user": {
     "changePassword": "Change password",

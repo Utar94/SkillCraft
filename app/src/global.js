@@ -16,6 +16,7 @@ import SearchField from './components/shared/SearchField.vue'
 import SkillSelect from './components/shared/SkillSelect.vue'
 import SortSelect from './components/shared/SortSelect.vue'
 import StatusDetail from './components/shared/StatusDetail.vue'
+import TagList from './components/shared/TagList.vue'
 
 Vue.component('v-gravatar', Gravatar)
 
@@ -35,6 +36,7 @@ Vue.component('search-field', SearchField)
 Vue.component('skill-select', SkillSelect)
 Vue.component('sort-select', SortSelect)
 Vue.component('status-detail', StatusDetail)
+Vue.component('tag-list', TagList)
 
 Vue.mixin({
   methods: {
@@ -46,6 +48,12 @@ Vue.mixin({
         console.error(e)
       }
       this.toast('errorToast.title', 'errorToast.body', 'danger')
+    },
+    orderBy(items, key = null) {
+      if (key) {
+        return items.sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0))
+      }
+      return items.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     },
     toast(title, body = '', variant = 'success') {
       this.$bvToast.toast(this.$i18n.t(body), {

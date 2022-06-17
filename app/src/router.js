@@ -17,6 +17,8 @@ import NatureEdit from './components/Natures/NatureEdit.vue'
 import NatureList from './components/Natures/NatureList.vue'
 import NotFound from './components/NotFound.vue'
 import Profile from './components/Identity/Profile.vue'
+import RaceEdit from './components/Races/RaceEdit.vue'
+import RaceList from './components/Races/RaceList.vue'
 import RecoverPassword from './components/Identity/RecoverPassword.vue'
 import ResetPassword from './components/Identity/ResetPassword.vue'
 import SignIn from './components/Identity/SignIn.vue'
@@ -142,6 +144,17 @@ const router = new VueRouter({
       name: 'NatureEdit',
       path: '/natures/:id',
       component: NatureEdit
+    },
+    // Races
+    {
+      name: 'RaceList',
+      path: '/races',
+      component: RaceList
+    },
+    {
+      name: 'RaceEdit',
+      path: '/races/:id',
+      component: RaceEdit
     },
     // Worlds
     {
