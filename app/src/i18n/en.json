@@ -196,6 +196,37 @@
       "tab": "Languages",
       "text": "Describe the languages of your race"
     },
+    "physical": {
+      "age": {
+        "adult": "Adult",
+        "child": "Child",
+        "mature": "Mature",
+        "placeholder": "Describe the aging of your race",
+        "teenager": "Teenager",
+        "title": "Age",
+        "venerable": "Venerable"
+      },
+      "size": {
+        "category": "Category",
+        "placeholder": "Describe the size of your race",
+        "statureRoll": {
+          "label": "Stature Roll",
+          "placeholder": "e.g., 2d20+140"
+        },
+        "title": "Size"
+      },
+      "tab": "Physical",
+      "weight": {
+        "malnutrition": "Malnutrition",
+        "normal": "Normal",
+        "obese": "Obese",
+        "overweight": "Overweight",
+        "placeholder": "Describe the weight of your race",
+        "roll": "e.g., 19 + 1d6",
+        "thin": "Thin",
+        "title": "Weight"
+      }
+    },
     "speeds": {
       "tab": "Speeds",
       "text": "Describe the speeds of your race"
@@ -244,6 +275,20 @@
     "submit": "Sign up",
     "success": "A message has been sent to your email. You may close this window now.",
     "title": "Sign Up"
+  },
+  "sizeCategory": {
+    "categories": {
+      "Colossal": "Colossal",
+      "Diminutive": "Diminutive",
+      "Gargantuan": "Gargantuan",
+      "Huge": "Huge",
+      "Large": "Large",
+      "Medium": "Medium",
+      "Small": "Small",
+      "Tiny": "Tiny"
+    },
+    "label": "Size Category",
+    "placeholder": "Select a size category"
   },
   "skill": {
     "label": "Skill",

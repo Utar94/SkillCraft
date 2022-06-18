@@ -13,6 +13,7 @@ import IconSubmit from './components/shared/IconSubmit.vue'
 import NameField from './components/shared/NameField.vue'
 import PasswordField from './components/shared/PasswordField.vue'
 import SearchField from './components/shared/SearchField.vue'
+import SizeCategorySelect from './components/shared/SizeCategorySelect.vue'
 import SkillSelect from './components/shared/SkillSelect.vue'
 import SortSelect from './components/shared/SortSelect.vue'
 import StatusDetail from './components/shared/StatusDetail.vue'
@@ -33,6 +34,7 @@ Vue.component('icon-submit', IconSubmit)
 Vue.component('name-field', NameField)
 Vue.component('password-field', PasswordField)
 Vue.component('search-field', SearchField)
+Vue.component('size-category-select', SizeCategorySelect)
 Vue.component('skill-select', SkillSelect)
 Vue.component('sort-select', SortSelect)
 Vue.component('status-detail', StatusDetail)

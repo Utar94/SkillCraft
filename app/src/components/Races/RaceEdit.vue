@@ -25,20 +25,73 @@
               <attribute-bonus-field class="col" attribute="Vigor" v-model.number="attributes.Vigor" />
             </b-row>
             <form-field id="extraAttributes" label="race.attributes.extra" :maxValue="3" :minValue="0" type="number" v-model.number="extraAttributes" />
-            <form-textarea
-              id="attributesText"
-              label="description.label"
-              :maxLength="1000"
-              placeholder="race.attributes.text"
-              :rows="5"
-              v-model="attributesText"
-            />
+            <race-text id="attributesText" placeholder="race.attributes.text" v-model="attributesText" />
           </b-tab>
           <b-tab :title="$t('race.languages.tab')">
             <language-select :disabled="!languageOptions.length" label="race.languages.add" :options="languageOptions" :value="null" @input="addLanguage" />
             <tag-list label="race.languages.tab" :tags="languageTags" @remove="removeLanguage" />
             <form-field id="extraLanguages" label="race.languages.extra" :maxValue="3" :minValue="0" type="number" v-model.number="extraLanguages" />
-            <form-textarea id="languagesText" label="description.label" :maxLength="1000" placeholder="race.languages.text" :rows="5" v-model="languagesText" />
+            <race-text id="languagesText" placeholder="race.languages.text" v-model="languagesText" />
+          </b-tab>
+          <b-tab :title="$t('race.physical.tab')">
+            <h4 v-t="'race.physical.size.title'" />
+            <b-row>
+              <size-category-select class="col" label="race.physical.size.category" required v-model="size" />
+              <form-field
+                class="col"
+                id="statureRoll"
+                label="race.physical.size.statureRoll.label"
+                placeholder="race.physical.size.statureRoll.placeholder"
+                :rules="{ regex: /^\d{1,2}d\d{1,2}(\+\d{1,3})?$/ }"
+                v-model="statureRoll"
+              />
+            </b-row>
+            <race-text id="sizeText" placeholder="race.physical.size.placeholder" v-model="sizeText" />
+            <h4 v-t="'race.physical.weight.title'" />
+            <b-row>
+              <weight-field class="col" id="malnutrition" label="race.physical.weight.malnutrition" v-model="weights.malnutrition" />
+              <weight-field class="col" id="thin" label="race.physical.weight.thin" v-model="weights.thin" />
+              <weight-field class="col" id="normal" label="race.physical.weight.normal" v-model="weights.normal" />
+              <weight-field class="col" id="overweight" label="race.physical.weight.overweight" v-model="weights.overweight" />
+              <weight-field class="col" id="obese" label="race.physical.weight.obese" v-model="weights.obese" />
+            </b-row>
+            <race-text id="weightText" placeholder="race.physical.weight.placeholder" v-model="weightText" />
+            <h4 v-t="'race.physical.age.title'" />
+            <b-row>
+              <form-field class="col" disabled id="child" label="race.physical.age.child" type="number" :value="0" />
+              <form-field class="col" id="teenager" label="race.physical.age.teenager" :minValue="0" type="number" v-model.number="ages.teenager" />
+              <form-field
+                class="col"
+                :disabled="ages.teenager === 0"
+                id="adult"
+                label="race.physical.age.adult"
+                :minValue="ages.teenager > 0 ? ages.teenager + 1 : null"
+                :required="ages.teenager > 0"
+                type="number"
+                v-model.number="ages.adult"
+              />
+              <form-field
+                class="col"
+                :disabled="ages.adult === 0"
+                id="mature"
+                label="race.physical.age.mature"
+                :minValue="ages.adult > 0 ? ages.adult + 1 : null"
+                :required="ages.adult > 0"
+                type="number"
+                v-model.number="ages.mature"
+              />
+              <form-field
+                class="col"
+                :disabled="ages.mature === 0"
+                id="venerable"
+                label="race.physical.age.venerable"
+                :minValue="ages.mature > 0 ? ages.mature + 1 : null"
+                :required="ages.mature > 0"
+                type="number"
+                v-model.number="ages.venerable"
+              />
+            </b-row>
+            <race-text id="ageText" placeholder="race.physical.age.placeholder" v-model="ageText" />
           </b-tab>
           <b-tab :title="$t('race.speeds.tab')">
             <b-row>
@@ -48,7 +101,7 @@
               <racial-speed-field class="col" speedType="Fly" v-model.number="speeds.Fly" />
               <racial-speed-field class="col" speedType="Swim" v-model.number="speeds.Swim" />
             </b-row>
-            <form-textarea id="speedText" label="description.label" :maxLength="1000" placeholder="race.speeds.text" :rows="5" v-model="speedText" />
+            <race-text id="speedText" placeholder="race.speeds.text" v-model="speedText" />
           </b-tab>
         </b-tabs>
         <div class="my-2">
@@ -64,15 +117,16 @@
 <script>
 /* TODO(fpion):
  * Names; NamesText
- * AgeThresholds, Size, StatureRoll, WeightRolls; AgeText, SizeText, WeightText
  * Traits; TraitsText
  * SubraceText
  */
 
 import AttributeBonusField from './AttributeBonusField.vue'
 import LanguageSelect from '../Languages/LanguageSelect.vue'
+import RaceText from './RaceText.vue'
 import RacialSpeedField from './RacialSpeedField.vue'
 import Vue from 'vue'
+import WeightField from './WeightField.vue'
 import { createRace, getRace, updateRace } from '@/api/races'
 import { getLanguages } from '@/api/languages'
 
@@ -80,9 +134,17 @@ export default {
   components: {
     AttributeBonusField,
     LanguageSelect,
-    RacialSpeedField
+    RaceText,
+    RacialSpeedField,
+    WeightField
   },
   data: () => ({
+    ages: {
+      teenager: 0,
+      adult: 0,
+      mature: 0,
+      venerable: 0
+    },
     attributes: {
       Agility: 0,
       Coordination: 0,
@@ -93,6 +155,7 @@ export default {
       Vigor: 0
     },
     attributesText: null,
+    ageText: null,
     description: null,
     extraAttributes: 0,
     extraLanguages: 0,
@@ -101,6 +164,8 @@ export default {
     loading: false,
     name: null,
     race: null,
+    size: 'Medium',
+    sizeText: null,
     speedText: null,
     speeds: {
       Burrow: 0,
@@ -109,9 +174,21 @@ export default {
       Swim: 0,
       Walk: 0
     },
+    statureRoll: null,
+    weights: {
+      malnutrition: null,
+      normal: null,
+      obese: null,
+      overweight: null,
+      thin: null
+    },
+    weightText: null,
     worldLanguages: []
   }),
   computed: {
+    ageThresholds() {
+      return [this.ages.teenager, this.ages.adult, this.ages.mature, this.ages.venerable].filter(age => age > 0)
+    },
     hasChanges() {
       return (
         // General
@@ -131,6 +208,14 @@ export default {
         JSON.stringify(this.orderBy(this.languageIds)) !== JSON.stringify(this.orderBy(this.race?.languages ?? [], 'id').map(({ id }) => id)) ||
         this.extraLanguages !== this.race?.extraLanguages ||
         (this.languagesText ?? '') !== (this.race?.languagesText ?? '') ||
+        // Physical
+        this.size !== (this.race?.size ?? 'Medium') ||
+        this.statureRoll !== this.race?.statureRoll ||
+        (this.sizeText ?? '') !== (this.race?.sizeText ?? '') ||
+        JSON.stringify(this.weightRolls) !== JSON.stringify(this.race?.weightRolls ?? []) ||
+        (this.weightText ?? '') !== (this.race?.weightText ?? '') ||
+        JSON.stringify(this.ageThresholds) !== JSON.stringify(this.race?.ageThresholds ?? []) ||
+        (this.ageText ?? '') !== (this.race?.ageText ?? '') ||
         // Speeds
         this.speeds.Burrow !== (this.race?.speeds.find(({ type }) => type === 'Burrow')?.value ?? 0) ||
         this.speeds.Climb !== (this.race?.speeds.find(({ type }) => type === 'Climb')?.value ?? 0) ||
@@ -160,26 +245,35 @@ export default {
       }))
     },
     payload() {
-      const payload = {
+      return {
+        ageThresholds: this.ageThresholds.length === 4 ? this.ageThresholds : null,
         attributes: Object.entries(this.attributes)
           .filter(([, bonus]) => bonus > 0)
           .map(([attribute, bonus]) => ({ attribute, bonus })),
         attributesText: this.attributesText,
+        ageText: this.ageText,
         description: this.description,
         extraAttributes: this.extraAttributes,
         extraLanguages: this.extraLanguages,
         languageIds: this.languageIds,
         languagesText: this.languagesText,
         name: this.name,
+        size: this.size,
+        sizeText: this.sizeText,
         speedText: this.speedText,
         speeds: Object.entries(this.speeds)
           .filter(([, value]) => value > 0)
-          .map(([type, value]) => ({ type, value }))
+          .map(([type, value]) => ({ type, value })),
+        statureRoll: this.statureRoll,
+        weightRolls: this.weightRolls.length === 5 ? this.weightRolls : null,
+        weightText: this.weightText
       }
-      return payload
     },
     title() {
       return this.race?.name ?? this.$i18n.t('race.title')
+    },
+    weightRolls() {
+      return [this.weights.malnutrition, this.weights.thin, this.weights.normal, this.weights.overweight, this.weights.obese].filter(roll => Boolean(roll))
     }
   },
   methods: {
@@ -235,6 +329,21 @@ export default {
       this.languages = [...model.languages]
       this.extraLanguages = model.extraLanguages
       this.languagesText = model.languagesText
+      // Physical
+      this.size = model.size
+      this.statureRoll = model.statureRoll
+      this.sizeText = model.sizeText
+      this.weights.malnutrition = model.weightRolls ? model.weightRolls[0] ?? null : null
+      this.weights.thin = model.weightRolls ? model.weightRolls[1] ?? null : null
+      this.weights.normal = model.weightRolls ? model.weightRolls[2] ?? null : null
+      this.weights.overweight = model.weightRolls ? model.weightRolls[3] ?? null : null
+      this.weights.obese = model.weightRolls ? model.weightRolls[4] ?? null : null
+      this.weightText = model.weightText
+      this.ages.teenager = model.ageThresholds ? model.ageThresholds[0] ?? 0 : 0
+      this.ages.adult = model.ageThresholds ? model.ageThresholds[1] ?? 0 : 0
+      this.ages.mature = model.ageThresholds ? model.ageThresholds[2] ?? 0 : 0
+      this.ages.venerable = model.ageThresholds ? model.ageThresholds[3] ?? 0 : 0
+      this.ageText = model.ageText
       // Speeds
       this.speeds.Burrow = model.speeds.find(({ type }) => type === 'Burrow')?.value ?? 0
       this.speeds.Climb = model.speeds.find(({ type }) => type === 'Climb')?.value ?? 0

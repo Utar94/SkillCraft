@@ -1,18 +1,43 @@
 import { _delete, get, post, put } from '.'
 
 export async function createRace({
+  ageThresholds,
   attributes,
   attributesText,
+  ageText,
   description,
   extraAttributes,
   extraLanguages,
   languageIds,
   languagesText,
   name,
+  size,
+  sizeText,
   speedText,
-  speeds
+  speeds,
+  statureRoll,
+  weightRolls,
+  weightText
 }) {
-  return await post('/races', { attributes, attributesText, description, extraAttributes, extraLanguages, languageIds, languagesText, name, speedText, speeds })
+  return await post('/races', {
+    ageThresholds,
+    attributes,
+    attributesText,
+    ageText,
+    description,
+    extraAttributes,
+    extraLanguages,
+    languageIds,
+    languagesText,
+    name,
+    size,
+    sizeText,
+    speedText,
+    speeds,
+    statureRoll,
+    weightRolls,
+    weightText
+  })
 }
 
 export async function deleteRace(id) {
@@ -33,18 +58,43 @@ export async function getRaces({ deleted, search, sort, desc, index, count }) {
 
 export async function updateRace(
   id,
-  { attributes, attributesText, description, extraAttributes, extraLanguages, languageIds, languagesText, name, speedText, speeds }
-) {
-  return await put(`/races/${id}`, {
+  {
+    ageThresholds,
     attributes,
     attributesText,
+    ageText,
     description,
     extraAttributes,
     extraLanguages,
     languageIds,
     languagesText,
     name,
+    size,
+    sizeText,
     speedText,
-    speeds
+    speeds,
+    statureRoll,
+    weightRolls,
+    weightText
+  }
+) {
+  return await put(`/races/${id}`, {
+    ageThresholds,
+    attributes,
+    attributesText,
+    ageText,
+    description,
+    extraAttributes,
+    extraLanguages,
+    languageIds,
+    languagesText,
+    name,
+    size,
+    sizeText,
+    speedText,
+    speeds,
+    statureRoll,
+    weightRolls,
+    weightText
   })
 }

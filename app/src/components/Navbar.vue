@@ -33,8 +33,7 @@
               {{ $t('natures.title') }}
             </b-nav-item>
             <b-nav-item :to="{ name: 'LanguageList' }">
-              <!-- TODO(fpion): icon? -->
-              <font-awesome-icon icon="cog" />
+              <font-awesome-icon icon="language" />
               {{ $t('languages.title') }}
             </b-nav-item>
             <b-nav-item :to="{ name: 'CasteList' }">
@@ -43,13 +42,11 @@
               {{ $t('castes.title') }}
             </b-nav-item>
             <b-nav-item :to="{ name: 'EducationList' }">
-              <!-- TODO(fpion): icon? -->
-              <font-awesome-icon icon="cog" />
+              <font-awesome-icon icon="graduation-cap" />
               {{ $t('educations.title') }}
             </b-nav-item>
             <b-nav-item :to="{ name: 'RaceList' }">
-              <!-- TODO(fpion): icon? -->
-              <font-awesome-icon icon="cog" />
+              <font-awesome-icon icon="paw" />
               {{ $t('races.title') }}
             </b-nav-item>
           </template>
