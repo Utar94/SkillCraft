@@ -12,10 +12,10 @@ namespace SkillCraft.Core.Races.Models
     public IEnumerable<NameCategoryModel> Names { get; set; } = null!;
     public IEnumerable<RacialSpeedModel> Speeds { get; set; } = null!;
 
-    public IEnumerable<int> AgeThresholds { get; set; } = null!;
+    public AgeThresholdsModel? AgeThresholds { get; set; }
     public SizeCategory Size { get; set; }
     public string? StatureRoll { get; set; }
-    public IEnumerable<string> WeightRolls { get; set; } = null!;
+    public WeightRollsModel? WeightRolls { get; set; }
 
     public IEnumerable<LanguageModel> Languages { get; set; } = null!;
     public IEnumerable<RacialTraitModel> Traits { get; set; } = null!;

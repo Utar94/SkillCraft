@@ -217,12 +217,12 @@
       },
       "tab": "Physical",
       "weight": {
-        "malnutrition": "Malnutrition",
         "normal": "Normal",
         "obese": "Obese",
         "overweight": "Overweight",
         "placeholder": "Describe the weight of your race",
         "roll": "e.g., 19 + 1d6",
+        "skinny": "Skinny",
         "thin": "Thin",
         "title": "Weight"
       }

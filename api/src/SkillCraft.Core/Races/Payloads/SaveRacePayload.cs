@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SkillCraft.Core.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Races.Payloads
 {
@@ -16,14 +17,14 @@ namespace SkillCraft.Core.Races.Payloads
 
     public IEnumerable<RacialSpeedPayload>? Speeds { get; set; }
 
-    public IEnumerable<int>? AgeThresholds { get; set; }
+    public AgeThresholdsPayload? AgeThresholds { get; set; }
 
     public SizeCategory Size { get; set; }
 
-    [RegularExpression("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?")] // TODO(fpion): refactor
+    [Roll]
     public string? StatureRoll { get; set; }
 
-    public IEnumerable<string>? WeightRolls { get; set; }
+    public WeightRollsPayload? WeightRolls { get; set; }
 
     public IEnumerable<Guid>? LanguageIds { get; set; }
 
@@ -64,15 +65,7 @@ namespace SkillCraft.Core.Races.Payloads
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-      var results = new List<ValidationResult>(capacity: 5);
-
-      if (AgeThresholds != null && AgeThresholds.ToHashSet().Count != 4)
-      {
-        results.Add(new ValidationResult(
-          "The collection must contain exactly 4 unique items.",
-          new[] { nameof(AgeThresholds) }
-        ));
-      }
+      var results = new List<ValidationResult>(capacity: 3);
 
       if (Attributes != null)
       {
@@ -114,19 +107,6 @@ namespace SkillCraft.Core.Races.Payloads
             memberNames: new[] { nameof(speedTypes) }
           ));
         }
-      }
-
-      if (WeightRolls != null)
-      {
-        if (WeightRolls.Count() != 5)
-        {
-          results.Add(new ValidationResult(
-            "The collection must contain exactly 5 items.",
-            new[] { nameof(WeightRolls) }
-          ));
-        }
-
-        // [RegularExpression("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?")] // TODO(fpion): refactor
       }
 
       return results;

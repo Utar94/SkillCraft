@@ -28,17 +28,17 @@ namespace SkillCraft.Core.Races.Mutations
       race.Description = payload.Description?.CleanTrim();
       race.Name = payload.Name.Trim();
 
-      race.AgeThresholds = payload.AgeThresholds?.OrderBy(x => x).ToArray();
       race.Size = payload.Size;
       race.StatureRoll = payload.StatureRoll;
-      race.WeightRolls = payload.WeightRolls?.ToArray();
 
       race.ExtraAttributes = payload.ExtraAttributes;
       race.ExtraLanguages = payload.ExtraLanguages;
 
+      UpdateAgeThresholds(race, payload);
       UpdateCharacteristics(race, payload);
       UpdateTexts(race, payload);
       UpdateTraits(race, payload);
+      UpdateWeightRolls(race, payload);
 
       await UpdateLanguagesAsync(race, payload, cancellationToken);
 
@@ -47,6 +47,17 @@ namespace SkillCraft.Core.Races.Mutations
       AppContext.SetEntity(race);
 
       return Mapper.Map<RaceModel>(race);
+    }
+
+    private static void UpdateAgeThresholds(Race race, SaveRacePayload payload)
+    {
+      race.AgeThresholds = payload.AgeThresholds == null ? null : new[]
+      {
+        payload.AgeThresholds.Teenager,
+        payload.AgeThresholds.Adult,
+        payload.AgeThresholds.Mature,
+        payload.AgeThresholds.Venerable
+      };
     }
 
     private static void UpdateCharacteristics(Race race, SaveRacePayload payload)
@@ -162,6 +173,18 @@ namespace SkillCraft.Core.Races.Mutations
           throw new RacialTraitsNotFoundException(missingIds);
         }
       }
+    }
+
+    private static void UpdateWeightRolls(Race race, SaveRacePayload payload)
+    {
+      race.WeightRolls = payload.WeightRolls == null ? null : new[]
+      {
+        payload.WeightRolls.Skinny,
+        payload.WeightRolls.Thin,
+        payload.WeightRolls.Normal,
+        payload.WeightRolls.Overweight,
+        payload.WeightRolls.Obese
+      };
     }
   }
 }
