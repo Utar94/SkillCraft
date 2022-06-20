@@ -1,6 +1,7 @@
 ﻿using Logitar;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Conditions;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
@@ -25,6 +26,7 @@ namespace SkillCraft.Core.Worlds
 
     public ICollection<Aspect> Aspects { get; set; } = new List<Aspect>();
     public ICollection<Caste> Castes { get; set; } = new List<Caste>();
+    public ICollection<Condition> Conditions { get; set; } = new List<Condition>();
     public ICollection<Customization> Customizations { get; set; } = new List<Customization>();
     public ICollection<Education> Educations { get; set; } = new List<Education>();
     public ICollection<Language> Languages { get; set; } = new List<Language>();

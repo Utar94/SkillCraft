@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SkillCraft.Core;
 using SkillCraft.Core.Races;
 using SkillCraft.Infrastructure.Entities;
 
@@ -34,7 +35,10 @@ namespace SkillCraft.Infrastructure.Configurations
         .HasColumnName(nameof(Race.Traits))
         .HasColumnType("jsonb");
 
+      builder.Property(x => x.ExtraAttributes).HasDefaultValue(0);
+      builder.Property(x => x.ExtraLanguages).HasDefaultValue(0);
       builder.Property(x => x.Name).HasMaxLength(256);
+      builder.Property(x => x.Size).HasDefaultValue(SizeCategory.Medium);
       builder.Property(x => x.StatureRoll).HasMaxLength(10);
       builder.Property(x => x.WeightRolls).HasColumnType("character varying(10)[]");
     }
