@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Races;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Languages
 {
@@ -22,6 +23,8 @@ namespace SkillCraft.Core.Languages
     public bool Exotic { get; set; }
     public string? Script { get; set; }
     public string? TypicalSpeakers { get; set; }
+
+    public ICollection<Race> Races { get; set; } = new List<Race>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

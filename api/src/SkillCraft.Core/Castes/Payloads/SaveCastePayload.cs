@@ -1,4 +1,5 @@
 ﻿using Logitar.Validation;
+using SkillCraft.Core.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Castes.Payloads
@@ -14,7 +15,7 @@ namespace SkillCraft.Core.Castes.Payloads
     [Enum(typeof(Skill))]
     public Skill Skill { get; set; }
 
-    [RegularExpression("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?")]
+    [Roll]
     public string? WealthRoll { get; set; }
   }
 }

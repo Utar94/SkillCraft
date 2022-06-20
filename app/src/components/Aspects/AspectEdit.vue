@@ -78,15 +78,27 @@ export default {
   computed: {
     hasChanges() {
       return (
-        this.name !== this.aspect?.name ||
-        this.mandatoryAttribute1 !== this.aspect?.mandatoryAttribute1 ||
-        this.mandatoryAttribute2 !== this.aspect?.mandatoryAttribute2 ||
-        this.optionalAttribute1 !== this.aspect?.optionalAttribute1 ||
-        this.optionalAttribute2 !== this.aspect?.optionalAttribute2 ||
-        this.skill1 !== this.aspect?.skill1 ||
-        this.skill2 !== this.aspect?.skill2 ||
+        (this.name ?? '') !== (this.aspect?.name ?? '') ||
+        this.mandatoryAttribute1 !== (this.aspect?.mandatoryAttribute1 ?? null) ||
+        this.mandatoryAttribute2 !== (this.aspect?.mandatoryAttribute2 ?? null) ||
+        this.optionalAttribute1 !== (this.aspect?.optionalAttribute1 ?? null) ||
+        this.optionalAttribute2 !== (this.aspect?.optionalAttribute2 ?? null) ||
+        this.skill1 !== (this.aspect?.skill1 ?? null) ||
+        this.skill2 !== (this.aspect?.skill2 ?? null) ||
         (this.description ?? '') !== (this.aspect?.description ?? '')
       )
+    },
+    payload() {
+      return {
+        description: this.description,
+        mandatoryAttribute1: this.mandatoryAttribute1,
+        mandatoryAttribute2: this.mandatoryAttribute2,
+        name: this.name,
+        optionalAttribute1: this.optionalAttribute1,
+        optionalAttribute2: this.optionalAttribute2,
+        skill1: this.skill1,
+        skill2: this.skill2
+      }
     },
     title() {
       return this.aspect?.name ?? this.$i18n.t('aspect.title')
@@ -114,29 +126,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.aspect) {
-              const { data } = await updateAspect(this.aspect.id, {
-                description: this.description,
-                mandatoryAttribute1: this.mandatoryAttribute1,
-                mandatoryAttribute2: this.mandatoryAttribute2,
-                name: this.name,
-                optionalAttribute1: this.optionalAttribute1,
-                optionalAttribute2: this.optionalAttribute2,
-                skill1: this.skill1,
-                skill2: this.skill2
-              })
+              const { data } = await updateAspect(this.aspect.id, this.payload)
               this.setModel(data)
               this.toast('success', 'aspect.updated')
             } else {
-              const { data } = await createAspect({
-                description: this.description,
-                mandatoryAttribute1: this.mandatoryAttribute1,
-                mandatoryAttribute2: this.mandatoryAttribute2,
-                name: this.name,
-                optionalAttribute1: this.optionalAttribute1,
-                optionalAttribute2: this.optionalAttribute2,
-                skill1: this.skill1,
-                skill2: this.skill2
-              })
+              const { data } = await createAspect(this.payload)
               this.setModel(data)
               this.toast('success', 'aspect.created')
             }

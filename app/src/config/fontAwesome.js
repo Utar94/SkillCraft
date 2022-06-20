@@ -7,9 +7,12 @@ import {
   faEdit,
   faEye,
   faGlobe,
+  faGraduationCap,
   faHome,
   faKey,
+  faLanguage,
   faPaperPlane,
+  faPaw,
   faPlus,
   faSave,
   faSearch,
@@ -18,7 +21,9 @@ import {
   faStar,
   faSyncAlt,
   faTasks,
+  faTimes,
   faTrashAlt,
+  faUndo,
   faUser
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -30,9 +35,12 @@ library.add(
   faEdit,
   faEye,
   faGlobe,
+  faGraduationCap,
   faHome,
   faKey,
+  faLanguage,
   faPaperPlane,
+  faPaw,
   faPlus,
   faSave,
   faSearch,
@@ -41,7 +49,9 @@ library.add(
   faStar,
   faSyncAlt,
   faTasks,
+  faTimes,
   faTrashAlt,
+  faUndo,
   faUser
 )
 

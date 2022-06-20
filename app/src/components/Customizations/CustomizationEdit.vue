@@ -47,7 +47,17 @@ export default {
   }),
   computed: {
     hasChanges() {
-      return this.name !== this.customization?.name || (this.description ?? '') !== (this.customization?.description ?? '')
+      return (this.name ?? '') !== (this.customization?.name ?? '') || (this.description ?? '') !== (this.customization?.description ?? '')
+    },
+    payload() {
+      const payload = {
+        description: this.description,
+        name: this.name
+      }
+      if (!this.customization) {
+        payload.type = this.type
+      }
+      return payload
     },
     title() {
       return this.customization?.name ?? this.$i18n.t('customization.title')
@@ -67,18 +77,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.customization) {
-              const { data } = await updateCustomization(this.customization.id, {
-                description: this.description,
-                name: this.name
-              })
+              const { data } = await updateCustomization(this.customization.id, this.payload)
               this.setModel(data)
               this.toast('success', 'customization.updated')
             } else {
-              const { data } = await createCustomization({
-                description: this.description,
-                name: this.name,
-                type: this.type
-              })
+              const { data } = await createCustomization(this.payload)
               this.setModel(data)
               this.toast('success', 'customization.created')
             }

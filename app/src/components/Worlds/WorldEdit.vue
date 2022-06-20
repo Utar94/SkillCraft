@@ -39,7 +39,17 @@ export default {
   }),
   computed: {
     hasChanges() {
-      return this.name !== this.world?.name || (this.description ?? '') !== (this.world?.description ?? '')
+      return (this.name ?? '') !== (this.world?.name ?? '') || (this.description ?? '') !== (this.world?.description ?? '')
+    },
+    payload() {
+      const payload = {
+        description: this.description,
+        name: this.name
+      }
+      if (!this.world) {
+        payload.alias = this.alias
+      }
+      return payload
     },
     title() {
       return this.world?.name ?? this.$i18n.t('world.title')
@@ -59,18 +69,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.world) {
-              const { data } = await updateWorld(this.world.id, {
-                description: this.description,
-                name: this.name
-              })
+              const { data } = await updateWorld(this.world.id, this.payload)
               this.setModel(data)
               this.toast('success', 'world.updated')
             } else {
-              const { data } = await createWorld({
-                alias: this.alias,
-                description: this.description,
-                name: this.name
-              })
+              const { data } = await createWorld(this.payload)
               this.setModel(data)
               this.toast('success', 'world.created')
             }

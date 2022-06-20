@@ -1,3 +1,4 @@
+import router from '@/router'
 import store from '@/store'
 
 const baseUrl = process.env.VUE_APP_API_BASE_URL
@@ -13,12 +14,19 @@ async function executeWithRenew(method, url, data = null) {
     if (status === 401 && token) {
       const { refresh_token } = token
       if (refresh_token) {
-        token = (await execute('POST', '/identity/renew', { refresh_token })).data
-        store.dispatch('signIn', token)
-        if (localStorage.getItem(process.env.VUE_APP_TOKEN_STORAGE_KEY)) {
-          localStorage.setItem(process.env.VUE_APP_TOKEN_STORAGE_KEY, JSON.stringify(token))
+        try {
+          token = (await execute('POST', '/identity/renew', { refresh_token })).data
+          store.dispatch('signIn', token)
+          if (localStorage.getItem(process.env.VUE_APP_TOKEN_STORAGE_KEY)) {
+            localStorage.setItem(process.env.VUE_APP_TOKEN_STORAGE_KEY, JSON.stringify(token))
+          }
+          return await execute(method, url, data, token, world)
+        } catch (e) {
+          console.error(e)
+          store.dispatch('signOut')
+          localStorage.removeItem(process.env.VUE_APP_TOKEN_STORAGE_KEY)
+          router.push({ name: 'SignIn' })
         }
-        return await execute(method, url, data, token, world)
       }
     }
     throw e

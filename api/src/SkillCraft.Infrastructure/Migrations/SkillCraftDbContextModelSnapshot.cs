@@ -870,6 +870,145 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.ToTable("Natures");
                 });
 
+            modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AgeText")
+                        .HasColumnType("text");
+
+                    b.Property<int[]>("AgeThresholds")
+                        .HasColumnType("integer[]");
+
+                    b.Property<string>("AttributesSerialized")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("Attributes");
+
+                    b.Property<string>("AttributesText")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Deleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ExtraAttributes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ExtraLanguages")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LanguagesText")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NamesSerialized")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("Names");
+
+                    b.Property<string>("NamesText")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PeopleText")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SizeText")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SpeedText")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SpeedsSerialized")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("Speeds");
+
+                    b.Property<string>("StatureRoll")
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("TraitsSerialized")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("Traits");
+
+                    b.Property<string>("TraitsText")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("Uuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<int>("Version")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string[]>("WeightRolls")
+                        .HasColumnType("character varying(10)[]");
+
+                    b.Property<string>("WeightText")
+                        .HasColumnType("text");
+
+                    b.Property<int>("WorldId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("Deleted");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("Uuid")
+                        .IsUnique();
+
+                    b.HasIndex("WorldId");
+
+                    b.ToTable("Races");
+                });
+
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>
                 {
                     b.Property<int>("Id")
@@ -941,6 +1080,21 @@ namespace SkillCraft.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Worlds");
+                });
+
+            modelBuilder.Entity("SkillCraft.Infrastructure.Entities.RaceLanguage", b =>
+                {
+                    b.Property<int>("RaceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RaceId", "LanguageId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("RaceLanguages");
                 });
 
             modelBuilder.Entity("Logitar.Identity.Core.Session", b =>
@@ -1079,9 +1233,50 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("World");
                 });
 
+            modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
+                {
+                    b.HasOne("SkillCraft.Core.Races.Race", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("SkillCraft.Core.Worlds.World", "World")
+                        .WithMany("Races")
+                        .HasForeignKey("WorldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("World");
+                });
+
+            modelBuilder.Entity("SkillCraft.Infrastructure.Entities.RaceLanguage", b =>
+                {
+                    b.HasOne("SkillCraft.Core.Languages.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SkillCraft.Core.Races.Race", "Race")
+                        .WithMany()
+                        .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Race");
+                });
+
             modelBuilder.Entity("Logitar.Identity.Core.User", b =>
                 {
                     b.Navigation("Sessions");
+                });
+
+            modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>
@@ -1097,6 +1292,8 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("Languages");
 
                     b.Navigation("Natures");
+
+                    b.Navigation("Races");
                 });
 #pragma warning restore 612, 618
         }

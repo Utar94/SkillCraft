@@ -13,9 +13,11 @@ import IconSubmit from './components/shared/IconSubmit.vue'
 import NameField from './components/shared/NameField.vue'
 import PasswordField from './components/shared/PasswordField.vue'
 import SearchField from './components/shared/SearchField.vue'
+import SizeCategorySelect from './components/shared/SizeCategorySelect.vue'
 import SkillSelect from './components/shared/SkillSelect.vue'
 import SortSelect from './components/shared/SortSelect.vue'
 import StatusDetail from './components/shared/StatusDetail.vue'
+import TagList from './components/shared/TagList.vue'
 
 Vue.component('v-gravatar', Gravatar)
 
@@ -32,9 +34,11 @@ Vue.component('icon-submit', IconSubmit)
 Vue.component('name-field', NameField)
 Vue.component('password-field', PasswordField)
 Vue.component('search-field', SearchField)
+Vue.component('size-category-select', SizeCategorySelect)
 Vue.component('skill-select', SkillSelect)
 Vue.component('sort-select', SortSelect)
 Vue.component('status-detail', StatusDetail)
+Vue.component('tag-list', TagList)
 
 Vue.mixin({
   methods: {
@@ -46,6 +50,12 @@ Vue.mixin({
         console.error(e)
       }
       this.toast('errorToast.title', 'errorToast.body', 'danger')
+    },
+    orderBy(items, key = null) {
+      return key ? [...items].sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0)) : [...items].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    },
+    shortify(text, length) {
+      return text?.length > length ? text.substring(0, length - 1) + '…' : text
     },
     toast(title, body = '', variant = 'success') {
       this.$bvToast.toast(this.$i18n.t(body), {
