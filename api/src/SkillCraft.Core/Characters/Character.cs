@@ -1,6 +1,7 @@
 ﻿using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Educations;
+using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
 using SkillCraft.Core.Worlds;
@@ -39,9 +40,9 @@ namespace SkillCraft.Core.Characters
     public int? EducationId { get; set; }
 
     public SizeCategory Size { get; set; }
-    public double? Stature { get; set; }
-    public double? Weight { get; set; }
-    public int? Age { get; set; }
+    public double Stature { get; set; }
+    public double Weight { get; set; }
+    public int Age { get; set; }
 
     public int Experience { get; set; }
     public int Vitality { get; set; }
@@ -52,20 +53,61 @@ namespace SkillCraft.Core.Characters
 
     public string? Description { get; set; }
 
-    public Creation? Creation { get; set; }
+    public CharacterCreation? Creation { get; set; }
     public string? CreationSerialized
     {
       get => Creation == null ? null : JsonSerializer.Serialize(Creation);
-      set => Creation = value == null ? null : JsonSerializer.Deserialize<Creation>(value);
+      set => Creation = value == null ? null : JsonSerializer.Deserialize<CharacterCreation>(value);
+    }
+    public Dictionary<int, CharacterLevelUp> LevelUps { get; set; } = new();
+    public string? LevelUpsSerialized
+    {
+      get => LevelUps.Any() ? JsonSerializer.Serialize(LevelUps) : null;
+      set
+      {
+        LevelUps.Clear();
+
+        if (value != null)
+        {
+          LevelUps = JsonSerializer.Deserialize<Dictionary<int, CharacterLevelUp>>(value) ?? new();
+        }
+      }
     }
 
-    public ICollection<LevelUp> LevelUps { get; set; } = new List<LevelUp>(); // (❓) => JSON
+    public List<SkillRank> SkillRanks { get; set; } = new();
+    public string? SkillRanksSerialized
+    {
+      get => SkillRanks.Any() ? JsonSerializer.Serialize(SkillRanks) : null;
+      set
+      {
+        SkillRanks.Clear();
+
+        if (value != null)
+        {
+          SkillRanks = JsonSerializer.Deserialize<List<SkillRank>>(value) ?? new();
+        }
+      }
+    }
+
+    public List<BonusBase> Bonuses { get; set; } = new();
+    public string[]? BonusesSerialized
+    {
+      get => Bonuses.Any() ? Bonuses.Select(bonus => bonus.Serialize()).ToArray() : null;
+      set
+      {
+        Bonuses.Clear();
+
+        if (value != null)
+        {
+          Bonuses = value.Select(json => BonusBase.Deserialize(json)).ToList();
+        }
+      }
+    }
+
+    public ICollection<CharacterCondition> Conditions { get; set; } = new List<CharacterCondition>();
+    public ICollection<Language> Languages { get; set; } = new List<Language>();
 
     // TODO(fpion): Customizations (Feats & Disabilities) (n..n)
-    // TODO(fpion): Languages (n..n)
-    // TODO(fpion): Skills (❓) => JSON
-    // TODO(fpion): Bonuses (❓) => JSON
-    // TODO(fpion): Conditions (string[]?)
     // TODO(fpion): Talents & Powers (n..n)
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)

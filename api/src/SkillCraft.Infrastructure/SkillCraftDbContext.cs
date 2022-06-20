@@ -26,7 +26,6 @@ namespace SkillCraft.Infrastructure
 
     public DbSet<Aspect> Aspects { get; set; }
     public DbSet<Caste> Castes { get; set; }
-    public DbSet<LevelUp> CharacterLevelUps { get; set; }
     public DbSet<Character> Characters { get; set; }
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Customization> Customizations { get; set; }
@@ -37,6 +36,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Race> Races { get; set; }
     public DbSet<World> Worlds { get; set; }
 
+    internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
 
     public void CancelChanges()
