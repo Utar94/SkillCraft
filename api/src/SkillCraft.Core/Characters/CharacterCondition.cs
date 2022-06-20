@@ -11,6 +11,9 @@ namespace SkillCraft.Core.Characters
       Condition = condition ?? throw new ArgumentNullException(nameof(condition));
       ConditionId = condition.Id;
     }
+    private CharacterCondition()
+    {
+    }
 
     public Character? Character { get; set; }
     public int CharacterId { get; set; }

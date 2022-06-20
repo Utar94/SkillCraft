@@ -23,7 +23,7 @@ namespace SkillCraft.Core.Characters
     public World? World { get; set; }
     public int WorldId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
     public string? Player { get; set; }
 
     public Aspect? Aspect1 { get; set; }

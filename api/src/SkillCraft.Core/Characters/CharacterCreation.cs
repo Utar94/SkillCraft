@@ -10,5 +10,7 @@
     public Attribute MandatoryAttribute2 { get; set; }
     public Attribute OptionalAttribute1 { get; set; }
     public Attribute OptionalAttribute2 { get; set; }
+
+    public int Step { get; set; }
   }
 }

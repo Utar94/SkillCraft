@@ -36,6 +36,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Race> Races { get; set; }
     public DbSet<World> Worlds { get; set; }
 
+    internal DbSet<CharacterCondition> CharacterConditions { get; set; }
     internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
 

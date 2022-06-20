@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkillCraft.Infrastructure;
@@ -11,9 +12,10 @@ using SkillCraft.Infrastructure;
 namespace SkillCraft.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillCraftDbContext))]
-    partial class SkillCraftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220620201254_CreateCharacterTable")]
+    partial class CreateCharacterTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -626,7 +628,7 @@ namespace SkillCraft.Infrastructure.Migrations
 
                     b.HasIndex("ConditionId");
 
-                    b.ToTable("CharacterConditions");
+                    b.ToTable("CharacterCondition");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Conditions.Condition", b =>

@@ -17,6 +17,8 @@ namespace SkillCraft.Infrastructure.Configurations
 
       builder.HasMany(x => x.Languages).WithMany(x => x.Characters)
         .UsingEntity<CharacterLanguage>(builder => builder.HasKey(x => new { x.CharacterId, x.LanguageId }));
+      builder.HasOne(x => x.Aspect1).WithMany(x => x.Characters1);
+      builder.HasOne(x => x.Aspect2).WithMany(x => x.Characters2);
 
       builder.Ignore(x => x.Bonuses);
       builder.Property(x => x.BonusesSerialized)
