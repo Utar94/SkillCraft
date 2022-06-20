@@ -54,6 +54,9 @@ Vue.mixin({
     orderBy(items, key = null) {
       return key ? [...items].sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0)) : [...items].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     },
+    shortify(text, length) {
+      return text?.length > length ? text.substring(0, length - 1) + '…' : text
+    },
     toast(title, body = '', variant = 'success') {
       this.$bvToast.toast(this.$i18n.t(body), {
         solid: true,

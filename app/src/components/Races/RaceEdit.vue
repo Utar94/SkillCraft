@@ -9,6 +9,11 @@
     />
     <validation-observer ref="form">
       <b-form @submit.prevent="submit">
+        <div class="my-2">
+          <icon-submit v-if="race" class="mx-1" :disabled="!hasChanges || loading" icon="save" :loading="loading" text="actions.save" variant="primary" />
+          <icon-submit v-else class="mx-1" :disabled="!hasChanges || loading" icon="plus" :loading="loading" text="actions.create" variant="success" />
+          <icon-button class="mx-1" icon="arrow-left" text="actions.back" :to="back" />
+        </div>
         <b-tabs content-class="mt-3">
           <b-tab :title="$t('race.general')" active>
             <name-field v-model="name" />
@@ -25,13 +30,13 @@
               <attribute-bonus-field class="col" attribute="Vigor" v-model.number="attributes.Vigor" />
             </b-row>
             <form-field id="extraAttributes" label="race.attributes.extra" :maxValue="3" :minValue="0" type="number" v-model.number="extraAttributes" />
-            <race-text id="attributesText" placeholder="race.attributes.text" v-model="attributesText" />
+            <race-text id="attributesText" :placeholder="`${type}.text.attributes`" v-model="attributesText" />
           </b-tab>
           <b-tab :title="$t('race.languages.tab')">
             <language-select :disabled="!languageOptions.length" label="race.languages.add" :options="languageOptions" :value="null" @input="addLanguage" />
             <tag-list label="race.languages.tab" :tags="languageTags" @remove="removeLanguage" />
             <form-field id="extraLanguages" label="race.languages.extra" :maxValue="3" :minValue="0" type="number" v-model.number="extraLanguages" />
-            <race-text id="languagesText" placeholder="race.languages.text" v-model="languagesText" />
+            <race-text id="languagesText" :placeholder="`${type}.text.languages`" v-model="languagesText" />
           </b-tab>
           <b-tab :title="$t('race.physical.tab')">
             <h4 v-t="'race.physical.size.title'" />
@@ -46,7 +51,7 @@
                 v-model="statureRoll"
               />
             </b-row>
-            <race-text id="sizeText" placeholder="race.physical.size.placeholder" v-model="sizeText" />
+            <race-text id="sizeText" :placeholder="`${type}.text.size`" v-model="sizeText" />
             <h4 v-t="'race.physical.weight.title'" />
             <b-row>
               <weight-field class="col" id="skinny" label="race.physical.weight.skinny" v-model="weightRolls.skinny" />
@@ -83,7 +88,7 @@
                 v-model="weightRolls.obese"
               />
             </b-row>
-            <race-text id="weightText" placeholder="race.physical.weight.placeholder" v-model="weightText" />
+            <race-text id="weightText" :placeholder="`${type}.text.weight`" v-model="weightText" />
             <h4 v-t="'race.physical.age.title'" />
             <b-row>
               <form-field class="col" disabled id="child" label="race.physical.age.child" type="number" :value="0" />
@@ -119,7 +124,7 @@
                 v-model.number="ageThresholds.venerable"
               />
             </b-row>
-            <race-text id="ageText" placeholder="race.physical.age.placeholder" v-model="ageText" />
+            <race-text id="ageText" :placeholder="`${type}.text.age`" v-model="ageText" />
           </b-tab>
           <b-tab :title="$t('race.speeds.tab')">
             <b-row>
@@ -129,33 +134,100 @@
               <racial-speed-field class="col" speedType="Fly" v-model.number="speeds.Fly" />
               <racial-speed-field class="col" speedType="Swim" v-model.number="speeds.Swim" />
             </b-row>
-            <race-text id="speedText" placeholder="race.speeds.text" v-model="speedText" />
+            <race-text id="speedText" :placeholder="`${type}.text.speeds`" v-model="speedText" />
+          </b-tab>
+          <b-tab :title="$t('race.traits.tab')">
+            <race-text id="traitsText" :placeholder="`${type}.text.traits`" v-model="traitsText" />
+            <div class="my-2">
+              <icon-button class="mx-1" icon="plus" text="actions.add" variant="success" v-b-modal.newTrait />
+              <trait-edit-modal id="newTrait" @ok="addTrait" />
+            </div>
+            <table v-if="traits.length" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" v-t="'name.label'" />
+                  <th scope="col" v-t="'description.label'" />
+                  <th scope="col" />
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(trait, index) in traits" :key="index">
+                  <td>
+                    {{ trait.name }}
+                    <trait-status v-if="trait.status" :status="trait.status" />
+                  </td>
+                  <td v-text="shortify(trait.description, 100)" />
+                  <td>
+                    <icon-button
+                      class="mx-1"
+                      :disabled="trait.status !== 'removed' && trait.status !== 'updated'"
+                      icon="undo"
+                      variant="warning"
+                      @click="restoreTrait(index)"
+                    />
+                    <icon-button class="mx-1" :disabled="trait.status === 'removed'" icon="edit" variant="primary" v-b-modal="`editTrait_${index}`" />
+                    <icon-button class="mx-1" :disabled="trait.status === 'removed'" icon="times" variant="danger" @click="removeTrait(index)" />
+                  </td>
+                  <trait-edit-modal :id="`editTrait_${index}`" :trait="trait" @ok="updateTrait(index, $event)" />
+                </tr>
+              </tbody>
+            </table>
+            <p v-else v-t="'race.traits.empty'" />
+          </b-tab>
+          <b-tab v-if="race && type === 'race'" :title="$t('race.people.tab')">
+            <race-text id="peopleText" placeholder="race.text.people" v-model="peopleText" />
+            <div class="my-2">
+              <icon-button icon="plus" text="actions.create" :to="{ name: 'PeopleEdit', params: { id: 'new', raceId: race.id } }" variant="success" />
+            </div>
+            <table v-if="people.length" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" v-t="'name.label'" />
+                  <th scope="col" v-t="'updatedAt'" />
+                  <th scope="col" />
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in sortedPeople" :key="item.id">
+                  <td>
+                    <router-link :to="{ name: 'PeopleEdit', params: { id: item.id, raceId: race.id } }" v-text="item.name" />
+                  </td>
+                  <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
+                  <td>
+                    <icon-button class="mx-1" icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deletePeople_${item.id}`" />
+                    <delete-modal
+                      confirm="people.delete.confirm"
+                      :disabled="loading"
+                      :displayName="item.name"
+                      :id="`deletePeople_${item.id}`"
+                      :loading="loading"
+                      title="people.delete.title"
+                      @ok="_delete(item, $event)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p v-else v-t="'race.people.empty'" />
           </b-tab>
         </b-tabs>
-        <div class="my-2">
-          <icon-submit v-if="race" class="mx-1" :disabled="!hasChanges || loading" icon="save" :loading="loading" text="actions.save" variant="primary" />
-          <icon-submit v-else class="mx-1" :disabled="!hasChanges || loading" icon="plus" :loading="loading" text="actions.create" variant="success" />
-          <icon-button class="mx-1" icon="arrow-left" text="actions.back" :to="{ name: 'RaceList' }" />
-        </div>
       </b-form>
     </validation-observer>
   </b-container>
 </template>
 
 <script>
-/* TODO(fpion):
- * Names; NamesText
- * Traits; TraitsText
- * SubraceText
- */
+// TODO(fpion): Names; NamesText
 
 import AttributeBonusField from './AttributeBonusField.vue'
 import LanguageSelect from '../Languages/LanguageSelect.vue'
 import RaceText from './RaceText.vue'
 import RacialSpeedField from './RacialSpeedField.vue'
+import TraitEditModal from './TraitEditModal.vue'
+import TraitStatus from './TraitStatus.vue'
 import Vue from 'vue'
 import WeightField from './WeightField.vue'
-import { createRace, getRace, updateRace } from '@/api/races'
+import { createRace, deleteRace, getPeople, getRace, updateRace } from '@/api/races'
 import { getLanguages } from '@/api/languages'
 
 export default {
@@ -164,6 +236,8 @@ export default {
     LanguageSelect,
     RaceText,
     RacialSpeedField,
+    TraitEditModal,
+    TraitStatus,
     WeightField
   },
   data: () => ({
@@ -191,6 +265,8 @@ export default {
     languagesText: null,
     loading: false,
     name: null,
+    people: [],
+    peopleText: null,
     race: null,
     size: 'Medium',
     sizeText: null,
@@ -203,6 +279,8 @@ export default {
       Walk: 0
     },
     statureRoll: null,
+    traits: [],
+    traitsText: null,
     weightRolls: {
       skinny: null,
       normal: null,
@@ -214,10 +292,13 @@ export default {
     worldLanguages: []
   }),
   computed: {
+    back() {
+      return this.type === 'people' ? { name: 'RaceEdit', params: { id: this.$route.params.raceId } } : { name: 'RaceList' }
+    },
     hasChanges() {
       return (
         // General
-        this.name !== this.race?.name ||
+        (this.name ?? '') !== (this.race?.name ?? '') ||
         (this.description ?? '') !== (this.race?.description ?? '') ||
         // Attributes
         this.attributes.Agility !== (this.race?.attributes.find(({ attribute }) => attribute === 'Agility')?.bonus ?? 0) ||
@@ -227,15 +308,15 @@ export default {
         this.attributes.Presence !== (this.race?.attributes.find(({ attribute }) => attribute === 'Presence')?.bonus ?? 0) ||
         this.attributes.Sensitivity !== (this.race?.attributes.find(({ attribute }) => attribute === 'Sensitivity')?.bonus ?? 0) ||
         this.attributes.Vigor !== (this.race?.attributes.find(({ attribute }) => attribute === 'Vigor')?.bonus ?? 0) ||
-        this.extraAttributes !== this.race?.extraAttributes ||
+        this.extraAttributes !== (this.race?.extraAttributes ?? 0) ||
         (this.attributesText ?? '') !== (this.race?.attributesText ?? '') ||
         // Languages
         JSON.stringify(this.orderBy(this.languageIds)) !== JSON.stringify(this.orderBy(this.race?.languages ?? [], 'id').map(({ id }) => id)) ||
-        this.extraLanguages !== this.race?.extraLanguages ||
+        this.extraLanguages !== (this.race?.extraLanguages ?? 0) ||
         (this.languagesText ?? '') !== (this.race?.languagesText ?? '') ||
         // Physical
         this.size !== (this.race?.size ?? 'Medium') ||
-        this.statureRoll !== this.race?.statureRoll ||
+        (this.statureRoll ?? '') !== (this.race?.statureRoll ?? '') ||
         (this.sizeText ?? '') !== (this.race?.sizeText ?? '') ||
         (this.weightRolls.skinny ?? '') !== (this.race?.weightRolls?.skinny ?? '') ||
         (this.weightRolls.thin ?? '') !== (this.race?.weightRolls?.thin ?? '') ||
@@ -254,7 +335,12 @@ export default {
         this.speeds.Fly !== (this.race?.speeds.find(({ type }) => type === 'Fly')?.value ?? 0) ||
         this.speeds.Swim !== (this.race?.speeds.find(({ type }) => type === 'Swim')?.value ?? 0) ||
         this.speeds.Walk !== (this.race?.speeds.find(({ type }) => type === 'Walk')?.value ?? 0) ||
-        (this.speedText ?? '') !== (this.race?.speedText ?? '')
+        (this.speedText ?? '') !== (this.race?.speedText ?? '') ||
+        // Traits
+        (this.traitsText ?? '') !== (this.race?.traitsText ?? '') ||
+        this.traits.some(({ status }) => Boolean(status)) ||
+        // People
+        (this.peopleText ?? '') !== (this.race?.peopleText ?? '')
       )
     },
     languageIds() {
@@ -277,7 +363,7 @@ export default {
       }))
     },
     payload() {
-      return {
+      const payload = {
         ageThresholds: Object.values(this.ageThresholds).some(value => value > 0) ? this.ageThresholds : null,
         attributes: Object.entries(this.attributes)
           .filter(([, bonus]) => bonus > 0)
@@ -296,16 +382,49 @@ export default {
         speeds: Object.entries(this.speeds)
           .filter(([, value]) => value > 0)
           .map(([type, value]) => ({ type, value })),
-        statureRoll: this.statureRoll,
+        statureRoll: this.statureRoll ?? null,
+        peopleText: this.peopleText,
+        traits: this.traits.filter(({ status }) => status !== 'removed').map(({ id, description, name }) => ({ id, description, name })),
+        traitsText: this.traitsText,
         weightRolls: Object.values(this.weightRolls).some(value => Boolean(value)) ? this.weightRolls : null,
         weightText: this.weightText
       }
+      if (this.type === 'people' && !this.race) {
+        payload.parentId = this.$route.params.raceId
+      }
+      return payload
+    },
+    sortedPeople() {
+      return this.orderBy([...this.people], 'name')
     },
     title() {
-      return this.race?.name ?? this.$i18n.t('race.title')
+      return this.race?.name ?? this.$i18n.t(`${this.type}.title`)
+    },
+    type() {
+      return this.$route.name === 'PeopleEdit' ? 'people' : 'race'
     }
   },
   methods: {
+    async _delete({ id }, callback = null) {
+      if (!this.loading) {
+        this.loading = true
+        try {
+          await deleteRace(id)
+          const index = this.people.findIndex(people => people.id === id)
+          if (index >= 0) {
+            Vue.delete(this.people, index)
+            this.toast('success', 'people.delete.success')
+            if (typeof callback === 'function') {
+              callback()
+            }
+          }
+        } catch (e) {
+          this.handleError(e)
+        } finally {
+          this.loading = false
+        }
+      }
+    },
     addLanguage(value) {
       const index = this.languages.findIndex(({ id }) => id === value)
       if (index >= 0) {
@@ -324,6 +443,12 @@ export default {
         })
       }
     },
+    addTrait({ callback, description, name }) {
+      this.traits.push({ description, name, status: 'added' })
+      if (callback) {
+        callback()
+      }
+    },
     clean(values) {
       return values.filter(value => typeof value !== 'undefined' && value !== null)
     },
@@ -338,6 +463,26 @@ export default {
           Vue.set(this.languages, index, language)
         }
       }
+    },
+    removeTrait(index) {
+      const trait = this.traits[index]
+      if (trait.status === 'added') {
+        Vue.delete(this.traits, index)
+        return
+      }
+      trait.status = 'removed'
+      Vue.set(this.traits, index, trait)
+    },
+    restoreTrait(index) {
+      const trait = this.traits[index]
+      if (trait.old) {
+        for (const [key, value] of Object.entries(trait.old)) {
+          trait[key] = value
+        }
+        delete trait.old
+      }
+      delete trait.status
+      Vue.set(this.traits, index, trait)
     },
     setModel(model) {
       this.race = model
@@ -380,6 +525,11 @@ export default {
       this.speeds.Swim = model.speeds.find(({ type }) => type === 'Swim')?.value ?? 0
       this.speeds.Walk = model.speeds.find(({ type }) => type === 'Walk')?.value ?? 0
       this.speedText = model.speedText
+      // Traits
+      this.traitsText = model.traitsText
+      this.traits = model.traits.map(trait => ({ ...trait }))
+      // People
+      this.peopleText = model.peopleText
     },
     async submit() {
       if (!this.loading) {
@@ -390,11 +540,11 @@ export default {
             if (this.race) {
               const { data } = await updateRace(this.race.id, this.payload)
               this.setModel(data)
-              this.toast('success', 'race.updated')
+              this.toast('success', `${this.type}.updated`)
             } else {
               const { data } = await createRace(this.payload)
               this.setModel(data)
-              this.toast('success', 'race.created')
+              this.toast('success', `${this.type}.created`)
             }
             this.$refs.form.reset()
           }
@@ -404,6 +554,17 @@ export default {
           this.loading = false
         }
       }
+    },
+    updateTrait(index, { callback, description, name }) {
+      const trait = this.traits[index]
+      trait.old = { ...trait }
+      trait.description = description
+      trait.name = name
+      trait.status = 'updated'
+      Vue.set(this.traits, index, trait)
+      if (callback) {
+        callback()
+      }
     }
   },
   async created() {
@@ -412,6 +573,7 @@ export default {
       try {
         const { data } = await getRace(id)
         this.setModel(data)
+        this.people = (await getPeople(id)).data
       } catch (e) {
         if (e.status === 404) {
           return this.$router.push({ name: 'NotFound' })

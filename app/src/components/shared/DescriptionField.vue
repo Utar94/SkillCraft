@@ -30,7 +30,8 @@ export default {
       default: 'description.label'
     },
     maxLength: {
-      type: Number
+      type: Number,
+      default: 10000
     },
     minLength: {
       type: Number

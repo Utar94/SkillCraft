@@ -2,5 +2,6 @@
 {
   public class CreateRacePayload : SaveRacePayload
   {
+    public Guid? ParentId { get; set; }
   }
 }

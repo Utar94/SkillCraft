@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkillCraft.Infrastructure;
@@ -11,9 +12,10 @@ using SkillCraft.Infrastructure;
 namespace SkillCraft.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillCraftDbContext))]
-    partial class SkillCraftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220620011622_RenamedSubraceTextToPeopleText")]
+    partial class RenamedSubraceTextToPeopleText
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -935,9 +937,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Property<string>("NamesText")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("PeopleText")
                         .HasColumnType("text");
 
@@ -998,8 +997,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.HasIndex("Deleted");
 
                     b.HasIndex("Name");
-
-                    b.HasIndex("ParentId");
 
                     b.HasIndex("Uuid")
                         .IsUnique();
@@ -1235,17 +1232,11 @@ namespace SkillCraft.Infrastructure.Migrations
 
             modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
                 {
-                    b.HasOne("SkillCraft.Core.Races.Race", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
-
                     b.HasOne("SkillCraft.Core.Worlds.World", "World")
                         .WithMany("Races")
                         .HasForeignKey("WorldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Parent");
 
                     b.Navigation("World");
                 });
@@ -1272,11 +1263,6 @@ namespace SkillCraft.Infrastructure.Migrations
             modelBuilder.Entity("Logitar.Identity.Core.User", b =>
                 {
                     b.Navigation("Sessions");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
-                {
-                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>

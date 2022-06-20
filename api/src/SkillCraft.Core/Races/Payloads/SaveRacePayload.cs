@@ -49,13 +49,13 @@ namespace SkillCraft.Core.Races.Payloads
     public string? NamesText { get; set; }
 
     [StringLength(1000)]
+    public string? PeopleText { get; set; }
+
+    [StringLength(1000)]
     public string? SizeText { get; set; }
 
     [StringLength(1000)]
     public string? SpeedText { get; set; }
-
-    [StringLength(1000)]
-    public string? SubraceText { get; set; }
 
     [StringLength(1000)]
     public string? TraitsText { get; set; }

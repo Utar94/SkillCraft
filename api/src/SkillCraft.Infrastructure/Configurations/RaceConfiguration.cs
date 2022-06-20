@@ -13,6 +13,7 @@ namespace SkillCraft.Infrastructure.Configurations
 
       builder.HasIndex(x => x.Name);
 
+      builder.HasOne(x => x.Parent).WithMany(x => x.Children);
       builder.HasMany(x => x.Languages).WithMany(x => x.Races)
         .UsingEntity<RaceLanguage>(builder => builder.HasKey(x => new { x.RaceId, x.LanguageId }));
 

@@ -75,6 +75,12 @@ namespace SkillCraft.Web.Controllers
       return Ok(model);
     }
 
+    [HttpGet("{raceId}/people")]
+    public async Task<ActionResult<RaceModel>> GetPeopleAsync(Guid raceId, CancellationToken cancellationToken)
+    {
+      return Ok(await _pipeline.ExecuteAsync(new GetPeopleQuery(raceId), cancellationToken));
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult<RaceModel>> UpdateAsync(
       Guid id,

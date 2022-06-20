@@ -1,5 +1,6 @@
 {
   "actions": {
+    "add": "Add",
     "back": "Back",
     "cancel": "Cancel",
     "create": "Create",
@@ -182,33 +183,52 @@
     "lead": "Page Not Found",
     "link": "Go to Home"
   },
+  "people": {
+    "created": "Your people has been created.",
+    "delete": {
+      "confirm": "Do you really want to delete the following people?",
+      "success": "Your people has been deleted.",
+      "title": "Delete people"
+    },
+    "text": {
+      "age": "Describe the aging of your people",
+      "attributes": "Describe the attributes of your people",
+      "languages": "Describe the languages of your people",
+      "size": "Describe the size of your people",
+      "speeds": "Describe the speeds of your people",
+      "traits": "Describe the traits of your people",
+      "weight": "Describe the weight of your people"
+    },
+    "title": "New people",
+    "updated": "Your people has been updated."
+  },
   "race": {
     "attributes": {
       "extra": "Extra attributes",
-      "tab": "Attributes",
-      "text": "Describe the attributes of your race"
+      "tab": "Attributes"
     },
     "created": "Your race has been created.",
     "general": "General",
     "languages": {
       "add": "Add a language",
       "extra": "Extra languages",
-      "tab": "Languages",
-      "text": "Describe the languages of your race"
+      "tab": "Languages"
+    },
+    "people": {
+      "empty": "No people to display.",
+      "tab": "People"
     },
     "physical": {
       "age": {
         "adult": "Adult",
         "child": "Child",
         "mature": "Mature",
-        "placeholder": "Describe the aging of your race",
         "teenager": "Teenager",
         "title": "Age",
         "venerable": "Venerable"
       },
       "size": {
         "category": "Category",
-        "placeholder": "Describe the size of your race",
         "statureRoll": {
           "label": "Stature Roll",
           "placeholder": "e.g., 2d20+140"
@@ -220,7 +240,6 @@
         "normal": "Normal",
         "obese": "Obese",
         "overweight": "Overweight",
-        "placeholder": "Describe the weight of your race",
         "roll": "e.g., 19 + 1d6",
         "skinny": "Skinny",
         "thin": "Thin",
@@ -228,10 +247,30 @@
       }
     },
     "speeds": {
-      "tab": "Speeds",
-      "text": "Describe the speeds of your race"
+      "tab": "Speeds"
+    },
+    "text": {
+      "age": "Describe the aging of your race",
+      "attributes": "Describe the attributes of your race",
+      "languages": "Describe the languages of your race",
+      "people": "Describe the people of your race",
+      "size": "Describe the size of your race",
+      "speeds": "Describe the speeds of your race",
+      "traits": "Describe the traits of your race",
+      "weight": "Describe the weight of your race"
     },
     "title": "New race",
+    "traits": {
+      "editTitle": "Edit trait",
+      "empty": "No trait to display.",
+      "newTitle": "New trait",
+      "status": {
+        "added": "Added",
+        "removed": "Removed",
+        "updated": "Updated"
+      },
+      "tab": "Traits"
+    },
     "updated": "Your race has been saved."
   },
   "races": {

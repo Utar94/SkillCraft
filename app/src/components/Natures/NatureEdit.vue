@@ -44,11 +44,19 @@ export default {
   computed: {
     hasChanges() {
       return (
-        this.name !== this.nature?.name ||
-        this.attribute !== this.nature?.attribute ||
-        this.featId !== this.nature?.featId ||
+        (this.name ?? '') !== (this.nature?.name ?? '') ||
+        this.attribute !== (this.nature?.attribute ?? null) ||
+        this.featId !== (this.nature?.featId ?? null) ||
         (this.description ?? '') !== (this.nature?.description ?? '')
       )
+    },
+    payload() {
+      return {
+        attribute: this.attribute,
+        description: this.description,
+        featId: this.featId,
+        name: this.name
+      }
     },
     title() {
       return this.nature?.name ?? this.$i18n.t('nature.title')
@@ -69,21 +77,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.nature) {
-              const { data } = await updateNature(this.nature.id, {
-                attribute: this.attribute,
-                description: this.description,
-                featId: this.featId,
-                name: this.name
-              })
+              const { data } = await updateNature(this.nature.id, this.payload)
               this.setModel(data)
               this.toast('success', 'nature.updated')
             } else {
-              const { data } = await createNature({
-                attribute: this.attribute,
-                description: this.description,
-                featId: this.featId,
-                name: this.name
-              })
+              const { data } = await createNature(this.payload)
               this.setModel(data)
               this.toast('success', 'nature.created')
             }

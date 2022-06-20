@@ -6,10 +6,12 @@ namespace SkillCraft.Core.Races
 {
   public class Race : EntityBase
   {
-    public Race(Guid userId, World world) : base(userId)
+    public Race(Guid userId, World world, Race? race = null) : base(userId)
     {
       World = world ?? throw new ArgumentNullException(nameof(world));
       WorldId = world.Id;
+      Parent = race;
+      ParentId = race?.Id;
     }
     private Race() : base()
     {
@@ -17,6 +19,10 @@ namespace SkillCraft.Core.Races
 
     public World? World { get; set; }
     public int WorldId { get; set; }
+
+    public Race? Parent { get; set; }
+    public int? ParentId { get; set; }
+    public ICollection<Race> Children { get; set; } = new List<Race>();
 
     public string? Description { get; set; }
     public string Name { get; set; } = null!;
@@ -97,9 +103,9 @@ namespace SkillCraft.Core.Races
     public string? AttributesText { get; set; }
     public string? LanguagesText { get; set; }
     public string? NamesText { get; set; }
+    public string? PeopleText { get; set; }
     public string? SizeText { get; set; }
     public string? SpeedText { get; set; }
-    public string? SubraceText { get; set; }
     public string? TraitsText { get; set; }
     public string? WeightText { get; set; }
   }

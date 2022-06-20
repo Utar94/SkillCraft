@@ -21,7 +21,9 @@ import {
   faStar,
   faSyncAlt,
   faTasks,
+  faTimes,
   faTrashAlt,
+  faUndo,
   faUser
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -47,7 +49,9 @@ library.add(
   faStar,
   faSyncAlt,
   faTasks,
+  faTimes,
   faTrashAlt,
+  faUndo,
   faUser
 )
 

@@ -5,6 +5,8 @@ namespace SkillCraft.Core.Races.Models
 {
   public class RaceModel : EntityBaseModel
   {
+    public RaceModel? Parent { get; set; }
+
     public string? Description { get; set; }
     public string Name { get; set; } = null!;
 
@@ -27,9 +29,9 @@ namespace SkillCraft.Core.Races.Models
     public string? AttributesText { get; set; }
     public string? LanguagesText { get; set; }
     public string? NamesText { get; set; }
+    public string? PeopleText { get; set; }
     public string? SizeText { get; set; }
     public string? SpeedText { get; set; }
-    public string? SubraceText { get; set; }
     public string? TraitsText { get; set; }
     public string? WeightText { get; set; }
   }

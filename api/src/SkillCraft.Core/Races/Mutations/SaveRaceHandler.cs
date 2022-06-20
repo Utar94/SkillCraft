@@ -128,9 +128,9 @@ namespace SkillCraft.Core.Races.Mutations
       race.AttributesText = payload.AttributesText?.CleanTrim();
       race.LanguagesText = payload.LanguagesText?.CleanTrim();
       race.NamesText = payload.NamesText?.CleanTrim();
+      race.PeopleText = payload.PeopleText?.CleanTrim();
       race.SizeText = payload.SizeText?.CleanTrim();
       race.SpeedText = payload.SpeedText?.CleanTrim();
-      race.SubraceText = payload.SubraceText?.CleanTrim();
       race.TraitsText = payload.TraitsText?.CleanTrim();
       race.WeightText = payload.WeightText?.CleanTrim();
     }

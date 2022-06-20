@@ -156,6 +156,11 @@ const router = new VueRouter({
       path: '/races/:id',
       component: RaceEdit
     },
+    {
+      name: 'PeopleEdit',
+      path: '/races/:raceId/people/:id',
+      component: RaceEdit
+    },
     // Worlds
     {
       name: 'WorldList',

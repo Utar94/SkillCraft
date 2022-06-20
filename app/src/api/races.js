@@ -11,11 +11,14 @@ export async function createRace({
   languageIds,
   languagesText,
   name,
+  parentId,
+  peopleText,
   size,
   sizeText,
   speedText,
   speeds,
   statureRoll,
+  traits,
   weightRolls,
   weightText
 }) {
@@ -30,11 +33,14 @@ export async function createRace({
     languageIds,
     languagesText,
     name,
+    parentId,
+    peopleText,
     size,
     sizeText,
     speedText,
     speeds,
     statureRoll,
+    traits,
     weightRolls,
     weightText
   })
@@ -42,6 +48,10 @@ export async function createRace({
 
 export async function deleteRace(id) {
   return await _delete(`/races/${id}`)
+}
+
+export async function getPeople(id) {
+  return await get(`/races/${id}/people`)
 }
 
 export async function getRace(id) {
@@ -69,11 +79,13 @@ export async function updateRace(
     languageIds,
     languagesText,
     name,
+    peopleText,
     size,
     sizeText,
     speedText,
     speeds,
     statureRoll,
+    traits,
     weightRolls,
     weightText
   }
@@ -89,11 +101,13 @@ export async function updateRace(
     languageIds,
     languagesText,
     name,
+    peopleText,
     size,
     sizeText,
     speedText,
     speeds,
     statureRoll,
+    traits,
     weightRolls,
     weightText
   })

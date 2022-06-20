@@ -48,11 +48,19 @@ export default {
   computed: {
     hasChanges() {
       return (
-        this.name !== this.education?.name ||
-        this.skill !== this.education?.skill ||
+        (this.name ?? '') !== (this.education?.name ?? '') ||
+        this.skill !== (this.education?.skill ?? null) ||
         this.wealthMultiplier !== (this.education?.wealthMultiplier ?? 0) ||
         (this.description ?? '') !== (this.education?.description ?? '')
       )
+    },
+    payload() {
+      return {
+        description: this.description,
+        name: this.name,
+        skill: this.skill,
+        wealthMultiplier: this.wealthMultiplier || null
+      }
     },
     title() {
       return this.education?.name ?? this.$i18n.t('education.title')
@@ -76,21 +84,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.education) {
-              const { data } = await updateEducation(this.education.id, {
-                description: this.description,
-                name: this.name,
-                skill: this.skill,
-                wealthMultiplier: this.wealthMultiplier || null
-              })
+              const { data } = await updateEducation(this.education.id, this.payload)
               this.setModel(data)
               this.toast('success', 'education.updated')
             } else {
-              const { data } = await createEducation({
-                description: this.description,
-                name: this.name,
-                skill: this.skill,
-                wealthMultiplier: this.wealthMultiplier || null
-              })
+              const { data } = await createEducation(this.payload)
               this.setModel(data)
               this.toast('success', 'education.created')
             }

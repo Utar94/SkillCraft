@@ -23,7 +23,7 @@ namespace SkillCraft.Core.Races.Queries
     {
       IQueryable<Race> query = _dbContext.Races
         .AsNoTracking()
-        .Where(x => x.WorldId == _appContext.World.Id);
+        .Where(x => x.ParentId == null && x.WorldId == _appContext.World.Id);
 
       if (request.Deleted.HasValue)
       {

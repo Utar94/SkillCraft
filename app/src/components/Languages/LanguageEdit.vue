@@ -59,12 +59,21 @@ export default {
   computed: {
     hasChanges() {
       return (
-        this.name !== this.language?.name ||
-        this.exotic !== this.language?.exotic ||
-        this.script !== this.language?.script ||
-        this.typicalSpeakers !== this.language?.typicalSpeakers ||
+        (this.name ?? '') !== (this.language?.name ?? '') ||
+        this.exotic !== (this.language?.exotic ?? false) ||
+        (this.script ?? '') !== (this.language?.script ?? '') ||
+        (this.typicalSpeakers ?? '') !== (this.language?.typicalSpeakers ?? '') ||
         (this.description ?? '') !== (this.language?.description ?? '')
       )
+    },
+    payload() {
+      return {
+        description: this.description,
+        exotic: this.exotic,
+        name: this.name,
+        script: this.script,
+        typicalSpeakers: this.typicalSpeakers
+      }
     },
     title() {
       return this.language?.name ?? this.$i18n.t('language.title')
@@ -86,23 +95,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.language) {
-              const { data } = await updateLanguage(this.language.id, {
-                description: this.description,
-                exotic: this.exotic,
-                name: this.name,
-                script: this.script,
-                typicalSpeakers: this.typicalSpeakers
-              })
+              const { data } = await updateLanguage(this.language.id, this.payload)
               this.setModel(data)
               this.toast('success', 'language.updated')
             } else {
-              const { data } = await createLanguage({
-                description: this.description,
-                exotic: this.exotic,
-                name: this.name,
-                script: this.script,
-                typicalSpeakers: this.typicalSpeakers
-              })
+              const { data } = await createLanguage(this.payload)
               this.setModel(data)
               this.toast('success', 'language.created')
             }

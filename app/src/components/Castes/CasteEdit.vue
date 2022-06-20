@@ -47,11 +47,19 @@ export default {
   computed: {
     hasChanges() {
       return (
-        this.name !== this.caste?.name ||
-        this.skill !== this.caste?.skill ||
+        (this.name ?? '') !== (this.caste?.name ?? '') ||
+        this.skill !== (this.caste?.skill ?? null) ||
         (this.wealthRoll ?? '') !== (this.caste?.wealthRoll ?? '') ||
         (this.description ?? '') !== (this.caste?.description ?? '')
       )
+    },
+    payload() {
+      return {
+        description: this.description,
+        name: this.name,
+        skill: this.skill,
+        wealthRoll: this.wealthRoll
+      }
     },
     title() {
       return this.caste?.name ?? this.$i18n.t('caste.title')
@@ -75,21 +83,11 @@ export default {
         try {
           if (await this.$refs.form.validate()) {
             if (this.caste) {
-              const { data } = await updateCaste(this.caste.id, {
-                description: this.description,
-                name: this.name,
-                skill: this.skill,
-                wealthRoll: this.wealthRoll
-              })
+              const { data } = await updateCaste(this.caste.id, this.payload)
               this.setModel(data)
               this.toast('success', 'caste.updated')
             } else {
-              const { data } = await createCaste({
-                description: this.description,
-                name: this.name,
-                skill: this.skill,
-                wealthRoll: this.wealthRoll
-              })
+              const { data } = await createCaste(this.payload)
               this.setModel(data)
               this.toast('success', 'caste.created')
             }
