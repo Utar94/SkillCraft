@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Aspects
 {
@@ -25,6 +26,9 @@ namespace SkillCraft.Core.Aspects
     public Attribute OptionalAttribute2 { get; set; }
     public Skill Skill1 { get; set; }
     public Skill Skill2 { get; set; }
+
+    public ICollection<Character> Characters1 { get; set; } = new List<Character>();
+    public ICollection<Character> Characters2 { get; set; } = new List<Character>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

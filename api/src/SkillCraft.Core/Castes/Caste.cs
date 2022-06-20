@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Castes
 {
@@ -21,6 +22,8 @@ namespace SkillCraft.Core.Castes
 
     public Skill Skill { get; set; }
     public string? WealthRoll { get; set; }
+
+    public ICollection<Character> Characters { get; set; } = new List<Character>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

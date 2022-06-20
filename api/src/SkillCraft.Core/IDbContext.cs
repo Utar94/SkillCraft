@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Characters;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
@@ -15,6 +16,7 @@ namespace SkillCraft.Core
   {
     DbSet<Aspect> Aspects { get; }
     DbSet<Caste> Castes { get; }
+    DbSet<Character> Characters { get; }
     DbSet<Customization> Customizations { get; }
     DbSet<Education> Educations { get; }
     DbSet<EventLog> EventLogs { get; }
