@@ -68,6 +68,28 @@
     },
     "title": "Castes"
   },
+  "condition": {
+    "created": "Your condition has been created.",
+    "maxLevel": {
+      "label": "Maximum Level",
+      "none": "(none)"
+    },
+    "title": "New condition",
+    "updated": "Your condition has been saved."
+  },
+  "conditions": {
+    "delete": {
+      "confirm": "Do you really want to delete the following condition?",
+      "success": "Your condition has been deleted.",
+      "title": "Delete condition"
+    },
+    "sort": {
+      "MaxLevel": "Maximum Level",
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Conditions"
+  },
   "count": "Count",
   "customization": {
     "created": "Your customization has been created.",
