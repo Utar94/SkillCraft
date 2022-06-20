@@ -2,17 +2,25 @@
   <validation-provider :name="$t(label).toLowerCase()" :rules="allRules" :vid="id" v-slot="validationContext" slim>
     <b-form-group :label="required ? '' : $t(label)" :label-for="id" :invalid-feedback="validationContext.errors[0]">
       <template #label v-if="required"><span class="text-danger">*</span> {{ $t(label) }}</template>
-      <b-form-input
-        :disabled="disabled"
-        :id="id"
-        :placeholder="$t(placeholder)"
-        :ref="id"
-        :state="hasRules ? getValidationState(validationContext) : null"
-        :step="step"
-        :type="type"
-        :value="value"
-        @input="$emit('input', $event)"
-      />
+      <b-input-group>
+        <template #prepend>
+          <slot name="prepend" />
+        </template>
+        <b-form-input
+          :disabled="disabled"
+          :id="id"
+          :placeholder="$t(placeholder)"
+          :ref="id"
+          :state="hasRules ? getValidationState(validationContext) : null"
+          :step="step"
+          :type="type"
+          :value="value"
+          @input="$emit('input', $event)"
+        />
+        <template #append>
+          <slot name="append" />
+        </template>
+      </b-input-group>
       <slot />
     </b-form-group>
   </validation-provider>

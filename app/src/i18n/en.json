@@ -7,6 +7,8 @@
     "delete": "Delete",
     "edit": "Edit",
     "refresh": "Refresh",
+    "remove": "Remove",
+    "restore": "Restore",
     "search": "Search",
     "save": "Save",
     "view": "View"
@@ -194,6 +196,7 @@
       "age": "Describe the aging of your people",
       "attributes": "Describe the attributes of your people",
       "languages": "Describe the languages of your people",
+      "names": "Describe the names of your people",
       "size": "Describe the size of your people",
       "speeds": "Describe the speeds of your people",
       "traits": "Describe the traits of your people",
@@ -213,6 +216,17 @@
       "add": "Add a language",
       "extra": "Extra languages",
       "tab": "Languages"
+    },
+    "names": {
+      "add": {
+        "category": "Add category",
+        "label": "Add name(s)",
+        "placeholder": "Enter a name, or names separated by a comma “,” or a semicolon “;”"
+      },
+      "label": "Category",
+      "placeholder": "Enter a category name",
+      "tab": "Names",
+      "tags": "Names"
     },
     "people": {
       "empty": "No people to display.",
@@ -253,6 +267,7 @@
       "age": "Describe the aging of your race",
       "attributes": "Describe the attributes of your race",
       "languages": "Describe the languages of your race",
+      "names": "Describe the names of your race",
       "people": "Describe the people of your race",
       "size": "Describe the size of your race",
       "speeds": "Describe the speeds of your race",

@@ -10,7 +10,14 @@
     :rules="rules"
     :value="value"
     @input="$emit('input', $event)"
-  />
+  >
+    <template #prepend>
+      <slot name="prepend" />
+    </template>
+    <template #append>
+      <slot name="append" />
+    </template>
+  </form-field>
 </template>
 
 <script>

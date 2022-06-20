@@ -38,6 +38,24 @@
             <form-field id="extraLanguages" label="race.languages.extra" :maxValue="3" :minValue="0" type="number" v-model.number="extraLanguages" />
             <race-text id="languagesText" :placeholder="`${type}.text.languages`" v-model="languagesText" />
           </b-tab>
+          <b-tab :title="$t('race.names.tab')">
+            <race-text id="namesText" :placeholder="`${type}.text.names`" v-model="namesText" />
+            <icon-button icon="plus" text="race.names.add.category" variant="success" @click="addCategory" />
+            <div v-for="(item, index) in names" :key="index">
+              <hr />
+              <name-category
+                :category="item.category"
+                :id="`names${index}`"
+                :status="item.status"
+                :values="item.values"
+                @nameRemoved="removeName(index, $event)"
+                @namesAdded="addNames(index, $event)"
+                @renamed="renameCategory(index, $event)"
+                @removed="removeCategory(index)"
+                @restored="restoreCategory(index)"
+              />
+            </div>
+          </b-tab>
           <b-tab :title="$t('race.physical.tab')">
             <h4 v-t="'race.physical.size.title'" />
             <b-row>
@@ -217,10 +235,9 @@
 </template>
 
 <script>
-// TODO(fpion): Names; NamesText
-
 import AttributeBonusField from './AttributeBonusField.vue'
 import LanguageSelect from '../Languages/LanguageSelect.vue'
+import NameCategory from './NameCategory.vue'
 import RaceText from './RaceText.vue'
 import RacialSpeedField from './RacialSpeedField.vue'
 import TraitEditModal from './TraitEditModal.vue'
@@ -234,6 +251,7 @@ export default {
   components: {
     AttributeBonusField,
     LanguageSelect,
+    NameCategory,
     RaceText,
     RacialSpeedField,
     TraitEditModal,
@@ -265,6 +283,8 @@ export default {
     languagesText: null,
     loading: false,
     name: null,
+    names: [],
+    namesText: null,
     people: [],
     peopleText: null,
     race: null,
@@ -314,6 +334,9 @@ export default {
         JSON.stringify(this.orderBy(this.languageIds)) !== JSON.stringify(this.orderBy(this.race?.languages ?? [], 'id').map(({ id }) => id)) ||
         this.extraLanguages !== (this.race?.extraLanguages ?? 0) ||
         (this.languagesText ?? '') !== (this.race?.languagesText ?? '') ||
+        // Names
+        JSON.stringify(this.names) !== JSON.stringify(this.race?.names ?? []) ||
+        (this.namesText ?? '') !== (this.race?.namesText ?? '') ||
         // Physical
         this.size !== (this.race?.size ?? 'Medium') ||
         (this.statureRoll ?? '') !== (this.race?.statureRoll ?? '') ||
@@ -368,14 +391,17 @@ export default {
         attributes: Object.entries(this.attributes)
           .filter(([, bonus]) => bonus > 0)
           .map(([attribute, bonus]) => ({ attribute, bonus })),
-        attributesText: this.attributesText,
         ageText: this.ageText,
+        attributesText: this.attributesText,
         description: this.description,
         extraAttributes: this.extraAttributes,
         extraLanguages: this.extraLanguages,
         languageIds: this.languageIds,
         languagesText: this.languagesText,
         name: this.name,
+        names: this.names.filter(({ status }) => status !== 'removed').map(({ category, values }) => ({ category, values })),
+        namesText: this.namesText,
+        peopleText: this.peopleText,
         size: this.size,
         sizeText: this.sizeText,
         speedText: this.speedText,
@@ -383,7 +409,6 @@ export default {
           .filter(([, value]) => value > 0)
           .map(([type, value]) => ({ type, value })),
         statureRoll: this.statureRoll ?? null,
-        peopleText: this.peopleText,
         traits: this.traits.filter(({ status }) => status !== 'removed').map(({ id, description, name }) => ({ id, description, name })),
         traitsText: this.traitsText,
         weightRolls: Object.values(this.weightRolls).some(value => Boolean(value)) ? this.weightRolls : null,
@@ -425,6 +450,13 @@ export default {
         }
       }
     },
+    addCategory() {
+      this.names.push({
+        added: true,
+        category: null,
+        values: []
+      })
+    },
     addLanguage(value) {
       const index = this.languages.findIndex(({ id }) => id === value)
       if (index >= 0) {
@@ -442,6 +474,13 @@ export default {
           status: 'added'
         })
       }
+    },
+    addNames(index, values) {
+      const category = this.names[index]
+      const names = [...category.values]
+      values.forEach(value => names.push(value))
+      category.values = this.orderBy([...new Set(names)])
+      Vue.set(this.names, index, category)
     },
     addTrait({ callback, description, name }) {
       this.traits.push({ description, name, status: 'added' })
@@ -473,6 +512,30 @@ export default {
       trait.status = 'removed'
       Vue.set(this.traits, index, trait)
     },
+    renameCategory(index, name) {
+      const item = this.names[index]
+      item.category = name
+      Vue.set(this.names, index, item)
+    },
+    removeCategory(index) {
+      const item = this.names[index]
+      if (item.added && !item.values.length) {
+        Vue.delete(this.names, index)
+        return
+      }
+      item.status = 'removed'
+      Vue.set(this.names, index, item)
+    },
+    removeName(index, { text }) {
+      const item = this.names[index]
+      item.values = item.values.filter(value => value !== text)
+      Vue.set(this.names, index, item)
+    },
+    restoreCategory(index) {
+      const item = this.names[index]
+      delete item.status
+      Vue.set(this.names, index, item)
+    },
     restoreTrait(index) {
       const trait = this.traits[index]
       if (trait.old) {
@@ -503,6 +566,9 @@ export default {
       this.languages = [...model.languages]
       this.extraLanguages = model.extraLanguages
       this.languagesText = model.languagesText
+      // Names
+      this.namesText = model.namesText
+      this.names = model.names.map(({ category, values }) => ({ category, values: [...values] }))
       // Physical
       this.size = model.size
       this.statureRoll = model.statureRoll
