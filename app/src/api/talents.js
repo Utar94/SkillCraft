@@ -1,7 +1,7 @@
 import { _delete, get, post, put } from '.'
 
-export async function createTalent({ description, multipleAcquisition, name, requiredTalentId, tier }) {
-  return await post('/talents', { description, multipleAcquisition, name, requiredTalentId, tier })
+export async function createTalent({ description, multipleAcquisition, name, requiredTalentId, skill, tier }) {
+  return await post('/talents', { description, multipleAcquisition, name, requiredTalentId, skill, tier })
 }
 
 export async function deleteTalent(id) {
@@ -20,6 +20,6 @@ export async function getTalents({ deleted, multipleAcquisition, search, tiers, 
   return await get(`/talents?${query}`)
 }
 
-export async function updateTalent(id, { description, multipleAcquisition, name, requiredTalentId }) {
-  return await put(`/talents/${id}`, { description, multipleAcquisition, name, requiredTalentId })
+export async function updateTalent(id, { description, multipleAcquisition, name, requiredTalentId, skill }) {
+  return await put(`/talents/${id}`, { description, multipleAcquisition, name, requiredTalentId, skill })
 }

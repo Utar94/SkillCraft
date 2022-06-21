@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Logitar.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Talents.Payloads
 {
@@ -7,6 +8,9 @@ namespace SkillCraft.Core.Talents.Payloads
     public bool MultipleAcquisition { get; set; }
 
     public Guid? RequiredTalentId { get; set; }
+
+    [Enum(typeof(Skill))]
+    public Skill? Skill { get; set; }
 
     [Required]
     [StringLength(100)]

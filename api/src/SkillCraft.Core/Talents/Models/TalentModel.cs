@@ -6,6 +6,7 @@ namespace SkillCraft.Core.Talents.Models
   {
     public bool MultipleAcquisition { get; set; }
     public TalentModel? RequiredTalent { get; set; }
+    public Skill? Skill { get; set; }
     public int Tier { get; set; }
 
     public string Name { get; set; } = null!;
