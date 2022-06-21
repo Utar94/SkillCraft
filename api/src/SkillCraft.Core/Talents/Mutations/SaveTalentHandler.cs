@@ -44,6 +44,7 @@ namespace SkillCraft.Core.Talents.Mutations
       talent.MultipleAcquisition = payload.MultipleAcquisition;
       talent.RequiredTalent = requiredTalent;
       talent.RequiredTalentId = requiredTalent?.Id;
+      talent.Skill = payload.Skill;
 
       talent.Description = payload.Description?.CleanTrim();
       talent.Name = payload.Name.Trim();

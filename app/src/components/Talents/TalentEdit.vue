@@ -20,6 +20,7 @@
             :maxTier="tier"
             v-model="requiredTalentId"
           />
+          <skill-select class="col" label="talent.skillTraining" v-model="skill" />
         </b-row>
         <b-form-group>
           <b-form-checkbox v-model="multipleAcquisition">{{ $t('talents.multipleAcquisition.label') }}</b-form-checkbox>
@@ -50,6 +51,7 @@ export default {
     loading: false,
     multipleAcquisition: false,
     requiredTalentId: null,
+    skill: null,
     talent: null,
     tier: null,
     name: null
@@ -60,6 +62,7 @@ export default {
         (this.name ?? '') !== (this.talent?.name ?? '') ||
         this.tier !== (this.talent?.tier ?? null) ||
         this.requiredTalentId !== (this.talent?.requiredTalent?.id ?? null) ||
+        this.skill !== (this.talent?.skill ?? null) ||
         this.multipleAcquisition !== (this.talent?.multipleAcquisition ?? false) ||
         (this.description ?? '') !== (this.talent?.description ?? '')
       )
@@ -69,7 +72,8 @@ export default {
         description: this.description,
         multipleAcquisition: this.multipleAcquisition,
         name: this.name,
-        requiredTalentId: this.requiredTalentId
+        requiredTalentId: this.requiredTalentId,
+        skill: this.skill
       }
       if (!this.talent) {
         payload.tier = this.tier
@@ -87,6 +91,7 @@ export default {
       this.multipleAcquisition = model.multipleAcquisition
       this.name = model.name
       this.requiredTalentId = model.requiredTalent?.id ?? null
+      this.skill = model.skill
       this.tier = model.tier
     },
     async submit() {

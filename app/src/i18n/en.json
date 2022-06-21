@@ -419,9 +419,10 @@
   "talent": {
     "created": "Your talent has been created.",
     "required": {
-      "label": "Required talent",
+      "label": "Required Talent",
       "placeholder": "Select a talent"
     },
+    "skillTraining": "Skill Training",
     "tier": {
       "label": "Tier",
       "placeholder": "Select a tier"

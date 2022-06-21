@@ -20,6 +20,7 @@ namespace SkillCraft.Core.Talents
     public bool MultipleAcquisition { get; set; }
     public Talent? RequiredTalent { get; set; }
     public int? RequiredTalentId { get; set; }
+    public Skill? Skill { get; set; }
     public int Tier { get; set; }
 
     public string Name { get; set; } = null!;
