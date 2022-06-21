@@ -1,5 +1,6 @@
 ﻿using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
@@ -105,10 +106,11 @@ namespace SkillCraft.Core.Characters
     }
 
     public ICollection<CharacterCondition> Conditions { get; set; } = new List<CharacterCondition>();
+    public ICollection<Customization> Customizations { get; set; } = new List<Customization>();
     public ICollection<Language> Languages { get; set; } = new List<Language>();
+    public ICollection<CharacterTalent> Talents { get; set; } = new List<CharacterTalent>();
 
-    // TODO(fpion): Customizations (Feats & Disabilities) (n..n)
-    // TODO(fpion): Talents & Powers (n..n)
+    // TODO(fpion): Powers (n..n)
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)
     // TODO(fpion): Notes (1..n)

@@ -15,6 +15,8 @@ namespace SkillCraft.Infrastructure.Configurations
       builder.HasIndex(x => x.Name);
       builder.HasIndex(x => x.Player);
 
+      builder.HasMany(x => x.Customizations).WithMany(x => x.Characters)
+        .UsingEntity<CharacterCustomization>(builder => builder.HasKey(x => new { x.CharacterId, x.CustomizationId }));
       builder.HasMany(x => x.Languages).WithMany(x => x.Characters)
         .UsingEntity<CharacterLanguage>(builder => builder.HasKey(x => new { x.CharacterId, x.LanguageId }));
       builder.HasOne(x => x.Aspect1).WithMany(x => x.Characters1);

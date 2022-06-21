@@ -54,9 +54,17 @@ namespace SkillCraft.Core.Characters.Payloads
     public string? Description { get; set; }
 
     public CharacterCreationPayload? Creation { get; set; }
-    //public IEnumerable<SkillRankPayload>? SkillRanks { get; set; } // TODO(fpion): Talents required
-    public IEnumerable<CreateBonusPayload>? Bonuses { get; set; }
+
+    public IEnumerable<SkillRankPayload>? SkillRanks { get; set; }
+
+    public IEnumerable<BonusPayload>? Bonuses { get; set; }
+
     public IEnumerable<CharacterConditionPayload>? Conditions { get; set; }
+
+    public IEnumerable<Guid>? CustomizationIds { get; set; }
+
     public IEnumerable<Guid>? LanguageIds { get; set; }
+
+    public IEnumerable<CharacterTalentPayload>? Talents { get; set; }
   }
 }

@@ -39,7 +39,9 @@ namespace SkillCraft.Infrastructure
     public DbSet<World> Worlds { get; set; }
 
     internal DbSet<CharacterCondition> CharacterConditions { get; set; }
+    internal DbSet<CharacterCustomization> CharacterCustomizations { get; set; }
     internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
+    internal DbSet<CharacterTalent> CharacterTalents { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
 
     public void CancelChanges()
