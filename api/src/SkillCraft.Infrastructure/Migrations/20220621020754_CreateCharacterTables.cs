@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SkillCraft.Infrastructure.Migrations
 {
-    public partial class CreateCharacterTable : Migration
+    public partial class CreateCharacterTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,7 @@ namespace SkillCraft.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WorldId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Player = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Aspect1Id = table.Column<int>(type: "integer", nullable: true),
                     Aspect2Id = table.Column<int>(type: "integer", nullable: true),
@@ -91,7 +91,7 @@ namespace SkillCraft.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterCondition",
+                name: "CharacterConditions",
                 columns: table => new
                 {
                     CharacterId = table.Column<int>(type: "integer", nullable: false),
@@ -100,15 +100,15 @@ namespace SkillCraft.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterCondition", x => new { x.CharacterId, x.ConditionId });
+                    table.PrimaryKey("PK_CharacterConditions", x => new { x.CharacterId, x.ConditionId });
                     table.ForeignKey(
-                        name: "FK_CharacterCondition_Characters_CharacterId",
+                        name: "FK_CharacterConditions_Characters_CharacterId",
                         column: x => x.CharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterCondition_Conditions_ConditionId",
+                        name: "FK_CharacterConditions_Conditions_ConditionId",
                         column: x => x.ConditionId,
                         principalTable: "Conditions",
                         principalColumn: "Id",
@@ -140,8 +140,8 @@ namespace SkillCraft.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterCondition_ConditionId",
-                table: "CharacterCondition",
+                name: "IX_CharacterConditions_ConditionId",
+                table: "CharacterConditions",
                 column: "ConditionId");
 
             migrationBuilder.CreateIndex(
@@ -214,7 +214,7 @@ namespace SkillCraft.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CharacterCondition");
+                name: "CharacterConditions");
 
             migrationBuilder.DropTable(
                 name: "CharacterLanguages");

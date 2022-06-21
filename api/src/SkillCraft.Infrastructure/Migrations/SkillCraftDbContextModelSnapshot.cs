@@ -520,6 +520,7 @@ namespace SkillCraft.Infrastructure.Migrations
                         .HasColumnName("LevelUps");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 

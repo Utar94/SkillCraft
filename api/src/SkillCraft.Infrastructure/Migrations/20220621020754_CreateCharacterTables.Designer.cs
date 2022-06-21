@@ -12,8 +12,8 @@ using SkillCraft.Infrastructure;
 namespace SkillCraft.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillCraftDbContext))]
-    [Migration("20220620201254_CreateCharacterTable")]
-    partial class CreateCharacterTable
+    [Migration("20220621020754_CreateCharacterTables")]
+    partial class CreateCharacterTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -522,6 +522,7 @@ namespace SkillCraft.Infrastructure.Migrations
                         .HasColumnName("LevelUps");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -628,7 +629,7 @@ namespace SkillCraft.Infrastructure.Migrations
 
                     b.HasIndex("ConditionId");
 
-                    b.ToTable("CharacterCondition");
+                    b.ToTable("CharacterConditions");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Conditions.Condition", b =>
