@@ -55,7 +55,7 @@ namespace SkillCraft.Core.Characters.Payloads
 
     public CharacterCreationPayload? Creation { get; set; }
 
-    public IEnumerable<SkillRankPayload>? SkillRanks { get; set; }
+    //public IEnumerable<SkillRankPayload>? SkillRanks { get; set; } // TODO(fpion): implement
 
     public IEnumerable<BonusPayload>? Bonuses { get; set; }
 

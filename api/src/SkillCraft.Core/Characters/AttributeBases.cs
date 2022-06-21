@@ -1,6 +1,6 @@
 ﻿namespace SkillCraft.Core.Characters
 {
-  public struct AttributeBases
+  public class AttributeBases
   {
     public int Agility { get; set; }
     public int Coordination { get; set; }

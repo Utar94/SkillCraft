@@ -1,8 +1,8 @@
 ﻿namespace SkillCraft.Core.Characters
 {
-  public struct CharacterCreation
+  public class CharacterCreation
   {
-    public AttributeBases AttributeBases { get; set; }
+    public AttributeBases? AttributeBases { get; set; }
 
     public Attribute BestAttribute { get; set; }
     public Attribute WorstAttribute { get; set; }
