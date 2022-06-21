@@ -1,5 +1,4 @@
-﻿using SkillCraft.Core.Attributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Races.Payloads
 {

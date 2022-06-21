@@ -9,6 +9,7 @@ using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core
@@ -25,6 +26,7 @@ namespace SkillCraft.Core
     DbSet<Language> Languages { get; }
     DbSet<Nature> Natures { get; }
     DbSet<Race> Races { get; }
+    DbSet<Talent> Talents { get; }
     DbSet<World> Worlds { get; }
 
     void CancelChanges();

@@ -8,6 +8,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 
 namespace SkillCraft.Core.Worlds
 {
@@ -34,6 +35,7 @@ namespace SkillCraft.Core.Worlds
     public ICollection<Language> Languages { get; set; } = new List<Language>();
     public ICollection<Nature> Natures { get; set; } = new List<Nature>();
     public ICollection<Race> Races { get; set; } = new List<Race>();
+    public ICollection<Talent> Talents { get; set; } = new List<Talent>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

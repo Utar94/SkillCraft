@@ -13,6 +13,7 @@ using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Entities;
 
@@ -34,6 +35,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
     public DbSet<Race> Races { get; set; }
+    public DbSet<Talent> Talents { get; set; }
     public DbSet<World> Worlds { get; set; }
 
     internal DbSet<CharacterCondition> CharacterConditions { get; set; }

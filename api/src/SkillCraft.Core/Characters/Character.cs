@@ -112,5 +112,7 @@ namespace SkillCraft.Core.Characters
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)
     // TODO(fpion): Notes (1..n)
+
+    public override string ToString() => $"{Name} | {base.ToString()}";
   }
 }

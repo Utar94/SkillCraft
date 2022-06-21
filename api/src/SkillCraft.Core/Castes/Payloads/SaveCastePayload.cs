@@ -1,5 +1,4 @@
 ﻿using Logitar.Validation;
-using SkillCraft.Core.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Castes.Payloads

@@ -111,5 +111,7 @@ namespace SkillCraft.Core.Races
     public string? WeightText { get; set; }
 
     public ICollection<Character> Characters { get; set; } = new List<Character>();
+
+    public override string ToString() => $"{Name} | {base.ToString()}";
   }
 }
