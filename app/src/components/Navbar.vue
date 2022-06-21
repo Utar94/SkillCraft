@@ -54,6 +54,11 @@
               <font-awesome-icon icon="cog" />
               {{ $t('conditions.title') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'TalentList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('talents.title') }}
+            </b-nav-item>
           </template>
         </b-navbar-nav>
 

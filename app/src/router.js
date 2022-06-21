@@ -25,6 +25,8 @@ import RecoverPassword from './components/Identity/RecoverPassword.vue'
 import ResetPassword from './components/Identity/ResetPassword.vue'
 import SignIn from './components/Identity/SignIn.vue'
 import SignUp from './components/Identity/SignUp.vue'
+import TalentEdit from './components/Talents/TalentEdit.vue'
+import TalentList from './components/Talents/TalentList.vue'
 import WorldEdit from './components/Worlds/WorldEdit.vue'
 import WorldList from './components/Worlds/WorldList.vue'
 
@@ -173,6 +175,17 @@ const router = new VueRouter({
       name: 'PeopleEdit',
       path: '/races/:raceId/people/:id',
       component: RaceEdit
+    },
+    // Talents
+    {
+      name: 'TalentList',
+      path: '/talents',
+      component: TalentList
+    },
+    {
+      name: 'TalentEdit',
+      path: '/talents/:id',
+      component: TalentEdit
     },
     // Worlds
     {

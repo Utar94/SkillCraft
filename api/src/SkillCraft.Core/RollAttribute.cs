@@ -1,4 +1,4 @@
-﻿namespace SkillCraft.Core.Attributes
+﻿namespace SkillCraft.Core
 {
   internal class RollAttribute : System.ComponentModel.DataAnnotations.RegularExpressionAttribute
   {

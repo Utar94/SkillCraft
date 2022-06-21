@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Languages;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Languages;
 using SkillCraft.Core.Worlds;
 using System.Text.Json;
 
@@ -108,5 +109,9 @@ namespace SkillCraft.Core.Races
     public string? SpeedText { get; set; }
     public string? TraitsText { get; set; }
     public string? WeightText { get; set; }
+
+    public ICollection<Character> Characters { get; set; } = new List<Character>();
+
+    public override string ToString() => $"{Name} | {base.ToString()}";
   }
 }

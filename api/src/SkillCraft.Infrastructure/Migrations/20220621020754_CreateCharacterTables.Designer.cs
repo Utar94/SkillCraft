@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkillCraft.Infrastructure;
@@ -11,9 +12,10 @@ using SkillCraft.Infrastructure;
 namespace SkillCraft.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillCraftDbContext))]
-    partial class SkillCraftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220621020754_CreateCharacterTables")]
+    partial class CreateCharacterTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1275,93 +1277,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.ToTable("Races");
                 });
 
-            modelBuilder.Entity("SkillCraft.Core.Talents.Talent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DeletedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("MultipleAcquisition")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<int?>("RequiredTalentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Tier")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("Uuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<int>("Version")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("WorldId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("Deleted");
-
-                    b.HasIndex("MultipleAcquisition");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("RequiredTalentId");
-
-                    b.HasIndex("Tier");
-
-                    b.HasIndex("Uuid")
-                        .IsUnique();
-
-                    b.HasIndex("WorldId");
-
-                    b.ToTable("Talents");
-                });
-
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>
                 {
                     b.Property<int>("Id")
@@ -1695,23 +1610,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("World");
                 });
 
-            modelBuilder.Entity("SkillCraft.Core.Talents.Talent", b =>
-                {
-                    b.HasOne("SkillCraft.Core.Talents.Talent", "RequiredTalent")
-                        .WithMany("RequiringTalents")
-                        .HasForeignKey("RequiredTalentId");
-
-                    b.HasOne("SkillCraft.Core.Worlds.World", "World")
-                        .WithMany("Talents")
-                        .HasForeignKey("WorldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RequiredTalent");
-
-                    b.Navigation("World");
-                });
-
             modelBuilder.Entity("SkillCraft.Infrastructure.Entities.CharacterLanguage", b =>
                 {
                     b.HasOne("SkillCraft.Core.Characters.Character", "Character")
@@ -1789,11 +1687,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("Children");
                 });
 
-            modelBuilder.Entity("SkillCraft.Core.Talents.Talent", b =>
-                {
-                    b.Navigation("RequiringTalents");
-                });
-
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>
                 {
                     b.Navigation("Aspects");
@@ -1813,8 +1706,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("Natures");
 
                     b.Navigation("Races");
-
-                    b.Navigation("Talents");
                 });
 #pragma warning restore 612, 618
         }

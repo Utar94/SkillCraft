@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Characters;
 using SkillCraft.Core.Conditions;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
@@ -12,6 +13,7 @@ using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Entities;
 
@@ -25,6 +27,7 @@ namespace SkillCraft.Infrastructure
 
     public DbSet<Aspect> Aspects { get; set; }
     public DbSet<Caste> Castes { get; set; }
+    public DbSet<Character> Characters { get; set; }
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Customization> Customizations { get; set; }
     public DbSet<Education> Educations { get; set; }
@@ -32,8 +35,11 @@ namespace SkillCraft.Infrastructure
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
     public DbSet<Race> Races { get; set; }
+    public DbSet<Talent> Talents { get; set; }
     public DbSet<World> Worlds { get; set; }
 
+    internal DbSet<CharacterCondition> CharacterConditions { get; set; }
+    internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
 
     public void CancelChanges()
