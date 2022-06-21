@@ -420,6 +420,7 @@
     "created": "Your talent has been created.",
     "required": {
       "label": "Required Talent",
+      "none": "(none)",
       "placeholder": "Select a talent"
     },
     "skillTraining": "Skill Training",

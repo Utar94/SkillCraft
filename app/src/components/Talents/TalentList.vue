@@ -26,6 +26,8 @@
         <thead>
           <tr>
             <th scope="col" v-t="'name.label'" />
+            <th scope="col" v-t="'talent.tier.label'" />
+            <th scope="col" v-t="'talent.required.label'" />
             <th scope="col" v-t="'updatedAt'" />
             <th scope="col" />
           </tr>
@@ -34,6 +36,10 @@
           <tr v-for="item in items" :key="item.id">
             <td>
               <router-link :to="{ name: 'TalentEdit', params: { id: item.id } }" v-text="item.name" />
+            </td>
+            <td v-text="item.tier" />
+            <td>
+              <router-link v-if="item.requiredTalent" :to="{ name: 'TalentEdit', params: { id: item.requiredTalent.id } }" v-text="item.requiredTalent.name" />
             </td>
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
             <td>

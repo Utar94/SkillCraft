@@ -13,8 +13,8 @@
         <b-row>
           <tier-select class="col" :disabled="Boolean(talent)" :required="!talent" v-model="tier" />
           <talent-select
-            v-if="tier !== null"
             class="col"
+            :disabled="tier === null"
             id="requiredTalentId"
             :exclude="talent ? [talent.id] : []"
             :maxTier="tier"
@@ -80,6 +80,9 @@ export default {
       }
       return payload
     },
+    skills() {
+      return Object.fromEntries(Object.entries(this.$i18n.t('skill.options')).map(([key, value]) => [value, key]))
+    },
     title() {
       return this.talent?.name ?? this.$i18n.t('talent.title')
     }
@@ -130,6 +133,16 @@ export default {
           return this.$router.push({ name: 'NotFound' })
         }
         this.handleError(e)
+      }
+    }
+  },
+  watch: {
+    name(name) {
+      if (this.skill === null) {
+        const skill = this.skills[name]
+        if (skill) {
+          this.skill = skill
+        }
       }
     }
   }
