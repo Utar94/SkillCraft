@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Customizations
 {
@@ -20,6 +21,8 @@ namespace SkillCraft.Core.Customizations
     public string? Description { get; set; }
     public string Name { get; set; } = null!;
     public CustomizationType Type { get; set; }
+
+    public ICollection<Character> Characters { get; set; } = new List<Character>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }
