@@ -416,6 +416,39 @@
     "label": "Tags",
     "placeholder": "(empty)"
   },
+  "talent": {
+    "created": "Your talent has been created.",
+    "required": {
+      "label": "Required talent",
+      "placeholder": "Select a talent"
+    },
+    "tier": {
+      "label": "Tier",
+      "placeholder": "Select a tier"
+    },
+    "title": "New talent",
+    "updated": "Your talent has been updated."
+  },
+  "talents": {
+    "delete": {
+      "confirm": "Do you really want to delete the following talent?",
+      "success": "Your talent has been deleted.",
+      "title": "Delete talent"
+    },
+    "multipleAcquisition": {
+      "label": "Multiple Acquisition",
+      "options": {
+        "no": "No",
+        "yes": "Yes"
+      },
+      "placeholder": "Select a value"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Talents"
+  },
   "updatedAt": "Updated at",
   "user": {
     "changePassword": "Change password",
