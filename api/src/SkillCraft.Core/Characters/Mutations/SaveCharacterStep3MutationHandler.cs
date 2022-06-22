@@ -26,6 +26,17 @@ namespace SkillCraft.Core.Characters.Mutations
       SaveCharacterStep3Payload payload = request.Payload;
 
       Character character = await _dbContext.Characters
+        .Include(x => x.Aspect1)
+        .Include(x => x.Aspect2)
+        .Include(x => x.Caste)
+        .Include(x => x.Education)
+        .Include(x => x.Nature)
+        .Include(x => x.Race)
+        .Include(x => x.Conditions)
+        .Include(x => x.Customizations)
+        .Include(x => x.Languages)
+        .Include(x => x.Talents).ThenInclude(x => x.Talent)
+        .Include(x => x.Talents).ThenInclude(x => x.Option)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)
         ?? throw new EntityNotFoundException<Character>(request.Id);
 

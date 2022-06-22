@@ -23,6 +23,7 @@ namespace SkillCraft.Core.Talents
     public int? RequiredTalentId { get; set; }
     public Skill? Skill { get; set; }
     public int Tier { get; set; }
+    public int Cost => Tier + 2;
 
     public string Name { get; set; } = null!;
     public string? Description { get; set; }

@@ -27,20 +27,32 @@ namespace SkillCraft.Core.Characters.Payloads
       {
         if (Type != null)
         {
-          results.Add(new ValidationResult($"The {nameof(Type)} should not be provided when an ID is specified.", new[] { nameof(Type) }));
+          results.Add(new ValidationResult(
+            errorMessage: $"The {nameof(Type)} should not be provided when an ID is specified.",
+            memberNames: new[] { nameof(Type) }
+          ));
         }
         if (Target != null)
         {
-          results.Add(new ValidationResult($"The {nameof(Target)} should not be provided when an ID is specified.", new[] { nameof(Target) }));
+          results.Add(new ValidationResult(
+            errorMessage: $"The {nameof(Target)} should not be provided when an ID is specified.",
+            memberNames: new[] { nameof(Target) }
+          ));
         }
       }
       else if (Type == null)
       {
-        results.Add(new ValidationResult($"The {nameof(Type)} is required.", new[] { nameof(Type) }));
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Type)} is required.",
+          memberNames: new[] { nameof(Type) }
+        ));
       }
       else if (Target == null)
       {
-        results.Add(new ValidationResult($"The {nameof(Target)} is required.", new[] { nameof(Target) }));
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Target)} is required.",
+          memberNames: new[] { nameof(Target) }
+        ));
       }
       else
       {
@@ -49,25 +61,37 @@ namespace SkillCraft.Core.Characters.Payloads
           case BonusType.Attribute:
             if (!Enum.TryParse<Attribute>(Target, out _))
             {
-              results.Add(new ValidationResult($"The {nameof(Target)} is not a valid attribute.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid attribute.",
+                memberNames: new[] { nameof(Target) }
+              ));
             }
             break;
           case BonusType.Other:
             if (!Enum.TryParse<OtherBonusTarget>(Target, out _))
             {
-              results.Add(new ValidationResult($"The {nameof(Target)} is not a valid other bonus target.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid other bonus target.",
+                memberNames: new[] { nameof(Target) }
+              ));
             }
             break;
           case BonusType.Statistic:
             if (!Enum.TryParse<Statistic>(Target, out _))
             {
-              results.Add(new ValidationResult($"The {nameof(Target)} is not a valid statistic.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid statistic.",
+                new[] { nameof(Target) }
+              ));
             }
             break;
           case BonusType.Skill:
             if (!Enum.TryParse<Skill>(Target, out _))
             {
-              results.Add(new ValidationResult($"The {nameof(Target)} is not a valid skill.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid skill.",
+                memberNames: new[] { nameof(Target) }
+              ));
             }
             break;
         }
@@ -75,7 +99,10 @@ namespace SkillCraft.Core.Characters.Payloads
 
       if (Value == 0)
       {
-        results.Add(new ValidationResult($"The {nameof(Value)} must differ from 0.", new[] { nameof(Value) }));
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Value)} must differ from 0.",
+          memberNames: new[] { nameof(Value) }
+        ));
       }
 
       return results;

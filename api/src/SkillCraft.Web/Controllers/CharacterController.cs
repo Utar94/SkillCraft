@@ -52,5 +52,15 @@ namespace SkillCraft.Web.Controllers
     {
       return Ok(await _pipeline.ExecuteAsync(new SaveCharacterStep3Mutation(id, payload), cancellationToken));
     }
+
+    [HttpPut("{id}/steps/4")]
+    public async Task<ActionResult<CharacterModel>> UpdateStep4Async(
+      Guid id,
+      [FromBody] SaveCharacterStep4Payload payload,
+      CancellationToken cancellationToken
+    )
+    {
+      return Ok(await _pipeline.ExecuteAsync(new SaveCharacterStep4Mutation(id, payload), cancellationToken));
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 namespace SkillCraft.Core.Characters.Payloads
 {
-  public class SaveCharacterStep2Payload
+  public class SaveCharacterStep2Payload : IValidatableObject
   {
     public Guid Aspect1Id { get; set; }
 
@@ -29,5 +29,47 @@ namespace SkillCraft.Core.Characters.Payloads
     public string Name { get; set; } = null!;
 
     public IEnumerable<BonusPayload>? Bonuses { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+      var results = new List<ValidationResult>(capacity: 3);
+
+      if (Aspect1Id == Aspect2Id)
+      {
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Aspect1Id)} must differ from the {nameof(Aspect2Id)}."
+        ));
+      }
+
+      if (Bonuses != null)
+      {
+        IEnumerable<Guid> bonusIds = Bonuses.GroupBy(x => x.Id)
+          .Where(x => x.Key.HasValue && x.Count() > 1)
+          .Select(x => x.Key!.Value);
+        if (bonusIds.Any())
+        {
+          results.Add(new ValidationResult(
+            errorMessage: $"Each bonus must only appear once: {string.Join(", ", bonusIds)}.",
+            memberNames: new[] { nameof(Bonuses) }
+          ));
+        }
+      }
+
+      if (LanguageIds != null)
+      {
+        IEnumerable<Guid> languageIds = LanguageIds.GroupBy(x => x)
+          .Where(x => x.Count() > 1)
+          .Select(x => x.Key);
+        if (languageIds.Any())
+        {
+          results.Add(new ValidationResult(
+            errorMessage: $"Each language must only appear once: {string.Join(", ", languageIds)}.",
+            memberNames: new[] { nameof(LanguageIds) }
+          ));
+        }
+      }
+
+      return results;
+    }
   }
 }

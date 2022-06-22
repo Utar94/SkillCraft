@@ -21,6 +21,7 @@ namespace SkillCraft.Core.Talents.Mutations
     public async Task<TalentModel> Handle(DeleteTalentMutation request, CancellationToken cancellationToken)
     {
       Talent talent = await _dbContext.Talents
+        .Include(x => x.Options)
         .Include(x => x.RequiredTalent)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)
         ?? throw new EntityNotFoundException<Talent>(request.Id);

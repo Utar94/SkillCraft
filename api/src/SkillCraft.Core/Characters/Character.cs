@@ -12,6 +12,8 @@ namespace SkillCraft.Core.Characters
 {
   public class Character : EntityBase
   {
+    private readonly ExperienceTable _experienceTable = new();
+
     public Character(Guid userId, World world) : base(userId)
     {
       World = world ?? throw new ArgumentNullException(nameof(world));
@@ -110,11 +112,29 @@ namespace SkillCraft.Core.Characters
     public ICollection<Language> Languages { get; set; } = new List<Language>();
     public ICollection<CharacterTalent> Talents { get; set; } = new List<CharacterTalent>();
 
+    public int Level => _experienceTable.GetLevel(Experience);
+
+    public int RemainingLearningPoints => TotalLearningPoints - SpentLearningPoints;
+    public int SpentLearningPoints => SkillRanks.Sum(x => x.Cost);
+    public int TotalLearningPoints => throw new NotImplementedException(); // TODO(fpion): implement
+
+    public int RemainingTalentPoints => TotalTalentPoints - SpentTalentPoints;
+    public int SpentTalentPoints => Talents.Sum(x => x.Cost);
+    public int TotalTalentPoints => (Level + 1) * 4;
+
     // TODO(fpion): Powers (n..n)
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)
     // TODO(fpion): Notes (1..n)
 
     public override string ToString() => $"{Name} | {base.ToString()}";
+
+    public void Validate()
+    {
+      if (RemainingTalentPoints < 0)
+      {
+        throw new SpentTalentPointsExceededException(this);
+      }
+    }
   }
 }

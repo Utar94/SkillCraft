@@ -22,6 +22,7 @@ namespace SkillCraft.Core.Talents.Queries
     {
       Talent? talent = await _dbContext.Talents
         .AsNoTracking()
+        .Include(x => x.Options)
         .Include(x => x.RequiredTalent)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken);
 

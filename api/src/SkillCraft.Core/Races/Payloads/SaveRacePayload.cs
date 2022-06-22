@@ -80,6 +80,20 @@ namespace SkillCraft.Core.Races.Payloads
         }
       }
 
+      if (LanguageIds != null)
+      {
+        IEnumerable<Guid> languageIds = LanguageIds.GroupBy(x => x)
+          .Where(x => x.Count() > 1)
+          .Select(x => x.Key);
+        if (languageIds.Any())
+        {
+          results.Add(new ValidationResult(
+            errorMessage: $"Each language must only appear once: {string.Join(", ", languageIds)}.",
+            memberNames: new[] { nameof(LanguageIds) }
+          ));
+        }
+      }
+
       if (Names != null)
       {
         IEnumerable<string> categories = Names.GroupBy(x => x.Category)
