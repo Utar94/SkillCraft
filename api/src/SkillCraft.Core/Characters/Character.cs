@@ -53,12 +53,28 @@ namespace SkillCraft.Core.Characters
 
     public string? Description { get; set; }
 
+    public List<BonusBase> Bonuses { get; set; } = new();
+    public string[]? BonusesSerialized
+    {
+      get => Bonuses.Any() ? Bonuses.Select(bonus => bonus.Serialize()).ToArray() : null;
+      set
+      {
+        Bonuses.Clear();
+
+        if (value != null)
+        {
+          Bonuses = value.Select(json => BonusBase.Deserialize(json)).ToList();
+        }
+      }
+    }
+
     public CharacterCreation? Creation { get; set; }
     public string? CreationSerialized
     {
       get => Creation == null ? null : JsonSerializer.Serialize(Creation);
       set => Creation = value == null ? null : JsonSerializer.Deserialize<CharacterCreation>(value);
     }
+
     public Dictionary<int, CharacterLevelUp> LevelUps { get; set; } = new();
     public string? LevelUpsSerialized
     {
@@ -85,21 +101,6 @@ namespace SkillCraft.Core.Characters
         if (value != null)
         {
           SkillRanks = JsonSerializer.Deserialize<List<SkillRank>>(value) ?? new();
-        }
-      }
-    }
-
-    public List<BonusBase> Bonuses { get; set; } = new();
-    public string[]? BonusesSerialized
-    {
-      get => Bonuses.Any() ? Bonuses.Select(bonus => bonus.Serialize()).ToArray() : null;
-      set
-      {
-        Bonuses.Clear();
-
-        if (value != null)
-        {
-          Bonuses = value.Select(json => BonusBase.Deserialize(json)).ToList();
         }
       }
     }
