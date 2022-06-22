@@ -126,23 +126,20 @@ namespace SkillCraft.Core.Characters.Mutations
               continue;
             }
           }
+          else if (bonusPayload.Type.HasValue)
+          {
+            bonus = bonusPayload.Type.Value switch
+            {
+              BonusType.Attribute => new AttributeBonus(Enum.Parse<Attribute>(bonusPayload.Target!)),
+              BonusType.Other => new OtherBonus(Enum.Parse<OtherBonusTarget>(bonusPayload.Target!)),
+              BonusType.Skill => new SkillBonus(Enum.Parse<Skill>(bonusPayload.Target!)),
+              BonusType.Statistic => new StatisticBonus(Enum.Parse<Statistic>(bonusPayload.Target!)),
+              _ => throw new InvalidOperationException($"The bonus type \"{bonusPayload.Type.Value}\" is not valid."),
+            };
+          }
           else
           {
-            if (bonusPayload.Type.HasValue)
-            {
-              bonus = bonusPayload.Type.Value switch
-              {
-                BonusType.Attribute => new AttributeBonus(Enum.Parse<Attribute>(bonusPayload.Target!)),
-                BonusType.Other => new OtherBonus(Enum.Parse<OtherBonusTarget>(bonusPayload.Target!)),
-                BonusType.Skill => new SkillBonus(Enum.Parse<Skill>(bonusPayload.Target!)),
-                BonusType.Statistic => new StatisticBonus(Enum.Parse<Statistic>(bonusPayload.Target!)),
-                _ => throw new InvalidOperationException($"The bonus type \"{bonusPayload.Type.Value}\" is not valid."),
-              };
-            }
-            else
-            {
-              throw new InvalidOperationException("The bonus type is required.");
-            }
+            throw new InvalidOperationException("The bonus ID or type is required.");
           }
 
           bonus.Description = bonusPayload.Description?.CleanTrim();
@@ -186,13 +183,14 @@ namespace SkillCraft.Core.Characters.Mutations
 
       if (payload.LanguageIds != null)
       {
+        HashSet<Guid> languageIds = payload.LanguageIds.ToHashSet();
         Dictionary<Guid, Language> languages = await _dbContext.Languages
-          .Where(x => payload.LanguageIds.Contains(x.Uuid))
+          .Where(x => languageIds.Contains(x.Uuid))
           .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
 
-        var missingIds = new List<Guid>(capacity: payload.LanguageIds.Count());
+        var missingIds = new List<Guid>(capacity: languageIds.Count);
 
-        foreach (Guid languageId in payload.LanguageIds)
+        foreach (Guid languageId in languageIds)
         {
           if (!languages.TryGetValue(languageId, out Language? language))
           {

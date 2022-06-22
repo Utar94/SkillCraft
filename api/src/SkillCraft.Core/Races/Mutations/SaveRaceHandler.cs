@@ -93,13 +93,14 @@ namespace SkillCraft.Core.Races.Mutations
 
       if (payload.LanguageIds != null)
       {
+        HashSet<Guid> languageIds = payload.LanguageIds.ToHashSet();
         Dictionary<Guid, Language> languages = await DbContext.Languages
-          .Where(x => payload.LanguageIds.Contains(x.Uuid))
+          .Where(x => languageIds.Contains(x.Uuid))
           .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
 
-        var missingIds = new List<Guid>(capacity: payload.LanguageIds.Count());
+        var missingIds = new List<Guid>(capacity: languageIds.Count);
 
-        foreach (Guid languageId in payload.LanguageIds)
+        foreach (Guid languageId in languageIds)
         {
           if (!languages.TryGetValue(languageId, out Language? language))
           {
