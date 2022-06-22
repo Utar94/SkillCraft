@@ -31,16 +31,15 @@ namespace SkillCraft.Core.Characters
     public int? Aspect1Id { get; set; }
     public Aspect? Aspect2 { get; set; }
     public int? Aspect2Id { get; set; }
-    public Race? Race { get; set; }
-    public int? RaceId { get; set; }
-    public Nature? Nature { get; set; }
-    public int? NatureId { get; set; }
     public Caste? Caste { get; set; }
     public int? CasteId { get; set; }
     public Education? Education { get; set; }
     public int? EducationId { get; set; }
+    public Nature? Nature { get; set; }
+    public int? NatureId { get; set; }
+    public Race? Race { get; set; }
+    public int? RaceId { get; set; }
 
-    public SizeCategory Size { get; set; }
     public double Stature { get; set; }
     public double Weight { get; set; }
     public int Age { get; set; }

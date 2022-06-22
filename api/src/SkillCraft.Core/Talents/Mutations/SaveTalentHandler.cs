@@ -49,11 +49,53 @@ namespace SkillCraft.Core.Talents.Mutations
       talent.Description = payload.Description?.CleanTrim();
       talent.Name = payload.Name.Trim();
 
+      UpdateOptions(talent, payload);
+
       await DbContext.SaveChangesAsync(cancellationToken);
 
       AppContext.SetEntity(talent);
 
       return Mapper.Map<TalentModel>(talent);
+    }
+
+    private static void UpdateOptions(Talent talent, SaveTalentPayload payload)
+    {
+      Dictionary<Guid, TalentOption> options = talent.Options.ToDictionary(x => x.Uuid, x => x);
+
+      talent.Options.Clear();
+
+      if (payload.Options != null)
+      {
+        var missingIds = new List<Guid>(capacity: payload.Options.Count());
+
+        foreach (TalentOptionPayload optionPayload in payload.Options)
+        {
+          TalentOption? option;
+          if (optionPayload.Id.HasValue)
+          {
+            if (!options.TryGetValue(optionPayload.Id.Value, out option))
+            {
+              missingIds.Add(optionPayload.Id.Value);
+
+              continue;
+            }
+          }
+          else
+          {
+            option = new TalentOption(talent);
+          }
+
+          option.Description = optionPayload.Description?.CleanTrim();
+          option.Name = optionPayload.Name.Trim();
+
+          talent.Options.Add(option);
+        }
+
+        if (missingIds.Any())
+        {
+          throw new TalentOptionsNotFoundException(missingIds);
+        }
+      }
     }
   }
 }

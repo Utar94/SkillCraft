@@ -2,7 +2,7 @@
 {
   public class AttributeBonus : BonusBase
   {
-    public AttributeBonus(Attribute attribute, Guid userId) : base(userId)
+    public AttributeBonus(Attribute attribute)
     {
       Attribute = attribute;
     }

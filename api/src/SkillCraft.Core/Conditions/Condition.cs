@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Conditions
 {
@@ -20,6 +21,8 @@ namespace SkillCraft.Core.Conditions
     public string Name { get; set; } = null!;
 
     public int MaxLevel { get; set; }
+
+    public ICollection<CharacterCondition> CharacterConditions { get; set; } = new List<CharacterCondition>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";
   }

@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Worlds;
+﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Talents
 {
@@ -26,6 +27,8 @@ namespace SkillCraft.Core.Talents
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
 
+    public ICollection<CharacterTalent> CharacterTalents { get; set; } = new List<CharacterTalent>();
+    public ICollection<TalentOption> Options { get; set; } = new List<TalentOption>();
     public ICollection<Talent> RequiringTalents { get; set; } = new List<Talent>();
 
     public override string ToString() => $"{Name} | {base.ToString()}";

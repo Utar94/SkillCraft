@@ -11,6 +11,8 @@ namespace SkillCraft.Core.Mappings
     {
       CreateMap<Talent, TalentModel>()
         .IncludeBase<EntityBase, EntityBaseModel>();
+      CreateMap<TalentOption, TalentOptionModel>()
+        .ForMember(x => x.Id, x => x.MapFrom(y => y.Uuid));
     }
   }
 }

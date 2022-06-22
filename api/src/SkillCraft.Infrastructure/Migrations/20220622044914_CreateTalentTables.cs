@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SkillCraft.Infrastructure.Migrations
 {
-    public partial class CreateTalentTable : Migration
+    public partial class CreateTalentTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,7 @@ namespace SkillCraft.Infrastructure.Migrations
                     WorldId = table.Column<int>(type: "integer", nullable: false),
                     MultipleAcquisition = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     RequiredTalentId = table.Column<int>(type: "integer", nullable: true),
+                    Skill = table.Column<int>(type: "integer", nullable: true),
                     Tier = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
@@ -47,6 +48,39 @@ namespace SkillCraft.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TalentOptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    TalentId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TalentOptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TalentOptions_Talents_TalentId",
+                        column: x => x.TalentId,
+                        principalTable: "Talents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TalentOptions_TalentId",
+                table: "TalentOptions",
+                column: "TalentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TalentOptions_Uuid",
+                table: "TalentOptions",
+                column: "Uuid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Talents_CreatedById",
@@ -92,6 +126,9 @@ namespace SkillCraft.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "TalentOptions");
+
             migrationBuilder.DropTable(
                 name: "Talents");
         }

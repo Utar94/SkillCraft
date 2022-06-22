@@ -2,7 +2,7 @@
 {
   public class OtherBonus : BonusBase
   {
-    public OtherBonus(OtherBonusTarget target, Guid userId) : base(userId)
+    public OtherBonus(OtherBonusTarget target)
     {
       Target = target;
     }

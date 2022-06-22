@@ -12,8 +12,8 @@ using SkillCraft.Infrastructure;
 namespace SkillCraft.Infrastructure.Migrations
 {
     [DbContext(typeof(SkillCraftDbContext))]
-    [Migration("20220621171712_AddSkillToTalentTable")]
-    partial class AddSkillToTalentTable
+    [Migration("20220622044914_CreateTalentTables")]
+    partial class CreateTalentTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -445,191 +445,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.HasIndex("WorldId");
 
                     b.ToTable("Castes");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Characters.Character", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Age")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<int?>("Aspect1Id")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("Aspect2Id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BloodAlcoholContent")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<string[]>("BonusesSerialized")
-                        .HasColumnType("jsonb[]")
-                        .HasColumnName("Bonuses");
-
-                    b.Property<int?>("CasteId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreationSerialized")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("Creation");
-
-                    b.Property<bool>("Deleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DeletedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("EducationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Experience")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Intoxication")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("LevelUpsSerialized")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("LevelUps");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int?>("NatureId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Player")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int?>("RaceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Size")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("SkillRanksSerialized")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("SkillRanks");
-
-                    b.Property<int>("Stamina")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<double>("Stature")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("double precision")
-                        .HasDefaultValue(0.0);
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("Uuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<int>("Version")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Vitality")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<double>("Weight")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("double precision")
-                        .HasDefaultValue(0.0);
-
-                    b.Property<int>("WorldId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Aspect1Id");
-
-                    b.HasIndex("Aspect2Id");
-
-                    b.HasIndex("CasteId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("Deleted");
-
-                    b.HasIndex("EducationId");
-
-                    b.HasIndex("Name");
-
-                    b.HasIndex("NatureId");
-
-                    b.HasIndex("Player");
-
-                    b.HasIndex("RaceId");
-
-                    b.HasIndex("Uuid")
-                        .IsUnique();
-
-                    b.HasIndex("WorldId");
-
-                    b.ToTable("Characters");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Characters.CharacterCondition", b =>
-                {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ConditionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CharacterId", "ConditionId");
-
-                    b.HasIndex("ConditionId");
-
-                    b.ToTable("CharacterConditions");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Conditions.Condition", b =>
@@ -1367,6 +1182,40 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.ToTable("Talents");
                 });
 
+            modelBuilder.Entity("SkillCraft.Core.Talents.TalentOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<int>("TalentId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("Uuid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TalentId");
+
+                    b.HasIndex("Uuid")
+                        .IsUnique();
+
+                    b.ToTable("TalentOptions");
+                });
+
             modelBuilder.Entity("SkillCraft.Core.Worlds.World", b =>
                 {
                     b.Property<int>("Id")
@@ -1438,21 +1287,6 @@ namespace SkillCraft.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Worlds");
-                });
-
-            modelBuilder.Entity("SkillCraft.Infrastructure.Entities.CharacterLanguage", b =>
-                {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CharacterId", "LanguageId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("CharacterLanguages");
                 });
 
             modelBuilder.Entity("SkillCraft.Infrastructure.Entities.RaceLanguage", b =>
@@ -1554,72 +1388,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("World");
                 });
 
-            modelBuilder.Entity("SkillCraft.Core.Characters.Character", b =>
-                {
-                    b.HasOne("SkillCraft.Core.Aspects.Aspect", "Aspect1")
-                        .WithMany("Characters1")
-                        .HasForeignKey("Aspect1Id");
-
-                    b.HasOne("SkillCraft.Core.Aspects.Aspect", "Aspect2")
-                        .WithMany("Characters2")
-                        .HasForeignKey("Aspect2Id");
-
-                    b.HasOne("SkillCraft.Core.Castes.Caste", "Caste")
-                        .WithMany("Characters")
-                        .HasForeignKey("CasteId");
-
-                    b.HasOne("SkillCraft.Core.Educations.Education", "Education")
-                        .WithMany("Characters")
-                        .HasForeignKey("EducationId");
-
-                    b.HasOne("SkillCraft.Core.Natures.Nature", "Nature")
-                        .WithMany("Characters")
-                        .HasForeignKey("NatureId");
-
-                    b.HasOne("SkillCraft.Core.Races.Race", "Race")
-                        .WithMany("Characters")
-                        .HasForeignKey("RaceId");
-
-                    b.HasOne("SkillCraft.Core.Worlds.World", "World")
-                        .WithMany("Characters")
-                        .HasForeignKey("WorldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Aspect1");
-
-                    b.Navigation("Aspect2");
-
-                    b.Navigation("Caste");
-
-                    b.Navigation("Education");
-
-                    b.Navigation("Nature");
-
-                    b.Navigation("Race");
-
-                    b.Navigation("World");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Characters.CharacterCondition", b =>
-                {
-                    b.HasOne("SkillCraft.Core.Characters.Character", "Character")
-                        .WithMany("Conditions")
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SkillCraft.Core.Conditions.Condition", "Condition")
-                        .WithMany()
-                        .HasForeignKey("ConditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-
-                    b.Navigation("Condition");
-                });
-
             modelBuilder.Entity("SkillCraft.Core.Conditions.Condition", b =>
                 {
                     b.HasOne("SkillCraft.Core.Worlds.World", "World")
@@ -1717,23 +1485,15 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("World");
                 });
 
-            modelBuilder.Entity("SkillCraft.Infrastructure.Entities.CharacterLanguage", b =>
+            modelBuilder.Entity("SkillCraft.Core.Talents.TalentOption", b =>
                 {
-                    b.HasOne("SkillCraft.Core.Characters.Character", "Character")
-                        .WithMany()
-                        .HasForeignKey("CharacterId")
+                    b.HasOne("SkillCraft.Core.Talents.Talent", "Talent")
+                        .WithMany("Options")
+                        .HasForeignKey("TalentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SkillCraft.Core.Languages.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Character");
-
-                    b.Navigation("Language");
+                    b.Navigation("Talent");
                 });
 
             modelBuilder.Entity("SkillCraft.Infrastructure.Entities.RaceLanguage", b =>
@@ -1760,42 +1520,15 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("Sessions");
                 });
 
-            modelBuilder.Entity("SkillCraft.Core.Aspects.Aspect", b =>
-                {
-                    b.Navigation("Characters1");
-
-                    b.Navigation("Characters2");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Castes.Caste", b =>
-                {
-                    b.Navigation("Characters");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Characters.Character", b =>
-                {
-                    b.Navigation("Conditions");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Educations.Education", b =>
-                {
-                    b.Navigation("Characters");
-                });
-
-            modelBuilder.Entity("SkillCraft.Core.Natures.Nature", b =>
-                {
-                    b.Navigation("Characters");
-                });
-
             modelBuilder.Entity("SkillCraft.Core.Races.Race", b =>
                 {
-                    b.Navigation("Characters");
-
                     b.Navigation("Children");
                 });
 
             modelBuilder.Entity("SkillCraft.Core.Talents.Talent", b =>
                 {
+                    b.Navigation("Options");
+
                     b.Navigation("RequiringTalents");
                 });
 
@@ -1804,8 +1537,6 @@ namespace SkillCraft.Infrastructure.Migrations
                     b.Navigation("Aspects");
 
                     b.Navigation("Castes");
-
-                    b.Navigation("Characters");
 
                     b.Navigation("Conditions");
 

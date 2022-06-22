@@ -2,19 +2,15 @@
 {
   public class CharacterLevelUp
   {
-    public CharacterLevelUp(Guid userId)
+    public CharacterLevelUp(Attribute attribute)
     {
-      PerformedAt = DateTime.UtcNow;
-      PerformedById = userId;
+      Attribute = attribute;
     }
     private CharacterLevelUp()
     {
     }
 
-    public DateTime PerformedAt { get; set; }
-    public Guid PerformedById { get; set; }
-
-    public Attribute Attribute { get; set; }
+    public Attribute Attribute { get; private set; }
 
     public int Constitution { get; set; }
     public double Initiative { get; set; }

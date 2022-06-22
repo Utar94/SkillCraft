@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SkillCraft.Core;
 using SkillCraft.Core.Characters;
 using SkillCraft.Infrastructure.Entities;
 
@@ -43,9 +42,8 @@ namespace SkillCraft.Infrastructure.Configurations
       builder.Property(x => x.BloodAlcoholContent).HasDefaultValue(0);
       builder.Property(x => x.Experience).HasDefaultValue(0);
       builder.Property(x => x.Intoxication).HasDefaultValue(0);
-      builder.Property(x => x.Name).HasMaxLength(100);
-      builder.Property(x => x.Player).HasMaxLength(100);
-      builder.Property(x => x.Size).HasDefaultValue(SizeCategory.Medium);
+      builder.Property(x => x.Name).HasMaxLength(256);
+      builder.Property(x => x.Player).HasMaxLength(256);
       builder.Property(x => x.Stamina).HasDefaultValue(0);
       builder.Property(x => x.Stature).HasDefaultValue(0.0);
       builder.Property(x => x.Vitality).HasDefaultValue(0);

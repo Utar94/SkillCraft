@@ -11,5 +11,7 @@ namespace SkillCraft.Core.Talents.Models
 
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
+
+    public IEnumerable<TalentOptionModel> Options { get; set; } = null!;
   }
 }
