@@ -9,6 +9,8 @@ namespace SkillCraft.Infrastructure.Configurations
     public void Configure(EntityTypeBuilder<CharacterCondition> builder)
     {
       builder.HasKey(x => new { x.CharacterId, x.ConditionId });
+
+      builder.Property(x => x.Level).HasDefaultValue(0);
     }
   }
 }

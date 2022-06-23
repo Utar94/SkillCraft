@@ -24,22 +24,22 @@ namespace SkillCraft.Core.Races.Payloads
       if (Adult <= Teenager)
       {
         results.Add(new ValidationResult(
-          $"The value must be greater than the value of ${nameof(Teenager)}.",
-          new[] { nameof(Adult) })
+          errorMessage: $"The value must be greater than the value of ${nameof(Teenager)}.",
+          memberNames: new[] { nameof(Adult) })
         );
       }
       if (Mature <= Adult)
       {
         results.Add(new ValidationResult(
-          $"The value must be greater than the value of ${nameof(Adult)}.",
-          new[] { nameof(Mature) })
+          errorMessage: $"The value must be greater than the value of ${nameof(Adult)}.",
+          memberNames: new[] { nameof(Mature) })
         );
       }
       if (Venerable <= Mature)
       {
         results.Add(new ValidationResult(
-          $"The value must be greater than the value of ${nameof(Mature)}.",
-          new[] { nameof(Venerable) })
+          errorMessage: $"The value must be greater than the value of ${nameof(Mature)}.",
+          memberNames: new[] { nameof(Venerable) })
         );
       }
 

@@ -2,7 +2,7 @@
 {
   public class SkillBonus : BonusBase
   {
-    public SkillBonus(Skill skill, Guid userId) : base(userId)
+    public SkillBonus(Skill skill)
     {
       Skill = skill;
     }

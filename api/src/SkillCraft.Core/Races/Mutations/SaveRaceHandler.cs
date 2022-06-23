@@ -62,14 +62,20 @@ namespace SkillCraft.Core.Races.Mutations
 
     private static void UpdateCharacteristics(Race race, SaveRacePayload payload)
     {
-      race.Attributes.Clear();
-      if (payload.Attributes != null)
+      if (payload.Attributes == null)
+      {
+        race.Attributes.Clear();
+      }
+      else
       {
         race.Attributes = payload.Attributes.ToDictionary(x => x.Attribute, x => x.Bonus);
       }
 
-      race.Names.Clear();
-      if (payload.Names != null)
+      if (payload.Names == null)
+      {
+        race.Names.Clear();
+      }
+      else
       {
         race.Names = payload.Names.ToDictionary(
           x => x.Category,
@@ -80,8 +86,11 @@ namespace SkillCraft.Core.Races.Mutations
         );
       }
 
-      race.Speeds.Clear();
-      if (payload.Speeds != null)
+      if (payload.Speeds == null)
+      {
+        race.Speeds.Clear();
+      }
+      else
       {
         race.Speeds = payload.Speeds.ToDictionary(x => x.Type, x => x.Value);
       }
@@ -93,13 +102,14 @@ namespace SkillCraft.Core.Races.Mutations
 
       if (payload.LanguageIds != null)
       {
+        HashSet<Guid> languageIds = payload.LanguageIds.ToHashSet();
         Dictionary<Guid, Language> languages = await DbContext.Languages
-          .Where(x => payload.LanguageIds.Contains(x.Uuid))
+          .Where(x => languageIds.Contains(x.Uuid))
           .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
 
-        var missingIds = new List<Guid>(capacity: payload.LanguageIds.Count());
+        var missingIds = new List<Guid>(capacity: languageIds.Count);
 
-        foreach (Guid languageId in payload.LanguageIds)
+        foreach (Guid languageId in languageIds)
         {
           if (!languages.TryGetValue(languageId, out Language? language))
           {

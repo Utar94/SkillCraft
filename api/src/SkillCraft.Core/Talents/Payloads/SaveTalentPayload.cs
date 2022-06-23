@@ -17,5 +17,7 @@ namespace SkillCraft.Core.Talents.Payloads
     public string Name { get; set; } = null!;
 
     public string? Description { get; set; }
+
+    public IEnumerable<TalentOptionPayload>? Options { get; set; }
   }
 }

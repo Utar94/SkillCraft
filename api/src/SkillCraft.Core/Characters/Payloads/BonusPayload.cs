@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Logitar.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SkillCraft.Core.Characters.Payloads
 {
@@ -6,6 +7,7 @@ namespace SkillCraft.Core.Characters.Payloads
   {
     public Guid? Id { get; set; }
 
+    [Enum(typeof(BonusType))]
     public BonusType? Type { get; set; }
 
     public string? Target { get; set; }
@@ -23,61 +25,84 @@ namespace SkillCraft.Core.Characters.Payloads
 
       if (Id.HasValue)
       {
-        if (Type.HasValue)
+        if (Type != null)
         {
-          results.Add(new ValidationResult($"The value must be null when an {nameof(Id)} is provided.", new[] { nameof(Type) }));
+          results.Add(new ValidationResult(
+            errorMessage: $"The {nameof(Type)} should not be provided when an ID is specified.",
+            memberNames: new[] { nameof(Type) }
+          ));
         }
         if (Target != null)
         {
-          results.Add(new ValidationResult($"The value must be null when an {nameof(Id)} is provided.", new[] { nameof(Target) }));
+          results.Add(new ValidationResult(
+            errorMessage: $"The {nameof(Target)} should not be provided when an ID is specified.",
+            memberNames: new[] { nameof(Target) }
+          ));
         }
       }
-      else if (Type.HasValue)
+      else if (Type == null)
+      {
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Type)} is required.",
+          memberNames: new[] { nameof(Type) }
+        ));
+      }
+      else if (Target == null)
+      {
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Target)} is required.",
+          memberNames: new[] { nameof(Target) }
+        ));
+      }
+      else
       {
         switch (Type.Value)
         {
           case BonusType.Attribute:
             if (!Enum.TryParse<Attribute>(Target, out _))
             {
-              results.Add(new ValidationResult("The value is not a valid attribute.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid attribute.",
+                memberNames: new[] { nameof(Target) }
+              ));
             }
             break;
           case BonusType.Other:
             if (!Enum.TryParse<OtherBonusTarget>(Target, out _))
             {
-              results.Add(new ValidationResult("The value is not a valid other #bonus target.", new[] { nameof(Target) }));
-            }
-            break;
-          case BonusType.Skill:
-            if (!Enum.TryParse<Skill>(Target, out _))
-            {
-              results.Add(new ValidationResult("The value is not a valid skill.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid other bonus target.",
+                memberNames: new[] { nameof(Target) }
+              ));
             }
             break;
           case BonusType.Statistic:
             if (!Enum.TryParse<Statistic>(Target, out _))
             {
-              results.Add(new ValidationResult("The value is not a valid statistic.", new[] { nameof(Target) }));
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid statistic.",
+                new[] { nameof(Target) }
+              ));
             }
             break;
-          default:
-            results.Add(new ValidationResult("The value is not a valid bonus type.", new[] { nameof(Type) }));
+          case BonusType.Skill:
+            if (!Enum.TryParse<Skill>(Target, out _))
+            {
+              results.Add(new ValidationResult(
+                errorMessage: $"The {nameof(Target)} is not a valid skill.",
+                memberNames: new[] { nameof(Target) }
+              ));
+            }
             break;
-        }
-      }
-      else
-      {
-        results.Add(new ValidationResult($"The value is required when no {nameof(Id)} is provided.", new[] { nameof(Type) }));
-
-        if (Target == null)
-        {
-          results.Add(new ValidationResult($"The value is required when no {nameof(Id)} is provided.", new[] { nameof(Target) }));
         }
       }
 
       if (Value == 0)
       {
-        results.Add(new ValidationResult("The value must differ from 0.", new[] { nameof(Value) }));
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(Value)} must differ from 0.",
+          memberNames: new[] { nameof(Value) }
+        ));
       }
 
       return results;

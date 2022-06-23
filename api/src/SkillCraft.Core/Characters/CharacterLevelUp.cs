@@ -2,26 +2,28 @@
 {
   public class CharacterLevelUp
   {
-    public CharacterLevelUp(Guid userId)
+    public CharacterLevelUp(Attribute attribute)
     {
-      PerformedAt = DateTime.UtcNow;
-      PerformedById = userId;
+      Attribute = attribute;
     }
     private CharacterLevelUp()
     {
     }
 
-    public DateTime PerformedAt { get; set; }
-    public Guid PerformedById { get; set; }
+    public Attribute Attribute { get; private set; }
+    public Dictionary<Statistic, double> Statistics { get; private set; } = new();
 
-    public Attribute Attribute { get; set; }
+    public void CalculateStatistics(CharacterStatistics statistics)
+    {
+      ArgumentNullException.ThrowIfNull(statistics);
 
-    public int Constitution { get; set; }
-    public double Initiative { get; set; }
-    public int Learning { get; set; }
-    public double Power { get; set; }
-    public double Precision { get; set; }
-    public double Repute { get; set; }
-    public double Strength { get; set; }
+      Statistics.Add(Statistic.Constitution, statistics.Constitution.Increment);
+      Statistics.Add(Statistic.Initiative, statistics.Initiative.Increment);
+      Statistics.Add(Statistic.Learning, statistics.Learning.Increment);
+      Statistics.Add(Statistic.Power, statistics.Power.Increment);
+      Statistics.Add(Statistic.Precision, statistics.Precision.Increment);
+      Statistics.Add(Statistic.Repute, statistics.Repute.Increment);
+      Statistics.Add(Statistic.Strength, statistics.Strength.Increment);
+    }
   }
 }

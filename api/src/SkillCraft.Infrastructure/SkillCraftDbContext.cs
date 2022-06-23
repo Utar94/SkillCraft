@@ -43,6 +43,7 @@ namespace SkillCraft.Infrastructure
     internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
     internal DbSet<CharacterTalent> CharacterTalents { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
+    internal DbSet<TalentOption> TalentOptions { get; set; }
 
     public void CancelChanges()
     {

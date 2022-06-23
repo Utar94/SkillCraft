@@ -39,12 +39,14 @@ namespace SkillCraft.Core.Aspects.Payloads
         .ToDictionary(x => x.Key, x => x.Count());
       if (attributes.Any())
       {
-        results.Add(new ValidationResult($"An attribute should only appear once. Conflicts: {string.Join(", ", attributes.Keys)}"));
+        results.Add(new ValidationResult(
+          errorMessage: $"An attribute should only appear once. Conflicts: {string.Join(", ", attributes.Keys)}"
+        ));
       }
 
       if (Skill1 == Skill2)
       {
-        results.Add(new ValidationResult("The two Skills should differ."));
+        results.Add(new ValidationResult(errorMessage: "The two Skills should differ."));
       }
 
       return results;

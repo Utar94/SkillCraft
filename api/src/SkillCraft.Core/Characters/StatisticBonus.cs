@@ -2,7 +2,7 @@
 {
   public class StatisticBonus : BonusBase
   {
-    public StatisticBonus(Statistic statistic, Guid userId) : base(userId)
+    public StatisticBonus(Statistic statistic)
     {
       Statistic = statistic;
     }

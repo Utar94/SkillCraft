@@ -18,6 +18,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillCraft.Infrastructure",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillCraft.Web", "src\SkillCraft.Web\SkillCraft.Web.csproj", "{EC552CBD-D476-42A9-A522-10EB2DC48DAE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{028C0307-5BF0-4F27-B594-FE6A951AE836}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{C59F2DC1-1C5E-4BAE-AE94-5CF2D76B86E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillCraft.Core.Unit.Test", "tests\unit\SkillCraft.Core.Unit.Test\SkillCraft.Core.Unit.Test.csproj", "{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,9 +42,17 @@ Global
 		{EC552CBD-D476-42A9-A522-10EB2DC48DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC552CBD-D476-42A9-A522-10EB2DC48DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC552CBD-D476-42A9-A522-10EB2DC48DAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C59F2DC1-1C5E-4BAE-AE94-5CF2D76B86E1} = {028C0307-5BF0-4F27-B594-FE6A951AE836}
+		{DDAD0B7D-C42F-448B-9F51-DE3A4AB800E7} = {C59F2DC1-1C5E-4BAE-AE94-5CF2D76B86E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BD54E12-2F8C-4671-9E8D-88C0D1001D2F}

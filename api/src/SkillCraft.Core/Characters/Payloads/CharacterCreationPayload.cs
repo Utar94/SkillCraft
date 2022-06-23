@@ -20,7 +20,9 @@ namespace SkillCraft.Core.Characters.Payloads
 
       if (BestAttribute == WorstAttribute)
       {
-        results.Add(new ValidationResult($"The {nameof(BestAttribute)} must differ from the {nameof(WorstAttribute)}."));
+        results.Add(new ValidationResult(
+          errorMessage: $"The {nameof(BestAttribute)} must differ from the {nameof(WorstAttribute)}."
+        ));
       }
 
       return results;
