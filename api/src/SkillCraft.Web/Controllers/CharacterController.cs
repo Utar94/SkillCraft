@@ -62,5 +62,11 @@ namespace SkillCraft.Web.Controllers
     {
       return Ok(await _pipeline.ExecuteAsync(new SaveCharacterStep4Mutation(id, payload), cancellationToken));
     }
+
+    [HttpPatch("{id}/complete")]
+    public async Task<ActionResult<CharacterModel>> CompleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+      return Ok(await _pipeline.ExecuteAsync(new CompleteCharacterMutation(id), cancellationToken));
+    }
   }
 }

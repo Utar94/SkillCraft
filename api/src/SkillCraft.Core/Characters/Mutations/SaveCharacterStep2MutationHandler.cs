@@ -49,6 +49,8 @@ namespace SkillCraft.Core.Characters.Mutations
         {
           throw new UnauthorizedOperationException<Character>(character, _appContext.UserId, _appContext.World);
         }
+
+        character.Update(_appContext.UserId);
       }
       else
       {

@@ -76,6 +76,8 @@ namespace SkillCraft.Core.Characters.Mutations
 
       character.Creation.Step = 4;
 
+      character.Update(_appContext.UserId);
+
       await _dbContext.SaveChangesAsync(cancellationToken);
 
       _appContext.SetEntity(character);
