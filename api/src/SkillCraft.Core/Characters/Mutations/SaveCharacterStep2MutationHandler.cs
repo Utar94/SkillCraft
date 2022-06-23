@@ -170,15 +170,14 @@ namespace SkillCraft.Core.Characters.Mutations
     private static void UpdateCharacterCreation(Character character, SaveCharacterStep2Payload payload)
     {
       character.Creation ??= new();
-      character.Creation.AttributeBases ??= new();
 
-      character.Creation.AttributeBases.Agility = payload.Creation.AttributeBases.Agility;
-      character.Creation.AttributeBases.Coordination = payload.Creation.AttributeBases.Coordination;
-      character.Creation.AttributeBases.Intellect = payload.Creation.AttributeBases.Intellect;
-      character.Creation.AttributeBases.Mind = payload.Creation.AttributeBases.Mind;
-      character.Creation.AttributeBases.Presence = payload.Creation.AttributeBases.Presence;
-      character.Creation.AttributeBases.Sensitivity = payload.Creation.AttributeBases.Sensitivity;
-      character.Creation.AttributeBases.Vigor = payload.Creation.AttributeBases.Vigor;
+      character.Creation.AttributeBases[Attribute.Agility] = payload.Creation.AttributeBases.Agility;
+      character.Creation.AttributeBases[Attribute.Coordination] = payload.Creation.AttributeBases.Coordination;
+      character.Creation.AttributeBases[Attribute.Intellect] = payload.Creation.AttributeBases.Intellect;
+      character.Creation.AttributeBases[Attribute.Mind] = payload.Creation.AttributeBases.Mind;
+      character.Creation.AttributeBases[Attribute.Presence] = payload.Creation.AttributeBases.Presence;
+      character.Creation.AttributeBases[Attribute.Sensitivity] = payload.Creation.AttributeBases.Sensitivity;
+      character.Creation.AttributeBases[Attribute.Vigor] = payload.Creation.AttributeBases.Vigor;
 
       character.Creation.BestAttribute = payload.Creation.BestAttribute;
       character.Creation.WorstAttribute = payload.Creation.WorstAttribute;

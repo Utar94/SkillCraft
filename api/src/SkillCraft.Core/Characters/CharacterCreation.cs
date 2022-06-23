@@ -2,7 +2,7 @@
 {
   public class CharacterCreation
   {
-    public AttributeBases? AttributeBases { get; set; }
+    public Dictionary<Attribute, int> AttributeBases { get; private set; } = new();
 
     public Attribute BestAttribute { get; set; }
     public Attribute WorstAttribute { get; set; }

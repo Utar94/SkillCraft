@@ -15,17 +15,26 @@ namespace SkillCraft.Core.Mappings
         {
           Level = z.Key,
           Attribute = z.Value.Attribute,
-          Constitution = z.Value.Constitution,
-          Initiative = z.Value.Initiative,
-          Learning = z.Value.Learning,
-          Power = z.Value.Power,
-          Precision = z.Value.Precision,
-          Repute = z.Value.Repute,
-          Strength = z.Value.Strength
+          Constitution = (int)GetStatisticIncrement(Statistic.Constitution, z.Value),
+          Initiative = GetStatisticIncrement(Statistic.Initiative, z.Value),
+          Learning = (int)GetStatisticIncrement(Statistic.Learning, z.Value),
+          Power = GetStatisticIncrement(Statistic.Power, z.Value),
+          Precision = GetStatisticIncrement(Statistic.Precision, z.Value),
+          Repute = GetStatisticIncrement(Statistic.Repute, z.Value),
+          Strength = GetStatisticIncrement(Statistic.Strength, z.Value)
         })));
-      CreateMap<AttributeBases, AttributeBasesModel>();
       CreateMap<CharacterCondition, CharacterConditionModel>();
-      CreateMap<CharacterCreation, CharacterCreationModel>();
+      CreateMap<CharacterCreation, CharacterCreationModel>()
+        .ForMember(x => x.AttributeBases, x => x.MapFrom(y => new AttributeBasesModel
+        {
+          Agility = GetAttributeBase(Attribute.Agility, y),
+          Coordination = GetAttributeBase(Attribute.Coordination, y),
+          Intellect = GetAttributeBase(Attribute.Intellect, y),
+          Mind = GetAttributeBase(Attribute.Mind, y),
+          Presence = GetAttributeBase(Attribute.Presence, y),
+          Sensitivity = GetAttributeBase(Attribute.Sensitivity, y),
+          Vigor = GetAttributeBase(Attribute.Vigor, y)
+        }));
       CreateMap<CharacterTalent, CharacterTalentModel>()
         .ForMember(x => x.Id, x => x.MapFrom(y => y.Uuid));
       CreateMap<SkillRank, SkillRankModel>();
@@ -43,6 +52,19 @@ namespace SkillCraft.Core.Mappings
       CreateMap<StatisticBonus, BonusModel>()
         .ForMember(x => x.Type, x => x.MapFrom(y => BonusType.Statistic))
         .ForMember(x => x.Target, x => x.MapFrom(y => y.Statistic));
+    }
+
+    private static int GetAttributeBase(Attribute attribute, CharacterCreation creation)
+    {
+      return creation.AttributeBases.TryGetValue(attribute, out int @base)
+        ? @base
+        : 0;
+    }
+    private static double GetStatisticIncrement(Statistic statistic, CharacterLevelUp levelUp)
+    {
+      return levelUp.Statistics.TryGetValue(statistic, out double increment)
+        ? increment
+        : 0.0;
     }
   }
 }
