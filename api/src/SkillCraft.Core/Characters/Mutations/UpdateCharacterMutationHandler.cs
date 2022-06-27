@@ -2,22 +2,22 @@
 using Logitar;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkillCraft.Core.Castes;
 using SkillCraft.Core.Characters.Models;
 using SkillCraft.Core.Characters.Payloads;
-using SkillCraft.Core.Educations;
+using SkillCraft.Core.Conditions;
+using SkillCraft.Core.Languages;
 using SkillCraft.Core.Powers;
 using SkillCraft.Core.Talents;
 
 namespace SkillCraft.Core.Characters.Mutations
 {
-  internal class SaveCharacterStep4MutationHandler : IRequestHandler<SaveCharacterStep4Mutation, CharacterModel>
+  internal class UpdateCharacterMutationHandler : IRequestHandler<UpdateCharacterMutation, CharacterModel>
   {
     private readonly IApplicationContext _appContext;
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public SaveCharacterStep4MutationHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
+    public UpdateCharacterMutationHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
     {
       _appContext = appContext;
       _dbContext = dbContext;
@@ -32,12 +32,9 @@ namespace SkillCraft.Core.Characters.Mutations
     /// <returns></returns>
     /// <exception cref="EntityNotFoundException{Character}"></exception>
     /// <exception cref="UnauthorizedOperationException{Character}"></exception>
-    /// <exception cref="EntityNotFoundException{Caste}"></exception>
-    /// <exception cref="UnauthorizedOperationException{Caste}"></exception>
-    /// <exception cref="UnauthorizedOperationException{Education}"></exception>
-    public async Task<CharacterModel> Handle(SaveCharacterStep4Mutation request, CancellationToken cancellationToken)
+    public async Task<CharacterModel> Handle(UpdateCharacterMutation request, CancellationToken cancellationToken)
     {
-      SaveCharacterStep4Payload payload = request.Payload;
+      UpdateCharacterPayload payload = request.Payload;
 
       Character character = await _dbContext.Characters
         .Include(x => x.Aspect1)
@@ -55,40 +52,37 @@ namespace SkillCraft.Core.Characters.Mutations
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)
         ?? throw new EntityNotFoundException<Character>(request.Id);
 
-      if (character.WorldId != _appContext.World.Id || character.Creation?.Step == null)
+      if (character.WorldId != _appContext.World.Id)
       {
         throw new UnauthorizedOperationException<Character>(character, _appContext.UserId, _appContext.World);
       }
 
-      Caste caste = await _dbContext.Castes
-        .SingleOrDefaultAsync(x => x.Uuid == payload.CasteId, cancellationToken)
-        ?? throw new EntityNotFoundException<Caste>(payload.CasteId, nameof(payload.CasteId));
-      Education education = await _dbContext.Educations
-        .SingleOrDefaultAsync(x => x.Uuid == payload.EducationId, cancellationToken)
-        ?? throw new EntityNotFoundException<Caste>(payload.EducationId, nameof(payload.EducationId));
+      character.Name = payload.Name.Trim();
+      character.Player = payload.Player?.CleanTrim();
 
-      if (caste.WorldId != _appContext.World.Id)
-      {
-        throw new UnauthorizedOperationException<Caste>(caste, _appContext.UserId, _appContext.World);
-      }
-      if (education.WorldId != _appContext.World.Id)
-      {
-        throw new UnauthorizedOperationException<Education>(education, _appContext.UserId, _appContext.World);
-      }
+      character.Stature = payload.Stature;
+      character.Weight = payload.Weight;
+      character.Age = payload.Age;
 
-      character.Caste = caste;
-      character.CasteId = caste.Id;
-      character.Education = education;
-      character.EducationId = education.Id;
+      character.Experience = payload.Experience;
+      character.Vitality = payload.Vitality;
+      character.Stamina = payload.Stamina;
+
+      character.BloodAlcoholContent = payload.BloodAlcoholContent;
+      character.Intoxication = payload.Intoxication;
 
       character.Description = payload.Description?.CleanTrim();
+
+      UpdateBonuses(character, payload);
+
+      await UpdateConditionsAsync(character, payload, cancellationToken);
+
+      await UpdateLanguagesAsync(character, payload, cancellationToken);
 
       await UpdatePowersAsync(character, payload, cancellationToken);
       await UpdateTalentsAsync(character, payload, cancellationToken);
       UpdateSkillRanks(character, payload);
       character.Validate();
-
-      character.Creation.Step = 4;
 
       character.Update(_appContext.UserId);
 
@@ -104,7 +98,153 @@ namespace SkillCraft.Core.Characters.Mutations
     /// </summary>
     /// <param name="character"></param>
     /// <param name="payload"></param>
-    private static void UpdateSkillRanks(Character character, SaveCharacterStep4Payload payload)
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="CharacterBonusesNotFoundException"></exception>
+    private static void UpdateBonuses(Character character, UpdateCharacterPayload payload)
+    {
+      Dictionary<Guid, BonusBase> bonuses = character.Bonuses.ToDictionary(x => x.Id, x => x);
+
+      character.Bonuses.Clear();
+
+      if (payload.Bonuses != null)
+      {
+        var missingIds = new List<Guid>(capacity: payload.Bonuses.Count());
+
+        foreach (BonusPayload bonusPayload in payload.Bonuses)
+        {
+          BonusBase? bonus;
+          if (bonusPayload.Id.HasValue)
+          {
+            if (!bonuses.TryGetValue(bonusPayload.Id.Value, out bonus))
+            {
+              missingIds.Add(bonusPayload.Id.Value);
+
+              continue;
+            }
+          }
+          else if (bonusPayload.Type.HasValue)
+          {
+            bonus = bonusPayload.Type.Value switch
+            {
+              BonusType.Attribute => new AttributeBonus(Enum.Parse<Attribute>(bonusPayload.Target!)),
+              BonusType.Other => new OtherBonus(Enum.Parse<OtherBonusTarget>(bonusPayload.Target!)),
+              BonusType.Skill => new SkillBonus(Enum.Parse<Skill>(bonusPayload.Target!)),
+              BonusType.Statistic => new StatisticBonus(Enum.Parse<Statistic>(bonusPayload.Target!)),
+              _ => throw new InvalidOperationException($"The bonus type \"{bonusPayload.Type.Value}\" is not valid."),
+            };
+          }
+          else
+          {
+            throw new InvalidOperationException("The bonus ID or type is required.");
+          }
+
+          bonus.Description = bonusPayload.Description?.CleanTrim();
+          bonus.Permanent = bonusPayload.Permanent;
+          bonus.Value = bonusPayload.Value;
+
+          character.Bonuses.Add(bonus);
+        }
+
+        if (missingIds.Any())
+        {
+          throw new CharacterBonusesNotFoundException(missingIds);
+        }
+      }
+    }
+
+    private async Task UpdateConditionsAsync(Character character, UpdateCharacterPayload payload, CancellationToken cancellationToken)
+    {
+      Dictionary<int, CharacterCondition> characterConditions = character.Conditions
+        .Where(x => x.Condition != null)
+        .ToDictionary(x => x.ConditionId, x => x);
+
+      character.Conditions.Clear();
+
+      if (payload.Conditions != null)
+      {
+        HashSet<Guid> conditionIds = payload.Conditions.Select(x => x.ConditionId).ToHashSet();
+        Dictionary<Guid, Condition> conditions = await _dbContext.Conditions
+          .Where(x => conditionIds.Contains(x.Uuid))
+          .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
+
+        var missingIds = new List<Guid>(capacity: conditionIds.Count);
+
+        foreach (CharacterConditionPayload conditionPayload in payload.Conditions)
+        {
+          if (!conditions.TryGetValue(conditionPayload.ConditionId, out Condition? condition))
+          {
+            missingIds.Add(conditionPayload.ConditionId);
+
+            continue;
+          }
+          else if (conditionPayload.Level > condition.MaxLevel)
+          {
+            throw new ConditionLevelExceededException(condition, conditionPayload.Level);
+          }
+
+          if (!characterConditions.TryGetValue(condition.Id, out CharacterCondition? characterCondition))
+          {
+            characterCondition = new CharacterCondition(character, condition);
+          }
+
+          characterCondition.Level = conditionPayload.Level;
+
+          character.Conditions.Add(characterCondition);
+        }
+      }
+    }
+
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="character"></param>
+    /// <param name="payload"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedOperationException{Language}"></exception>
+    /// <exception cref="LanguagesNotFoundException"></exception>
+    private async Task UpdateLanguagesAsync(Character character, UpdateCharacterPayload payload, CancellationToken cancellationToken)
+    {
+      character.Languages.Clear();
+
+      if (payload.LanguageIds != null)
+      {
+        HashSet<Guid> languageIds = payload.LanguageIds.ToHashSet();
+        Dictionary<Guid, Language> languages = await _dbContext.Languages
+          .Where(x => languageIds.Contains(x.Uuid))
+          .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
+
+        var missingIds = new List<Guid>(capacity: languageIds.Count);
+
+        foreach (Guid languageId in languageIds)
+        {
+          if (!languages.TryGetValue(languageId, out Language? language))
+          {
+            missingIds.Add(languageId);
+          }
+          else if (language.WorldId != character.WorldId)
+          {
+            throw new UnauthorizedOperationException<Language>(language, _appContext.UserId, _appContext.World);
+          }
+          else
+          {
+            character.Languages.Add(language);
+          }
+        }
+
+        if (missingIds.Any())
+        {
+          throw new LanguagesNotFoundException(missingIds);
+        }
+      }
+    }
+
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="character"></param>
+    /// <param name="payload"></param>
+    private static void UpdateSkillRanks(Character character, UpdateCharacterPayload payload)
     {
       if (payload.SkillRanks == null)
       {
@@ -142,7 +282,7 @@ namespace SkillCraft.Core.Characters.Mutations
     /// <exception cref="InvalidOperationException"></exception>
     /// <exception cref="UnauthorizedOperationException{Power}"></exception>
     /// <exception cref="TalentCostExceededException"></exception>
-    private async Task UpdatePowersAsync(Character character, SaveCharacterStep4Payload payload, CancellationToken cancellationToken)
+    private async Task UpdatePowersAsync(Character character, UpdateCharacterPayload payload, CancellationToken cancellationToken)
     {
       Dictionary<Guid, CharacterPower> characterPowers = character.Powers
         .ToDictionary(x => x.Uuid, x => x);
@@ -225,7 +365,7 @@ namespace SkillCraft.Core.Characters.Mutations
     /// <exception cref="UnauthorizedOperationException{Talent}"></exception>
     /// <exception cref="TalentOptionRequiredException"></exception>
     /// <exception cref="TalentCostExceededException"></exception>
-    private async Task UpdateTalentsAsync(Character character, SaveCharacterStep4Payload payload, CancellationToken cancellationToken)
+    private async Task UpdateTalentsAsync(Character character, UpdateCharacterPayload payload, CancellationToken cancellationToken)
     {
       Dictionary<Guid, CharacterTalent> characterTalents = character.Talents
         .ToDictionary(x => x.Uuid, x => x);

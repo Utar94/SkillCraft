@@ -5,20 +5,20 @@ using SkillCraft.Core.Characters.Models;
 
 namespace SkillCraft.Core.Characters.Mutations
 {
-  internal class CompleteCharacterMutationHandler : IRequestHandler<CompleteCharacterMutation, CharacterModel>
+  internal class DeleteCharacterMutationHandler : IRequestHandler<DeleteCharacterMutation, CharacterModel>
   {
     private readonly IApplicationContext _appContext;
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public CompleteCharacterMutationHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
+    public DeleteCharacterMutationHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
     {
       _appContext = appContext;
       _dbContext = dbContext;
       _mapper = mapper;
     }
 
-    public async Task<CharacterModel> Handle(CompleteCharacterMutation request, CancellationToken cancellationToken)
+    public async Task<CharacterModel> Handle(DeleteCharacterMutation request, CancellationToken cancellationToken)
     {
       Character character = await _dbContext.Characters
         .Include(x => x.Aspect1)
@@ -31,7 +31,7 @@ namespace SkillCraft.Core.Characters.Mutations
         .Include(x => x.Customizations)
         .Include(x => x.Languages)
         .Include(x => x.Powers).ThenInclude(x => x.Power)
-        .Include(x => x.Talents).ThenInclude(x => x.Talent)
+        .Include(x => x.Talents).ThenInclude(x => x.Talent).ThenInclude(x => x!.Options)
         .Include(x => x.Talents).ThenInclude(x => x.Option)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)
         ?? throw new EntityNotFoundException<Character>(request.Id);
@@ -40,20 +40,9 @@ namespace SkillCraft.Core.Characters.Mutations
       {
         throw new UnauthorizedOperationException<Character>(character, _appContext.UserId, _appContext.World);
       }
-      else if (character.Creation?.Step == null)
-      {
-        throw new CharacterAlreadyCompletedException(character);
-      }
 
-      character.Creation.Step = null;
-      character.Vitality = character.MaxVitality;
-      character.Stamina = character.MaxStamina;
-
-      character.Update(_appContext.UserId);
-
+      character.Delete(_appContext.UserId);
       await _dbContext.SaveChangesAsync(cancellationToken);
-
-      _appContext.SetEntity(character);
 
       return _mapper.Map<CharacterModel>(character);
     }

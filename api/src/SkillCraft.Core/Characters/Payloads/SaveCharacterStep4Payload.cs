@@ -8,6 +8,8 @@ namespace SkillCraft.Core.Characters.Payloads
 
     public Guid EducationId { get; set; }
 
+    public IEnumerable<CharacterPowerPayload>? Powers { get; set; }
+
     public IEnumerable<CharacterTalentPayload>? Talents { get; set; }
 
     public IEnumerable<SkillRankPayload>? SkillRanks { get; set; }
@@ -16,7 +18,7 @@ namespace SkillCraft.Core.Characters.Payloads
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-      var results = new List<ValidationResult>(capacity: 2);
+      var results = new List<ValidationResult>(capacity: 3);
 
       if (SkillRanks != null)
       {
@@ -28,6 +30,20 @@ namespace SkillCraft.Core.Characters.Payloads
           results.Add(new ValidationResult(
             errorMessage: $"Each skill rank must only appear once: {string.Join(", ", skillRankIds)}.",
             memberNames: new[] { nameof(SkillRanks) }
+          ));
+        }
+      }
+
+      if (Powers != null)
+      {
+        IEnumerable<Guid> powerIds = Powers.GroupBy(x => x.Id)
+          .Where(x => x.Key.HasValue && x.Count() > 1)
+          .Select(x => x.Key!.Value);
+        if (powerIds.Any())
+        {
+          results.Add(new ValidationResult(
+            errorMessage: $"Each power must only appear once: {string.Join(", ", powerIds)}.",
+            memberNames: new[] { nameof(Powers) }
           ));
         }
       }

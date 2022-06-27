@@ -42,6 +42,7 @@ namespace SkillCraft.Core.Characters.Models
     public IEnumerable<CharacterConditionModel> Conditions { get; set; } = null!;
     public IEnumerable<CustomizationModel> Customizations { get; set; } = null!;
     public IEnumerable<LanguageModel> Languages { get; set; } = null!;
+    public IEnumerable<CharacterPowerModel> Powers { get; set; } = null!;
     public IEnumerable<CharacterTalentModel> Talents { get; set; } = null!;
   }
 }

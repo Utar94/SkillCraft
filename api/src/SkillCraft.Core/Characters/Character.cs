@@ -176,7 +176,7 @@ namespace SkillCraft.Core.Characters
 
       if (level > Level)
       {
-        throw new InvalidOperationException("The character cannot level-up.");
+        throw new CharacterCannotLevelUpException(this);
       }
 
       var levelUp = new CharacterLevelUp(attribute);
