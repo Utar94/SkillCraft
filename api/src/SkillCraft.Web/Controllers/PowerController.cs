@@ -45,6 +45,7 @@ namespace SkillCraft.Web.Controllers
     public async Task<ActionResult<PowerModel>> GetAsync(
       bool? deleted,
       string? search,
+      string? tiers, // TODO(fpion): refactor
       PowerSort? sort,
       bool desc,
       int? index,
@@ -56,6 +57,7 @@ namespace SkillCraft.Web.Controllers
       {
         Deleted = deleted,
         Search = search,
+        Tiers = tiers?.Split(',').Select(tier => int.Parse(tier)), // TODO(fpion): refactor
         Sort = sort,
         Desc = desc,
         Index = index,

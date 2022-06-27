@@ -133,7 +133,7 @@ namespace SkillCraft.Core.Characters
 
     [Theory]
     [InlineData(Attribute.Vigor)]
-    public void Given_MaxLevel_When_LevelUp_Then_InvalidOperationException(Attribute attribute)
+    public void Given_MaxLevel_When_LevelUp_Then_CharacterCannotLevelUpException(Attribute attribute)
     {
       _character.Experience = 11908;
 
@@ -145,7 +145,8 @@ namespace SkillCraft.Core.Characters
       _character.LevelUp(Attribute.Mind);
       _character.LevelUp(attribute);
 
-      Assert.Throws<InvalidOperationException>(() => _character.LevelUp(attribute));
+      var exception = Assert.Throws<CharacterCannotLevelUpException>(() => _character.LevelUp(attribute));
+      Assert.Same(_character, exception.Character);
     }
 
     [Theory]

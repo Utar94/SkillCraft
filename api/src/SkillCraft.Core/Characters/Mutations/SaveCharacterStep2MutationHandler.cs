@@ -23,6 +23,18 @@ namespace SkillCraft.Core.Characters.Mutations
       _mapper = mapper;
     }
 
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="EntityNotFoundException{Character}"></exception>
+    /// <exception cref="UnauthorizedOperationException{Character}"></exception>
+    /// <exception cref="EntityNotFoundException{Aspect}"></exception>
+    /// <exception cref="UnauthorizedOperationException{Aspect}"></exception>
+    /// <exception cref="EntityNotFoundException{Race}"></exception>
+    /// <exception cref="UnauthorizedOperationException{Race}"></exception>
     public async Task<CharacterModel> Handle(SaveCharacterStep2Mutation request, CancellationToken cancellationToken)
     {
       SaveCharacterStep2Payload payload = request.Payload;
@@ -37,7 +49,7 @@ namespace SkillCraft.Core.Characters.Mutations
           .Include(x => x.Education)
           .Include(x => x.Nature)
           .Include(x => x.Race)
-          .Include(x => x.Conditions)
+          .Include(x => x.Conditions).ThenInclude(x => x.Condition)
           .Include(x => x.Customizations)
           .Include(x => x.Languages)
           .Include(x => x.Powers).ThenInclude(x => x.Power)
@@ -118,6 +130,13 @@ namespace SkillCraft.Core.Characters.Mutations
       return _mapper.Map<CharacterModel>(character);
     }
 
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="character"></param>
+    /// <param name="payload"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="CharacterBonusesNotFoundException"></exception>
     private static void UpdateBonuses(Character character, SaveCharacterStep2Payload payload)
     {
       Dictionary<Guid, BonusBase> bonuses = character.Bonuses.ToDictionary(x => x.Id, x => x);
@@ -190,6 +209,15 @@ namespace SkillCraft.Core.Characters.Mutations
       character.Creation.OptionalAttribute2 = payload.Creation.OptionalAttribute2;
     }
 
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="character"></param>
+    /// <param name="payload"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedOperationException{Language}"></exception>
+    /// <exception cref="LanguagesNotFoundException"></exception>
     private async Task UpdateLanguagesAsync(Character character, SaveCharacterStep2Payload payload, CancellationToken cancellationToken)
     {
       character.Languages.Clear();

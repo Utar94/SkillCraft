@@ -21,6 +21,16 @@ namespace SkillCraft.Core.Characters.Mutations
       _mapper = mapper;
     }
 
+    /// <summary>
+    /// TODO(fpion): refactor
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="EntityNotFoundException{Character}"></exception>
+    /// <exception cref="UnauthorizedOperationException{Character}"></exception>
+    /// <exception cref="EntityNotFoundException{Nature}"></exception>
+    /// <exception cref="UnauthorizedOperationException{Nature}"></exception>
     public async Task<CharacterModel> Handle(SaveCharacterStep3Mutation request, CancellationToken cancellationToken)
     {
       SaveCharacterStep3Payload payload = request.Payload;
@@ -32,7 +42,7 @@ namespace SkillCraft.Core.Characters.Mutations
         .Include(x => x.Education)
         .Include(x => x.Nature)
         .Include(x => x.Race)
-        .Include(x => x.Conditions)
+        .Include(x => x.Conditions).ThenInclude(x => x.Condition)
         .Include(x => x.Customizations)
         .Include(x => x.Languages)
         .Include(x => x.Powers).ThenInclude(x => x.Power)
