@@ -7,6 +7,7 @@ using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Powers;
 using SkillCraft.Core.Races;
 using SkillCraft.Core.Talents;
 
@@ -34,6 +35,7 @@ namespace SkillCraft.Core.Worlds
     public ICollection<Education> Educations { get; set; } = new List<Education>();
     public ICollection<Language> Languages { get; set; } = new List<Language>();
     public ICollection<Nature> Natures { get; set; } = new List<Nature>();
+    public ICollection<Power> Powers { get; set; } = new List<Power>();
     public ICollection<Race> Races { get; set; } = new List<Race>();
     public ICollection<Talent> Talents { get; set; } = new List<Talent>();
 

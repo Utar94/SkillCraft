@@ -8,6 +8,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Powers;
 using SkillCraft.Core.Races;
 using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
@@ -25,6 +26,7 @@ namespace SkillCraft.Core
     DbSet<EventLog> EventLogs { get; }
     DbSet<Language> Languages { get; }
     DbSet<Nature> Natures { get; }
+    DbSet<Power> Powers { get; }
     DbSet<Race> Races { get; }
     DbSet<Talent> Talents { get; }
     DbSet<World> Worlds { get; }

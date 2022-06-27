@@ -12,6 +12,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Logging;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Powers;
 using SkillCraft.Core.Races;
 using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
@@ -34,6 +35,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<EventLog> EventLogs { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Nature> Natures { get; set; }
+    public DbSet<Power> Powers { get; set; }
     public DbSet<Race> Races { get; set; }
     public DbSet<Talent> Talents { get; set; }
     public DbSet<World> Worlds { get; set; }
@@ -41,6 +43,7 @@ namespace SkillCraft.Infrastructure
     internal DbSet<CharacterCondition> CharacterConditions { get; set; }
     internal DbSet<CharacterCustomization> CharacterCustomizations { get; set; }
     internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
+    internal DbSet<CharacterPower> CharacterPowers { get; set; }
     internal DbSet<CharacterTalent> CharacterTalents { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
     internal DbSet<TalentOption> TalentOptions { get; set; }

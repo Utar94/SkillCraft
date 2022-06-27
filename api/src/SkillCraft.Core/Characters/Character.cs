@@ -114,6 +114,7 @@ namespace SkillCraft.Core.Characters
     public ICollection<CharacterCondition> Conditions { get; set; } = new List<CharacterCondition>();
     public ICollection<Customization> Customizations { get; set; } = new List<Customization>();
     public ICollection<Language> Languages { get; set; } = new List<Language>();
+    public ICollection<CharacterPower> Powers { get; set; } = new List<CharacterPower>();
     public ICollection<CharacterTalent> Talents { get; set; } = new List<CharacterTalent>();
 
     public int Level => _experienceTable.GetLevel(Experience);
@@ -160,10 +161,9 @@ namespace SkillCraft.Core.Characters
     public int TotalLearningPoints => Statistics.Learning.Value;
 
     public int RemainingTalentPoints => TotalTalentPoints - SpentTalentPoints;
-    public int SpentTalentPoints => Talents.Sum(x => x.Cost);
+    public int SpentTalentPoints => Talents.Sum(x => x.Cost) + Powers.Sum(x => x.Cost);
     public int TotalTalentPoints => (Level + 1) * 4;
 
-    // TODO(fpion): Powers (n..n)
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)
     // TODO(fpion): Notes (1..n)

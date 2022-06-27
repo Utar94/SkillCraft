@@ -37,6 +37,7 @@ namespace SkillCraft.Core.Characters.Mutations
         .Include(x => x.Conditions).ThenInclude(x => x.Condition)
         .Include(x => x.Customizations)
         .Include(x => x.Languages)
+        .Include(x => x.Powers).ThenInclude(x => x.Power)
         .Include(x => x.Talents).ThenInclude(x => x.Talent).ThenInclude(x => x!.Options)
         .Include(x => x.Talents).ThenInclude(x => x.Option)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)

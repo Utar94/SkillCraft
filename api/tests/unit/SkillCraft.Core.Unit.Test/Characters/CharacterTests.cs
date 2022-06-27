@@ -1,4 +1,5 @@
 ﻿using SkillCraft.Core.Fakers;
+using SkillCraft.Core.Powers;
 using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 
@@ -202,9 +203,13 @@ namespace SkillCraft.Core.Characters
     [Fact]
     public void Given_SpentTalentPointsExceeded_When_Validate_Then_SpentTalentPointsExceededException()
     {
+      _character.Powers.Add(new CharacterPower(_character, new Power(tier: 2, UserId, _world))
+      {
+        Cost = 2
+      });
       _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 3, UserId, _world))
       {
-        Cost = 5
+        Cost = 3
       });
 
       var exception = Assert.Throws<SpentTalentPointsExceededException>(() => _character.Validate());
@@ -212,15 +217,15 @@ namespace SkillCraft.Core.Characters
     }
 
     [Fact]
-    public void Given_Talents_When_getRemainingTalentPoints_Then_CorrectRemainingTalentPoints()
+    public void Given_TalentsAndPowers_When_getRemainingTalentPoints_Then_CorrectRemainingTalentPoints()
     {
-      _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
+      _character.Powers.Add(new CharacterPower(_character, new Power(tier: 1, UserId, _world))
       {
-        Cost = 0
+        Cost = 1
       });
       _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
       {
-        Cost = 1
+        Cost = 0
       });
       _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
       {
@@ -231,7 +236,7 @@ namespace SkillCraft.Core.Characters
     }
 
     [Fact]
-    public void Given_Talents_When_getSpentTalentPoints_Then_CorrectSpentTalentPoints()
+    public void Given_TalentsAndPowers_When_getSpentTalentPoints_Then_CorrectSpentTalentPoints()
     {
       _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
       {
@@ -245,7 +250,7 @@ namespace SkillCraft.Core.Characters
       {
         Cost = 2
       });
-      _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 1, UserId, _world))
+      _character.Powers.Add(new CharacterPower(_character, new Power(tier: 1, UserId, _world))
       {
         Cost = 3
       });
@@ -254,7 +259,7 @@ namespace SkillCraft.Core.Characters
     }
 
     [Fact]
-    public void Given_Talents_When_Validate_Then_Success()
+    public void Given_TalentsAndPowers_When_Validate_Then_Success()
     {
       _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
       {
@@ -264,7 +269,7 @@ namespace SkillCraft.Core.Characters
       {
         Cost = 1
       });
-      _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
+      _character.Powers.Add(new CharacterPower(_character, new Power(tier: 0, UserId, _world))
       {
         Cost = 2
       });
