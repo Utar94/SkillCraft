@@ -1,4 +1,7 @@
-﻿namespace SkillCraft.Web
+﻿using Microsoft.EntityFrameworkCore;
+using SkillCraft.Infrastructure;
+
+namespace SkillCraft.Web
 {
   public class Program
   {
@@ -12,6 +15,13 @@
       WebApplication application = builder.Build();
 
       startup.Configure(application);
+
+      if (builder.Configuration.GetValue<bool>("MigrateDatabase"))
+      {
+        using IServiceScope scope = application.Services.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<SkillCraftDbContext>();
+        dbContext.Database.Migrate();
+      }
 
       application.Run();
     }
