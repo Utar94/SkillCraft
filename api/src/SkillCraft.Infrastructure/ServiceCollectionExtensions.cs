@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SkillCraft.Core;
+using SkillCraft.Core.Repositories;
+using SkillCraft.Infrastructure.Repositories;
 
 namespace SkillCraft.Infrastructure
 {
@@ -11,7 +13,8 @@ namespace SkillCraft.Infrastructure
     {
       return services
         .AddDbContext<IDbContext, SkillCraftDbContext>(ConfigureDbContext)
-        .AddDbContext<SkillCraftDbContext>(ConfigureDbContext);
+        .AddDbContext<SkillCraftDbContext>(ConfigureDbContext)
+        .AddScoped<ICharacterRepository, CharacterRepository>();
     }
 
     private static void ConfigureDbContext(IServiceProvider provider, DbContextOptionsBuilder builder)

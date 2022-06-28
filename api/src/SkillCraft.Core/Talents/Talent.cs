@@ -1,4 +1,5 @@
 ﻿using SkillCraft.Core.Characters;
+using SkillCraft.Core.Classes;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Talents
@@ -28,7 +29,10 @@ namespace SkillCraft.Core.Talents
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
 
+    public Class? Class { get; set; }
+
     public ICollection<CharacterTalent> CharacterTalents { get; set; } = new List<CharacterTalent>();
+    public ICollection<ClassTalent> ClassTalents { get; set; } = new List<ClassTalent>();
     public ICollection<TalentOption> Options { get; set; } = new List<TalentOption>();
     public ICollection<Talent> RequiringTalents { get; set; } = new List<Talent>();
 

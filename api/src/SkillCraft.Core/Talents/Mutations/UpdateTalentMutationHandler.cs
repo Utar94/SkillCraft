@@ -15,6 +15,7 @@ namespace SkillCraft.Core.Talents.Mutations
     public async Task<TalentModel> Handle(UpdateTalentMutation request, CancellationToken cancellationToken)
     {
       Talent talent = await DbContext.Talents
+        .Include(x => x.Class)
         .Include(x => x.Options)
         .Include(x => x.RequiredTalent)
         .SingleOrDefaultAsync(x => x.Uuid == request.Id, cancellationToken)

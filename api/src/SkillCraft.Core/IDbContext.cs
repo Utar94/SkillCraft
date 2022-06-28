@@ -2,6 +2,7 @@
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Characters;
+using SkillCraft.Core.Classes;
 using SkillCraft.Core.Conditions;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
@@ -20,6 +21,7 @@ namespace SkillCraft.Core
     DbSet<Aspect> Aspects { get; }
     DbSet<Caste> Castes { get; }
     DbSet<Character> Characters { get; }
+    DbSet<Class> Classes { get; }
     DbSet<Condition> Conditions { get; }
     DbSet<Customization> Customizations { get; }
     DbSet<Education> Educations { get; }

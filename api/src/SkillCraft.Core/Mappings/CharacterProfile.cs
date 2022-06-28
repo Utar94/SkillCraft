@@ -35,8 +35,7 @@ namespace SkillCraft.Core.Mappings
           Sensitivity = GetAttributeBase(Attribute.Sensitivity, y),
           Vigor = GetAttributeBase(Attribute.Vigor, y)
         }));
-      CreateMap<CharacterPower, CharacterPowerModel>()
-        .ForMember(x => x.Id, x => x.MapFrom(y => y.Uuid));
+      CreateMap<CharacterPower, CharacterPowerModel>();
       CreateMap<CharacterTalent, CharacterTalentModel>()
         .ForMember(x => x.Id, x => x.MapFrom(y => y.Uuid));
       CreateMap<SkillRank, SkillRankModel>();

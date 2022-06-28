@@ -2,6 +2,7 @@
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Characters;
+using SkillCraft.Core.Classes;
 using SkillCraft.Core.Conditions;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
@@ -30,6 +31,7 @@ namespace SkillCraft.Core.Worlds
     public ICollection<Aspect> Aspects { get; set; } = new List<Aspect>();
     public ICollection<Caste> Castes { get; set; } = new List<Caste>();
     public ICollection<Character> Characters { get; set; } = new List<Character>();
+    public ICollection<Class> Classes { get; set; } = new List<Class>();
     public ICollection<Condition> Conditions { get; set; } = new List<Condition>();
     public ICollection<Customization> Customizations { get; set; } = new List<Customization>();
     public ICollection<Education> Educations { get; set; } = new List<Education>();

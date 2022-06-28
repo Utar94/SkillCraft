@@ -1,4 +1,5 @@
-﻿using SkillCraft.Core.Fakers;
+﻿using SkillCraft.Core.Classes;
+using SkillCraft.Core.Fakers;
 using SkillCraft.Core.Powers;
 using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
@@ -68,6 +69,44 @@ namespace SkillCraft.Core.Characters
       _character.LevelUp(Attribute.Mind);
 
       Assert.Equal(77, _character.MaxVitality);
+    }
+
+    [Fact]
+    public void Given_Classes_When_GetTier_Then_CorrectTier()
+    {
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(0, UserId, _world)
+      {
+        Class = new Class(1, UserId, _world)
+      }));
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(1, UserId, _world)
+      {
+        Class = new Class(2, UserId, _world)
+      }));
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(0, UserId, _world)
+      {
+        Class = new Class(1, UserId, _world)
+      }));
+
+      Assert.Equal(2, _character.Tier);
+    }
+
+    [Fact]
+    public void Given_ExceededSkillRanks_When_Validate_Then_SkillRanksExceededException()
+    {
+      _character.Creation ??= new();
+      _character.Creation.AttributeBases[Attribute.Intellect] = 11;
+      _character.Creation.BestAttribute = Attribute.Intellect;
+      _character.Creation.MandatoryAttribute1 = Attribute.Intellect;
+
+      _character.SkillRanks.Add(new SkillRank(Skill.Discipline, true));
+      _character.SkillRanks.Add(new SkillRank(Skill.Discipline, true));
+      _character.SkillRanks.Add(new SkillRank(Skill.Discipline, true));
+      _character.SkillRanks.Add(new SkillRank(Skill.Sorcery, true));
+      _character.SkillRanks.Add(new SkillRank(Skill.Sorcery, true));
+      _character.SkillRanks.Add(new SkillRank(Skill.Sorcery, true));
+
+      var exception = Assert.Throws<SkillRanksExceededException>(() => _character.Validate());
+      Assert.Equal(new[] { Skill.Discipline, Skill.Sorcery }, exception.Skills);
     }
 
     [Theory]
@@ -149,6 +188,42 @@ namespace SkillCraft.Core.Characters
       Assert.Same(_character, exception.Character);
     }
 
+    [Fact]
+    public void Given_MissingRequiredTalents_When_Validate_Then_MissingRequiredTalentsException()
+    {
+      var requiredTalent1 = new Talent(0, UserId, _world)
+      {
+        Id = 1
+      };
+      var requiredTalent2 = new Talent(0, UserId, _world)
+      {
+        Id = 2
+      };
+
+      var talent1 = new Talent(0, UserId, _world)
+      {
+        RequiredTalent = requiredTalent1,
+        RequiredTalentId = requiredTalent1.Id
+      };
+      var talent2 = new Talent(0, UserId, _world)
+      {
+        RequiredTalent = requiredTalent2,
+        RequiredTalentId = requiredTalent2.Id
+      };
+      var talent3 = new Talent(0, UserId, _world)
+      {
+        RequiredTalent = requiredTalent2,
+        RequiredTalentId = requiredTalent2.Id
+      };
+
+      _character.Talents.Add(new CharacterTalent(_character, talent1));
+      _character.Talents.Add(new CharacterTalent(_character, talent2));
+      _character.Talents.Add(new CharacterTalent(_character, talent3));
+
+      var exception = Assert.Throws<MissingRequiredTalentsException>(() => _character.Validate());
+      Assert.Equal(new[] { requiredTalent1.Id, requiredTalent2.Id }, exception.RequiredTalents.Select(x => x.Id).Distinct());
+    }
+
     [Theory]
     [InlineData(Attribute.Sensitivity)]
     public void Given_NoLevelUp_When_LevelUp_Then_LeveledUp(Attribute attribute)
@@ -157,6 +232,20 @@ namespace SkillCraft.Core.Characters
 
       CharacterLevelUp levelUp = _character.LevelUp(attribute);
       Assert.Same(_character.LevelUps.Values.Single(), levelUp);
+    }
+
+    [Fact]
+    public void Given_NoClass_When_getTier_Then_Zero()
+    {
+      Assert.Equal(0, _character.Tier);
+    }
+
+    [Fact]
+    public void Given_NoUniqueTalent_When_getClasses_Then_Empty()
+    {
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(0, UserId, _world)));
+
+      Assert.Empty(_character.Classes);
     }
 
     [Fact]
@@ -195,7 +284,7 @@ namespace SkillCraft.Core.Characters
     {
       _character.SkillRanks.Add(new(Skill.Insight, training: false));
       _character.SkillRanks.Add(new(Skill.Insight, training: false));
-      _character.SkillRanks.Add(new(Skill.Insight, training: false));
+      _character.SkillRanks.Add(new(Skill.Investigation, training: false));
 
       var exception = Assert.Throws<SpentLearningPointsExceededException>(() => _character.Validate());
       Assert.Same(_character, exception.Character);
@@ -262,11 +351,21 @@ namespace SkillCraft.Core.Characters
     [Fact]
     public void Given_TalentsAndPowers_When_Validate_Then_Success()
     {
-      _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
+      var requiredTalent = new Talent(tier: 0, UserId, _world)
+      {
+        Id = 1
+      };
+      var requiringTalent = new Talent(tier: 0, UserId, _world)
+      {
+        RequiredTalent = requiredTalent,
+        RequiredTalentId = requiredTalent.Id
+      };
+
+      _character.Talents.Add(new CharacterTalent(_character, requiredTalent)
       {
         Cost = 0
       });
-      _character.Talents.Add(new CharacterTalent(_character, new Talent(tier: 0, UserId, _world))
+      _character.Talents.Add(new CharacterTalent(_character, requiringTalent)
       {
         Cost = 1
       });
@@ -276,6 +375,53 @@ namespace SkillCraft.Core.Characters
       });
 
       _character.Validate();
+    }
+
+    [Fact]
+    public void Given_Talents_When_getClasses_Then_CorrectClasses()
+    {
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(0, UserId, _world)));
+
+      var class1 = new Class(1, UserId, _world)
+      {
+        Id = 1
+      };
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(0, UserId, _world)
+      {
+        Class = class1
+      }));
+
+      var class2 = new Class(2, UserId, _world)
+      {
+        Id = 2
+      };
+      _character.Talents.Add(new CharacterTalent(_character, new Talent(1, UserId, _world)
+      {
+        Class = class2
+      }));
+
+      Assert.Equal(new[] { class1, class2 }, _character.Classes);
+    }
+
+    [Theory]
+    [InlineData(0, 2)]
+    [InlineData(1, 5)]
+    [InlineData(2, 9)]
+    [InlineData(3, 14)]
+    public void Given_Tier_When_getMaxSkillRank_Then_CorrectMaxSkillRank(int tier, int maxSkillRank)
+    {
+      Assert.True(tier >= 0 && tier <= 3);
+
+      if (tier > 0)
+      {
+        _character.Talents.Add(new CharacterTalent(_character, new Talent(tier - 1, UserId, _world)
+        {
+          Class = new Class(tier, UserId, _world)
+        }));
+        Assert.Equal(tier, _character.Tier);
+      }
+
+      Assert.Equal(maxSkillRank, _character.MaxSkillRank);
     }
   }
 }

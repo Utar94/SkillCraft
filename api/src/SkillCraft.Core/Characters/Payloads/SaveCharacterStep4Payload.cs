@@ -36,9 +36,9 @@ namespace SkillCraft.Core.Characters.Payloads
 
       if (Powers != null)
       {
-        IEnumerable<Guid> powerIds = Powers.GroupBy(x => x.Id)
-          .Where(x => x.Key.HasValue && x.Count() > 1)
-          .Select(x => x.Key!.Value);
+        IEnumerable<Guid> powerIds = Powers.GroupBy(x => x.PowerId)
+          .Where(x => x.Count() > 1)
+          .Select(x => x.Key);
         if (powerIds.Any())
         {
           results.Add(new ValidationResult(

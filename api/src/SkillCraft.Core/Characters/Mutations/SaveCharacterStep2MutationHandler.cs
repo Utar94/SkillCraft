@@ -1,40 +1,37 @@
 ﻿using AutoMapper;
-using Logitar;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Characters.Models;
 using SkillCraft.Core.Characters.Payloads;
-using SkillCraft.Core.Languages;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Repositories;
 
 namespace SkillCraft.Core.Characters.Mutations
 {
   internal class SaveCharacterStep2MutationHandler : IRequestHandler<SaveCharacterStep2Mutation, CharacterModel>
   {
     private readonly IApplicationContext _appContext;
+    private readonly ICharacterRepository _characterRepository;
+    private readonly ICharacterService _characterService;
     private readonly IDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public SaveCharacterStep2MutationHandler(IApplicationContext appContext, IDbContext dbContext, IMapper mapper)
+    public SaveCharacterStep2MutationHandler(
+      IApplicationContext appContext,
+      ICharacterRepository characterRepository,
+      ICharacterService characterService,
+      IDbContext dbContext,
+      IMapper mapper
+    )
     {
       _appContext = appContext;
+      _characterRepository = characterRepository;
+      _characterService = characterService;
       _dbContext = dbContext;
       _mapper = mapper;
     }
 
-    /// <summary>
-    /// TODO(fpion): refactor
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="EntityNotFoundException{Character}"></exception>
-    /// <exception cref="UnauthorizedOperationException{Character}"></exception>
-    /// <exception cref="EntityNotFoundException{Aspect}"></exception>
-    /// <exception cref="UnauthorizedOperationException{Aspect}"></exception>
-    /// <exception cref="EntityNotFoundException{Race}"></exception>
-    /// <exception cref="UnauthorizedOperationException{Race}"></exception>
     public async Task<CharacterModel> Handle(SaveCharacterStep2Mutation request, CancellationToken cancellationToken)
     {
       SaveCharacterStep2Payload payload = request.Payload;
@@ -42,20 +39,8 @@ namespace SkillCraft.Core.Characters.Mutations
       Character? character;
       if (request.Id.HasValue)
       {
-        character = await _dbContext.Characters
-          .Include(x => x.Aspect1)
-          .Include(x => x.Aspect2)
-          .Include(x => x.Caste)
-          .Include(x => x.Education)
-          .Include(x => x.Nature)
-          .Include(x => x.Race)
-          .Include(x => x.Conditions).ThenInclude(x => x.Condition)
-          .Include(x => x.Customizations)
-          .Include(x => x.Languages)
-          .Include(x => x.Powers).ThenInclude(x => x.Power)
-          .Include(x => x.Talents).ThenInclude(x => x.Talent)
-          .Include(x => x.Talents).ThenInclude(x => x.Option)
-          .SingleOrDefaultAsync(x => x.Uuid == request.Id.Value, cancellationToken)
+        character = await _characterRepository
+          .GetAsync(request.Id.Value, readOnly: false, cancellationToken)
           ?? throw new EntityNotFoundException<Character>(request.Id.Value);
 
         if (character.WorldId != _appContext.World.Id || character.Creation?.Step == null)
@@ -68,7 +53,6 @@ namespace SkillCraft.Core.Characters.Mutations
       else
       {
         character = new Character(_appContext.UserId, _appContext.World);
-        _dbContext.Characters.Add(character);
       }
 
       Guid[] aspectIds = new[] { payload.Aspect1Id, payload.Aspect2Id };
@@ -116,10 +100,10 @@ namespace SkillCraft.Core.Characters.Mutations
       character.Weight = payload.Weight;
       character.Age = payload.Age;
 
-      UpdateBonuses(character, payload);
-      UpdateCharacterCreation(character, payload);
+      _characterService.UpdateBonuses(character, payload.Bonuses);
+      _characterService.UpdateCharacterCreation(character, payload.Creation);
 
-      await UpdateLanguagesAsync(character, payload, cancellationToken);
+      await _characterService.UpdateLanguagesAsync(character, payload.LanguageIds?.ToHashSet(), cancellationToken);
 
       character.Creation!.Step = 2;
 
@@ -128,130 +112,6 @@ namespace SkillCraft.Core.Characters.Mutations
       _appContext.SetEntity(character);
 
       return _mapper.Map<CharacterModel>(character);
-    }
-
-    /// <summary>
-    /// TODO(fpion): refactor
-    /// </summary>
-    /// <param name="character"></param>
-    /// <param name="payload"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <exception cref="CharacterBonusesNotFoundException"></exception>
-    private static void UpdateBonuses(Character character, SaveCharacterStep2Payload payload)
-    {
-      Dictionary<Guid, BonusBase> bonuses = character.Bonuses.ToDictionary(x => x.Id, x => x);
-
-      character.Bonuses.Clear();
-
-      if (payload.Bonuses != null)
-      {
-        var missingIds = new List<Guid>(capacity: payload.Bonuses.Count());
-
-        foreach (BonusPayload bonusPayload in payload.Bonuses)
-        {
-          BonusBase? bonus;
-          if (bonusPayload.Id.HasValue)
-          {
-            if (!bonuses.TryGetValue(bonusPayload.Id.Value, out bonus))
-            {
-              missingIds.Add(bonusPayload.Id.Value);
-
-              continue;
-            }
-          }
-          else if (bonusPayload.Type.HasValue)
-          {
-            bonus = bonusPayload.Type.Value switch
-            {
-              BonusType.Attribute => new AttributeBonus(Enum.Parse<Attribute>(bonusPayload.Target!)),
-              BonusType.Other => new OtherBonus(Enum.Parse<OtherBonusTarget>(bonusPayload.Target!)),
-              BonusType.Skill => new SkillBonus(Enum.Parse<Skill>(bonusPayload.Target!)),
-              BonusType.Statistic => new StatisticBonus(Enum.Parse<Statistic>(bonusPayload.Target!)),
-              _ => throw new InvalidOperationException($"The bonus type \"{bonusPayload.Type.Value}\" is not valid."),
-            };
-          }
-          else
-          {
-            throw new InvalidOperationException("The bonus ID or type is required.");
-          }
-
-          bonus.Description = bonusPayload.Description?.CleanTrim();
-          bonus.Permanent = bonusPayload.Permanent;
-          bonus.Value = bonusPayload.Value;
-
-          character.Bonuses.Add(bonus);
-        }
-
-        if (missingIds.Any())
-        {
-          throw new CharacterBonusesNotFoundException(missingIds);
-        }
-      }
-    }
-
-    private static void UpdateCharacterCreation(Character character, SaveCharacterStep2Payload payload)
-    {
-      character.Creation ??= new();
-
-      character.Creation.AttributeBases[Attribute.Agility] = payload.Creation.AttributeBases.Agility;
-      character.Creation.AttributeBases[Attribute.Coordination] = payload.Creation.AttributeBases.Coordination;
-      character.Creation.AttributeBases[Attribute.Intellect] = payload.Creation.AttributeBases.Intellect;
-      character.Creation.AttributeBases[Attribute.Mind] = payload.Creation.AttributeBases.Mind;
-      character.Creation.AttributeBases[Attribute.Presence] = payload.Creation.AttributeBases.Presence;
-      character.Creation.AttributeBases[Attribute.Sensitivity] = payload.Creation.AttributeBases.Sensitivity;
-      character.Creation.AttributeBases[Attribute.Vigor] = payload.Creation.AttributeBases.Vigor;
-
-      character.Creation.BestAttribute = payload.Creation.BestAttribute;
-      character.Creation.WorstAttribute = payload.Creation.WorstAttribute;
-      character.Creation.MandatoryAttribute1 = payload.Creation.MandatoryAttribute1;
-      character.Creation.MandatoryAttribute2 = payload.Creation.MandatoryAttribute2;
-      character.Creation.OptionalAttribute1 = payload.Creation.OptionalAttribute1;
-      character.Creation.OptionalAttribute2 = payload.Creation.OptionalAttribute2;
-    }
-
-    /// <summary>
-    /// TODO(fpion): refactor
-    /// </summary>
-    /// <param name="character"></param>
-    /// <param name="payload"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="UnauthorizedOperationException{Language}"></exception>
-    /// <exception cref="LanguagesNotFoundException"></exception>
-    private async Task UpdateLanguagesAsync(Character character, SaveCharacterStep2Payload payload, CancellationToken cancellationToken)
-    {
-      character.Languages.Clear();
-
-      if (payload.LanguageIds != null)
-      {
-        HashSet<Guid> languageIds = payload.LanguageIds.ToHashSet();
-        Dictionary<Guid, Language> languages = await _dbContext.Languages
-          .Where(x => languageIds.Contains(x.Uuid))
-          .ToDictionaryAsync(x => x.Uuid, x => x, cancellationToken);
-
-        var missingIds = new List<Guid>(capacity: languageIds.Count);
-
-        foreach (Guid languageId in languageIds)
-        {
-          if (!languages.TryGetValue(languageId, out Language? language))
-          {
-            missingIds.Add(languageId);
-          }
-          else if (language.WorldId != character.WorldId)
-          {
-            throw new UnauthorizedOperationException<Language>(language, _appContext.UserId, _appContext.World);
-          }
-          else
-          {
-            character.Languages.Add(language);
-          }
-        }
-
-        if (missingIds.Any())
-        {
-          throw new LanguagesNotFoundException(missingIds);
-        }
-      }
     }
   }
 }
