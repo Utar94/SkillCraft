@@ -9,23 +9,64 @@
     />
     <validation-observer ref="form">
       <b-form @submit.prevent="submit">
-        <name-field v-model="name" />
-        <b-row>
-          <tier-select class="col" :disabled="Boolean(talent)" :required="!talent" v-model="tier" />
-          <talent-select
-            class="col"
-            :disabled="tier === null"
-            id="requiredTalentId"
-            :exclude="talent ? [talent.id] : []"
-            :maxTier="tier"
-            v-model="requiredTalentId"
-          />
-          <skill-select class="col" label="talent.skillTraining" v-model="skill" />
-        </b-row>
-        <b-form-group>
-          <b-form-checkbox v-model="multipleAcquisition">{{ $t('talents.multipleAcquisition.label') }}</b-form-checkbox>
-        </b-form-group>
-        <description-field v-model="description" />
+        <b-tabs content-class="mt-3">
+          <b-tab :title="$t('talent.general')" active>
+            <name-field v-model="name" />
+            <b-row>
+              <tier-select class="col" :disabled="Boolean(talent)" :required="!talent" v-model="tier" />
+              <talent-select
+                class="col"
+                :disabled="tier === null"
+                id="requiredTalentId"
+                :exclude="talent ? [talent.id] : []"
+                :maxTier="tier"
+                v-model="requiredTalentId"
+              />
+              <skill-select class="col" label="talent.skillTraining" v-model="skill" />
+            </b-row>
+            <b-form-group>
+              <b-form-checkbox v-model="multipleAcquisition">{{ $t('talents.multipleAcquisition.label') }}</b-form-checkbox>
+            </b-form-group>
+            <description-field v-model="description" />
+          </b-tab>
+          <b-tab :title="$t('talent.options.tab')">
+            <div class="my-2">
+              <icon-button class="mx-1" icon="plus" text="actions.add" variant="success" v-b-modal.newOption />
+              <talent-option-edit-modal id="newOption" @ok="addOption" />
+            </div>
+            <table v-if="options.length" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" v-t="'name.label'" />
+                  <th scope="col" v-t="'description.label'" />
+                  <th scope="col" />
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(option, index) in options" :key="index">
+                  <td>
+                    {{ option.name }}
+                    <talent-option-status v-if="option.status" :status="option.status" />
+                  </td>
+                  <td v-text="shortify(option.description, 100)" />
+                  <td>
+                    <icon-button
+                      class="mx-1"
+                      :disabled="option.status !== 'removed' && option.status !== 'updated'"
+                      icon="undo"
+                      variant="warning"
+                      @click="restoreOption(index)"
+                    />
+                    <icon-button class="mx-1" :disabled="option.status === 'removed'" icon="edit" variant="primary" v-b-modal="`editOption_${index}`" />
+                    <icon-button class="mx-1" :disabled="option.status === 'removed'" icon="times" variant="danger" @click="removeOption(index)" />
+                  </td>
+                  <talent-option-edit-modal :id="`editOption_${index}`" :option="option" @ok="updateOption(index, $event)" />
+                </tr>
+              </tbody>
+            </table>
+            <p v-else v-t="'talent.options.empty'" />
+          </b-tab>
+        </b-tabs>
         <div class="my-2">
           <icon-submit v-if="talent" class="mx-1" :disabled="!hasChanges || loading" icon="save" :loading="loading" text="actions.save" variant="primary" />
           <icon-submit v-else class="mx-1" :disabled="!hasChanges || loading" icon="plus" :loading="loading" text="actions.create" variant="success" />
@@ -37,12 +78,17 @@
 </template>
 
 <script>
+import TalentOptionEditModal from './TalentOptionEditModal.vue'
+import TalentOptionStatus from './TalentOptionStatus.vue'
 import TalentSelect from './TalentSelect.vue'
 import TierSelect from './TierSelect.vue'
+import Vue from 'vue'
 import { createTalent, getTalent, updateTalent } from '@/api/talents'
 
 export default {
   components: {
+    TalentOptionEditModal,
+    TalentOptionStatus,
     TalentSelect,
     TierSelect
   },
@@ -50,6 +96,7 @@ export default {
     description: null,
     loading: false,
     multipleAcquisition: false,
+    options: [],
     requiredTalentId: null,
     skill: null,
     talent: null,
@@ -64,7 +111,8 @@ export default {
         this.requiredTalentId !== (this.talent?.requiredTalent?.id ?? null) ||
         this.skill !== (this.talent?.skill ?? null) ||
         this.multipleAcquisition !== (this.talent?.multipleAcquisition ?? false) ||
-        (this.description ?? '') !== (this.talent?.description ?? '')
+        (this.description ?? '') !== (this.talent?.description ?? '') ||
+        this.options.some(({ status }) => Boolean(status))
       )
     },
     payload() {
@@ -72,6 +120,7 @@ export default {
         description: this.description,
         multipleAcquisition: this.multipleAcquisition,
         name: this.name,
+        options: this.options.filter(({ status }) => status !== 'removed').map(({ id, description, name }) => ({ id, description, name })),
         requiredTalentId: this.requiredTalentId,
         skill: this.skill
       }
@@ -88,11 +137,38 @@ export default {
     }
   },
   methods: {
+    addOption({ callback, description, name }) {
+      this.options.push({ description, name, status: 'added' })
+      if (callback) {
+        callback()
+      }
+    },
+    removeOption(index) {
+      const option = this.options[index]
+      if (option.status === 'added') {
+        Vue.delete(this.options, index)
+        return
+      }
+      option.status = 'removed'
+      Vue.set(this.options, index, option)
+    },
+    restoreOption(index) {
+      const option = this.options[index]
+      if (option.old) {
+        for (const [key, value] of Object.entries(option.old)) {
+          option[key] = value
+        }
+        delete option.old
+      }
+      delete option.status
+      Vue.set(this.options, index, option)
+    },
     setModel(model) {
       this.talent = model
       this.description = model.description
       this.multipleAcquisition = model.multipleAcquisition
       this.name = model.name
+      this.options = model.options.map(option => ({ ...option }))
       this.requiredTalentId = model.requiredTalent?.id ?? null
       this.skill = model.skill
       this.tier = model.tier
@@ -119,6 +195,17 @@ export default {
         } finally {
           this.loading = false
         }
+      }
+    },
+    updateOption(index, { callback, description, name }) {
+      const option = this.options[index]
+      option.old = { ...option }
+      option.description = description
+      option.name = name
+      option.status = 'updated'
+      Vue.set(this.options, index, option)
+      if (callback) {
+        callback()
       }
     }
   },
