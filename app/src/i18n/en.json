@@ -418,6 +418,18 @@
   },
   "talent": {
     "created": "Your talent has been created.",
+    "general": "General",
+    "options": {
+      "editTitle": "Edit option",
+      "empty": "No option to display.",
+      "newTitle": "New option",
+      "status": {
+        "added": "Added",
+        "removed": "Removed",
+        "updated": "Updated"
+      },
+      "tab": "Options"
+    },
     "required": {
       "label": "Required Talent",
       "none": "(none)",
