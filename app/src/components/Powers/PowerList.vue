@@ -1,23 +1,13 @@
 <template>
   <b-container>
-    <h1 v-t="'talents.title'" />
+    <h1 v-t="'powers.title'" />
     <div class="my-2">
       <icon-button class="mx-1" :disabled="loading" icon="sync-alt" :loading="loading" text="actions.refresh" variant="primary" @click="refresh()" />
-      <icon-button class="mx-1" icon="plus" text="actions.create" :to="{ name: 'TalentEdit', params: { id: 'new' } }" variant="success" />
+      <icon-button class="mx-1" icon="plus" text="actions.create" :to="{ name: 'PowerEdit', params: { id: 'new' } }" variant="success" />
     </div>
     <b-row>
       <search-field class="col" v-model="search" />
-      <form-select
-        class="col"
-        id="multipleAcquisition"
-        label="talents.multipleAcquisition.label"
-        :options="multipleAcquisitionOptions"
-        placeholder="talents.multipleAcquisition.placeholder"
-        v-model="multipleAcquisition"
-      />
       <tier-select class="col" v-model="tier" />
-    </b-row>
-    <b-row>
       <sort-select class="col" :desc="desc" :options="sortOptions" v-model="sort" @descInput="desc = $event" />
       <count-select class="col" v-model="count" />
     </b-row>
@@ -27,7 +17,7 @@
           <tr>
             <th scope="col" v-t="'name.label'" />
             <th scope="col" v-t="'tier.label'" />
-            <th scope="col" v-t="'talent.required.label'" />
+            <th scope="col" v-t="'power.incantation.label'" />
             <th scope="col" v-t="'updatedAt'" />
             <th scope="col" />
           </tr>
@@ -35,22 +25,20 @@
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>
-              <router-link :to="{ name: 'TalentEdit', params: { id: item.id } }" v-text="item.name" />
+              <router-link :to="{ name: 'PowerEdit', params: { id: item.id } }" v-text="item.name" />
             </td>
             <td v-text="item.tier" />
-            <td>
-              <router-link v-if="item.requiredTalent" :to="{ name: 'TalentEdit', params: { id: item.requiredTalent.id } }" v-text="item.requiredTalent.name" />
-            </td>
+            <td>{{ $t(`power.incantation.options.${item.incantation}`) }}</td>
             <td>{{ $d(new Date(item.updatedAt || item.createdAt), 'medium') }}</td>
             <td>
-              <icon-button class="mx-1" icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deleteTalent_${item.id}`" />
+              <icon-button class="mx-1" icon="trash-alt" text="actions.delete" variant="danger" v-b-modal="`deletePower_${item.id}`" />
               <delete-modal
-                confirm="talents.delete.confirm"
+                confirm="powers.delete.confirm"
                 :disabled="loading"
                 :displayName="item.name"
-                :id="`deleteTalent_${item.id}`"
+                :id="`deletePower_${item.id}`"
                 :loading="loading"
-                title="talents.delete.title"
+                title="powers.delete.title"
                 @ok="_delete(item, $event)"
               />
             </td>
@@ -64,7 +52,7 @@
 </template>
 
 <script>
-import { deleteTalent, getTalents } from '@/api/talents'
+import { deletePower, getPowers } from '@/api/powers'
 
 export default {
   data: () => ({
@@ -73,7 +61,6 @@ export default {
     desc: false,
     items: [],
     loading: false,
-    multipleAcquisition: null,
     page: 1,
     search: null,
     sort: 'Name',
@@ -81,13 +68,9 @@ export default {
     total: 0
   }),
   computed: {
-    multipleAcquisitionOptions() {
-      return Object.entries(this.$i18n.t('talents.multipleAcquisition.options')).map(([value, text]) => ({ text, value }))
-    },
     params() {
       return {
         deleted: this.deleted,
-        multipleAcquisition: this.multipleAcquisition === 'yes' ? true : this.multipleAcquisition === 'no' ? false : null,
         search: this.search,
         tiers: this.tier === null ? null : this.tier.toString(),
         sort: this.sort,
@@ -97,7 +80,7 @@ export default {
       }
     },
     sortOptions() {
-      return Object.entries(this.$i18n.t('talents.sort'))
+      return Object.entries(this.$i18n.t('powers.sort'))
         .map(([value, text]) => ({ text, value }))
         .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     }
@@ -108,9 +91,9 @@ export default {
         this.loading = true
         let refresh = false
         try {
-          await deleteTalent(id)
+          await deletePower(id)
           refresh = true
-          this.toast('success', 'talents.delete.success')
+          this.toast('success', 'powers.delete.success')
           if (typeof callback === 'function') {
             callback()
           }
@@ -128,7 +111,7 @@ export default {
       if (!this.loading) {
         this.loading = true
         try {
-          const { data } = await getTalents(params ?? this.params)
+          const { data } = await getPowers(params ?? this.params)
           this.items = data.items
           this.total = data.total
         } catch (e) {
@@ -148,7 +131,6 @@ export default {
           newValue?.index &&
           oldValue &&
           (newValue.deleted !== oldValue.deleted ||
-            newValue.multipleAcquisition !== oldValue.multipleAcquisition ||
             newValue.search !== oldValue.search ||
             newValue.tier !== oldValue.tier ||
             newValue.sort !== oldValue.sort ||

@@ -25,7 +25,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'talent.tier.label'
+      default: 'tier.label'
     },
     options: {
       type: Array,
@@ -33,7 +33,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'talent.tier.placeholder'
+      default: 'tier.placeholder'
     },
     required: {
       type: Boolean,

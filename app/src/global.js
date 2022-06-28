@@ -18,6 +18,7 @@ import SkillSelect from './components/shared/SkillSelect.vue'
 import SortSelect from './components/shared/SortSelect.vue'
 import StatusDetail from './components/shared/StatusDetail.vue'
 import TagList from './components/shared/TagList.vue'
+import TierSelect from './components/shared/TierSelect.vue'
 
 Vue.component('v-gravatar', Gravatar)
 
@@ -39,6 +40,7 @@ Vue.component('skill-select', SkillSelect)
 Vue.component('sort-select', SortSelect)
 Vue.component('status-detail', StatusDetail)
 Vue.component('tag-list', TagList)
+Vue.component('tier-select', TierSelect)
 
 Vue.mixin({
   methods: {

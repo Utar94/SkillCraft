@@ -18,6 +18,8 @@ import LanguageList from './components/Languages/LanguageList.vue'
 import NatureEdit from './components/Natures/NatureEdit.vue'
 import NatureList from './components/Natures/NatureList.vue'
 import NotFound from './components/NotFound.vue'
+import PowerEdit from './components/Powers/PowerEdit.vue'
+import PowerList from './components/Powers/PowerList.vue'
 import Profile from './components/Identity/Profile.vue'
 import RaceEdit from './components/Races/RaceEdit.vue'
 import RaceList from './components/Races/RaceList.vue'
@@ -159,6 +161,17 @@ const router = new VueRouter({
       name: 'NatureEdit',
       path: '/natures/:id',
       component: NatureEdit
+    },
+    // Powers
+    {
+      name: 'PowerList',
+      path: '/powers',
+      component: PowerList
+    },
+    {
+      name: 'PowerEdit',
+      path: '/powers/:id',
+      component: PowerEdit
     },
     // Races
     {

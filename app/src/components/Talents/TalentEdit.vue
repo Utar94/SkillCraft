@@ -81,7 +81,6 @@
 import TalentOptionEditModal from './TalentOptionEditModal.vue'
 import TalentOptionStatus from './TalentOptionStatus.vue'
 import TalentSelect from './TalentSelect.vue'
-import TierSelect from './TierSelect.vue'
 import Vue from 'vue'
 import { createTalent, getTalent, updateTalent } from '@/api/talents'
 
@@ -89,8 +88,7 @@ export default {
   components: {
     TalentOptionEditModal,
     TalentOptionStatus,
-    TalentSelect,
-    TierSelect
+    TalentSelect
   },
   data: () => ({
     description: null,

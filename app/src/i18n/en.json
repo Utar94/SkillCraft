@@ -227,6 +227,85 @@
     "title": "New people",
     "updated": "Your people has been updated."
   },
+  "power": {
+    "components": {
+      "focus": "Focus",
+      "label": "Components",
+      "material": "Material",
+      "somatic": "Somatic",
+      "verbal": "Verbal"
+    },
+    "created": "Your power has been created.",
+    "descriptions": {
+      "firstLevel": {
+        "label": "First Level",
+        "placeholder": "Describe the effects of the first level"
+      },
+      "global": {
+        "label": "Summary",
+        "placeholder": "Summarize the power and its effects"
+      },
+      "secondLevel": {
+        "label": "Second Level",
+        "placeholder": "Describe the effects of the second level"
+      },
+      "thirdLevel": {
+        "label": "Third Level",
+        "placeholder": "Describe the effects of the third level"
+      }
+    },
+    "duration": {
+      "concentration": "Concentration",
+      "label": "Duration",
+      "options": {
+        "0": "Instantaneous",
+        "6": "1 round",
+        "60": "1 minute",
+        "600": "10 minutes",
+        "3600": "1 hour",
+        "∞": "Until dispelled"
+      },
+      "placeholder": "Select a duration"
+    },
+    "general": "General",
+    "incantation": {
+      "label": "Incantation",
+      "options": {
+        "StandardAction": "Standard Action",
+        "FullRoundAction": "Full-Round Action",
+        "SwiftAction": "Swift Action",
+        "Reaction": "Reaction",
+        "OneMinute": "1 minute",
+        "TenMinutes": "10 minutes"
+      },
+      "placeholder": "Select an incantation type",
+      "ritual": "Ritual"
+    },
+    "ingredients": {
+      "consumed": "Consumed",
+      "label": "Ingredients",
+      "placeholder": "Enter the ingredients"
+    },
+    "range": {
+      "label": "Range (squares)",
+      "self": "Self",
+      "touch": "Touch"
+    },
+    "title": "New power",
+    "updated": "Your power has been updated."
+  },
+  "powers": {
+    "delete": {
+      "confirm": "Do you really want to delete the following power?",
+      "success": "Your power has been deleted.",
+      "title": "Delete power"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Powers"
+  },
   "race": {
     "attributes": {
       "extra": "Extra attributes",
@@ -436,10 +515,6 @@
       "placeholder": "Select a talent"
     },
     "skillTraining": "Skill Training",
-    "tier": {
-      "label": "Tier",
-      "placeholder": "Select a tier"
-    },
     "title": "New talent",
     "updated": "Your talent has been updated."
   },
@@ -462,6 +537,10 @@
       "UpdatedAt": "Updated at"
     },
     "title": "Talents"
+  },
+  "tier": {
+    "label": "Tier",
+    "placeholder": "Select a tier"
   },
   "updatedAt": "Updated at",
   "user": {
