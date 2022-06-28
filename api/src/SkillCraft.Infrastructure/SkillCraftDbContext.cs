@@ -6,6 +6,7 @@ using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Characters;
+using SkillCraft.Core.Classes;
 using SkillCraft.Core.Conditions;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
@@ -29,6 +30,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Aspect> Aspects { get; set; }
     public DbSet<Caste> Castes { get; set; }
     public DbSet<Character> Characters { get; set; }
+    public DbSet<Class> Classes { get; set; }
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Customization> Customizations { get; set; }
     public DbSet<Education> Educations { get; set; }
@@ -45,6 +47,7 @@ namespace SkillCraft.Infrastructure
     internal DbSet<CharacterLanguage> CharacterLanguages { get; set; }
     internal DbSet<CharacterPower> CharacterPowers { get; set; }
     internal DbSet<CharacterTalent> CharacterTalents { get; set; }
+    internal DbSet<ClassTalent> ClassTalents { get; set; }
     internal DbSet<RaceLanguage> RaceLanguages { get; set; }
     internal DbSet<TalentOption> TalentOptions { get; set; }
 

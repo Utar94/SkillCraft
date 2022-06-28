@@ -8,10 +8,9 @@ namespace SkillCraft.Infrastructure.Configurations
   {
     public void Configure(EntityTypeBuilder<CharacterPower> builder)
     {
-      builder.HasIndex(x => x.Uuid).IsUnique();
+      builder.HasKey(x => new { x.CharacterId, x.PowerId });
 
       builder.Property(x => x.Cost).HasDefaultValue(0);
-      builder.Property(x => x.Uuid).HasDefaultValueSql("uuid_generate_v4()");
     }
   }
 }

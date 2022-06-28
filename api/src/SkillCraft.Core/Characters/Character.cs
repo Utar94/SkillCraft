@@ -1,10 +1,12 @@
 ﻿using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
+using SkillCraft.Core.Classes;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using System.Text.Json;
 
@@ -164,11 +166,15 @@ namespace SkillCraft.Core.Characters
     public int SpentTalentPoints => Talents.Sum(x => x.Cost) + Powers.Sum(x => x.Cost);
     public int TotalTalentPoints => (Level + 1) * 4;
 
+    public IEnumerable<Class> Classes => Talents
+      .Where(x => x.Talent?.Class != null)
+      .Select(x => x.Talent!.Class!);
+    public int Tier => Classes.Max(x => (int?)x.Tier) ?? 0;
+    public int MaxSkillRank => ((Tier + 1) * 2) + (Tier * (Tier + 1) / 2);
+
     // TODO(fpion): Inventory (n..n)*
     // TODO(fpion): Attacks & Defense (JSON & computed)
     // TODO(fpion): Notes (1..n)
-
-    public override string ToString() => $"{Name} | {base.ToString()}";
 
     public CharacterLevelUp LevelUp(Attribute attribute)
     {
@@ -187,8 +193,32 @@ namespace SkillCraft.Core.Characters
       return levelUp;
     }
 
+    public override string ToString() => $"{Name} | {base.ToString()}";
+
     public void Validate()
     {
+      IEnumerable<Skill> exceededSkillRanks = SkillRanks.GroupBy(x => x.Skill)
+        .Where(x => x.Count() > MaxSkillRank)
+        .Select(x => x.Key);
+      if (exceededSkillRanks.Any())
+      {
+        throw new SkillRanksExceededException(this, exceededSkillRanks);
+      }
+
+      HashSet<int> talentIds = Talents.Select(x => x.TalentId).ToHashSet();
+      var requiredTalents = new List<Talent>(capacity: talentIds.Count);
+      foreach (CharacterTalent talent in Talents)
+      {
+        if (talent.Talent?.RequiredTalent != null && !talentIds.Contains(talent.Talent.RequiredTalent.Id))
+        {
+          requiredTalents.Add(talent.Talent.RequiredTalent);
+        }
+      }
+      if (requiredTalents.Any())
+      {
+        throw new MissingRequiredTalentsException(this, requiredTalents);
+      }
+
       if (RemainingLearningPoints < 0)
       {
         throw new SpentLearningPointsExceededException(this);

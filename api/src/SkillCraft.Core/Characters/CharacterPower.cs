@@ -10,14 +10,10 @@ namespace SkillCraft.Core.Characters
       CharacterId = character.Id;
       Power = power ?? throw new ArgumentNullException(nameof(power));
       PowerId = power.Id;
-      Uuid = Guid.NewGuid();
     }
     private CharacterPower()
     {
     }
-
-    public int Id { get; set; }
-    public Guid Uuid { get; set; }
 
     public Character? Character { get; set; }
     public int CharacterId { get; set; }

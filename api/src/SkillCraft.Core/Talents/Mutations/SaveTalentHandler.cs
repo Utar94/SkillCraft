@@ -27,13 +27,23 @@ namespace SkillCraft.Core.Talents.Mutations
       Talent? requiredTalent = null;
       if (payload.RequiredTalentId.HasValue)
       {
+        if (talent.Class != null)
+        {
+          throw new UniqueTalentCannotRequireException(talent);
+        }
+
         requiredTalent = await DbContext.Talents
+          .Include(x => x.Class)
           .SingleOrDefaultAsync(x => x.Uuid == payload.RequiredTalentId.Value, cancellationToken)
           ?? throw new EntityNotFoundException<Talent>(payload.RequiredTalentId.Value, nameof(payload.RequiredTalentId));
 
         if (requiredTalent.WorldId != AppContext.World.Id)
         {
           throw new UnauthorizedOperationException<Talent>(talent, AppContext.UserId, AppContext.World);
+        }
+        else if (requiredTalent.Class != null)
+        {
+          throw new CannotRequireUniqueTalentException(requiredTalent, talent);
         }
         else if (requiredTalent.Tier > talent.Tier)
         {

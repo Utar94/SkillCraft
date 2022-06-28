@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using SkillCraft.Core.Characters;
 using System.Reflection;
 
 namespace SkillCraft.Core
@@ -12,7 +13,8 @@ namespace SkillCraft.Core
 
       return services
         .AddAutoMapper(assembly)
-        .AddMediatR(assembly);
+        .AddMediatR(assembly)
+        .AddScoped<ICharacterService, CharacterService>();
     }
   }
 }
