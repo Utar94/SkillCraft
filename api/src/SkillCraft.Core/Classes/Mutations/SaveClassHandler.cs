@@ -78,7 +78,7 @@ namespace SkillCraft.Core.Classes.Mutations
       {
         throw new UniqueTalentCannotBeRequiredException(uniqueTalent);
       }
-      else if (uniqueTalent.Tier >= @class.Tier)
+      else if (uniqueTalent.Tier != (@class.Tier - 1))
       {
         throw new InvalidClassTalentTierException(@class.Tier, uniqueTalent);
       }
@@ -106,7 +106,7 @@ namespace SkillCraft.Core.Classes.Mutations
           {
             throw new InvalidUniqueClassTalentException(talent);
           }
-          else if (talent.Tier >= @class.Tier)
+          else if ((@class.Tier == 0) ? (talent.Tier > 0) : (talent.Tier >= @class.Tier))
           {
             throw new InvalidClassTalentTierException(@class.Tier, talent);
           }

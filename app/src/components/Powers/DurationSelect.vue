@@ -10,7 +10,7 @@
     :value="value"
     @input="$emit('input', $event)"
   >
-    <b-form-checkbox id="concentration" :checked="concentration" :disabled="value === '0'" @input="$emit('concentrationInput', $event)">{{
+    <b-form-checkbox id="concentration" :checked="concentration" :disabled="instantaneous" @input="$emit('concentrationInput', $event)">{{
       $t('power.duration.concentration')
     }}</b-form-checkbox>
   </form-select>
@@ -50,6 +50,9 @@ export default {
     value: {}
   },
   computed: {
+    instantaneous() {
+      return this.value !== null && Number(this.value) === 0
+    },
     options() {
       return Object.entries(this.$i18n.t('power.duration.options')).map(([value, text]) => ({ text, value }))
     }

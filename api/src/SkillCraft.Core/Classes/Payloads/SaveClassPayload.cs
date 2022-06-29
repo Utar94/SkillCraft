@@ -12,7 +12,7 @@ namespace SkillCraft.Core.Classes.Payloads
 
     public string? Description { get; set; }
 
-    [StringLength(100)]
+    [StringLength(1000)]
     public string? OtherRequirements { get; set; }
 
     [StringLength(100)]
@@ -40,7 +40,7 @@ namespace SkillCraft.Core.Classes.Payloads
         if (Talents.Any(talent => talent.TalentId == UniqueTalentId))
         {
           results.Add(new ValidationResult(
-            errorMessage: "The unique talent must be included.",
+            errorMessage: "The unique talent cannot be included.",
             memberNames: new[] { nameof(Talents) }
           ));
         }
