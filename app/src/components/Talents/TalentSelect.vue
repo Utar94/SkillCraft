@@ -8,7 +8,7 @@
     :required="disabled ? false : required"
     :rules="disabled ? null : rules"
     :value="value"
-    @input="$emit('input', $event)"
+    @input="onInput"
   />
 </template>
 
@@ -34,15 +34,11 @@ export default {
     },
     label: {
       type: String,
-      default: 'talent.required.label'
-    },
-    maxTier: {
-      type: Number,
-      default: 3
+      default: 'talent.select.label'
     },
     placeholder: {
       type: String,
-      default: 'talent.required.placeholder'
+      default: 'talent.select.placeholder'
     },
     required: {
       type: Boolean,
@@ -51,6 +47,10 @@ export default {
     rules: {
       type: Object,
       default: null
+    },
+    tiers: {
+      type: Array,
+      default: () => [0, 1, 2, 3]
     },
     value: {}
   },
@@ -64,20 +64,31 @@ export default {
         }))
     }
   },
+  methods: {
+    onInput(id) {
+      this.$emit('input', id)
+      const talent = this.talents.find(talent => talent.id === id)
+      if (talent) {
+        this.$emit('talent', talent)
+      }
+    }
+  },
   watch: {
-    maxTier: {
+    tiers: {
       immediate: true,
-      async handler(maxTier) {
-        try {
-          const { data } = await getTalents({
-            deleted: false,
-            tiers: Array.from(new Array(maxTier + 1), (_, i) => i).join(','),
-            sort: 'Name',
-            desc: false
-          })
-          this.talents = data.items
-        } catch (e) {
-          this.handle(e)
+      async handler(newValue, oldValue) {
+        if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+          try {
+            const { data } = await getTalents({
+              deleted: false,
+              tiers: newValue.join(','),
+              sort: 'Name',
+              desc: false
+            })
+            this.talents = data.items
+          } catch (e) {
+            this.handle(e)
+          }
         }
       }
     }

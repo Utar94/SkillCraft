@@ -68,6 +68,42 @@
     },
     "title": "Castes"
   },
+  "class": {
+    "acquisition": {
+      "addTalent": "Add a talent",
+      "mandatory": "Mandatory",
+      "tab": "Acquisition",
+      "talents": "Talents"
+    },
+    "created": "Your class has been created.",
+    "general": "General",
+    "otherRequirements": {
+      "label": "Other requirements",
+      "placeholder": "State the other requirements to acquire this class."
+    },
+    "otherTalentsText": {
+      "label": "Other talents",
+      "placeholder": "Specify other elements which count towards acquiring this class."
+    },
+    "title": "New class",
+    "uniqueTalent": {
+      "label": "Unique Talent",
+      "placeholder": "Select an unique talent"
+    },
+    "updated": "Your class has been saved."
+  },
+  "classes": {
+    "delete": {
+      "confirm": "Do you really want to delete the following class?",
+      "success": "Your class has been deleted.",
+      "title": "Delete class"
+    },
+    "sort": {
+      "Name": "Name",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Classes"
+  },
   "condition": {
     "created": "Your condition has been created.",
     "maxLevel": {
@@ -511,7 +547,10 @@
     },
     "required": {
       "label": "Required Talent",
-      "none": "(none)",
+      "none": "(none)"
+    },
+    "select": {
+      "label": "Talent",
       "placeholder": "Select a talent"
     },
     "skillTraining": "Skill Training",

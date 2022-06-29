@@ -66,9 +66,6 @@ export default {
     }
   },
   methods: {
-    clean(values) {
-      return values.filter(value => typeof value !== 'undefined' && value !== null)
-    },
     setModel(model) {
       this.caste = model
       this.description = model.description

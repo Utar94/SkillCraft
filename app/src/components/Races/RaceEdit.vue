@@ -488,9 +488,6 @@ export default {
         callback()
       }
     },
-    clean(values) {
-      return values.filter(value => typeof value !== 'undefined' && value !== null)
-    },
     removeLanguage({ value }) {
       const index = this.languages.findIndex(({ id }) => id === value)
       if (index >= 0) {

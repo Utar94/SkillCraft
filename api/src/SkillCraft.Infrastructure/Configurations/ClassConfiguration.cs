@@ -16,7 +16,6 @@ namespace SkillCraft.Infrastructure.Configurations
       builder.HasOne(x => x.UniqueTalent).WithOne(x => x.Class);
 
       builder.Property(x => x.Name).HasMaxLength(256);
-      builder.Property(x => x.OtherRequirements).HasMaxLength(256);
       builder.Property(x => x.OtherTalentsText).HasMaxLength(256);
     }
   }

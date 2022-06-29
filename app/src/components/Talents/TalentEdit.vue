@@ -11,15 +11,18 @@
       <b-form @submit.prevent="submit">
         <b-tabs content-class="mt-3">
           <b-tab :title="$t('talent.general')" active>
-            <name-field v-model="name" />
             <b-row>
+              <name-field class="col" v-model="name" />
               <tier-select class="col" :disabled="Boolean(talent)" :required="!talent" v-model="tier" />
+            </b-row>
+            <b-row>
               <talent-select
                 class="col"
                 :disabled="tier === null"
-                id="requiredTalentId"
                 :exclude="talent ? [talent.id] : []"
-                :maxTier="tier"
+                id="requiredTalentId"
+                label="talent.required.label"
+                :tiers="[0, 1, 2, 3].filter(value => value <= tier)"
                 v-model="requiredTalentId"
               />
               <skill-select class="col" label="talent.skillTraining" v-model="skill" />
