@@ -6,6 +6,7 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "next": "Next",
     "refresh": "Refresh",
     "remove": "Remove",
     "restore": "Restore",
@@ -67,6 +68,44 @@
       "UpdatedAt": "Updated at"
     },
     "title": "Castes"
+  },
+  "character": {
+    "aspect1": "Aspect 1",
+    "aspect2": "Aspect 2",
+    "aspects": "Aspects",
+    "attributes": {
+      "bases": "Attribute Bases",
+      "best": "Best Attribute (+3)",
+      "mandatory": {
+        "other": "Other attributes (+2): {attributes}",
+        "title": "Mandatory Attributes"
+      },
+      "optional": {
+        "label1": "Optional Attribute 1 (+1)",
+        "label2": "Optional Attribute 2 (+1)",
+        "title": "Optional Attributes"
+      },
+      "placeholder": "Select an attribute",
+      "worst": "Worst Attribute (+1)"
+    },
+    "remainingPoints": "Remaining points: {value}",
+    "selectAspect": "Select an aspect",
+    "title": {
+      "step1": "New character — Step #1"
+    }
+  },
+  "characters": {
+    "delete": {
+      "confirm": "Do you really want to delete the following character?",
+      "success": "Your character has been deleted.",
+      "title": "Delete character"
+    },
+    "sort": {
+      "Name": "Name",
+      "Player": "Player",
+      "UpdatedAt": "Updated at"
+    },
+    "title": "Characters"
   },
   "class": {
     "acquisition": {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faArrowLeft,
+  faArrowRight,
   faBan,
   faCog,
   faEdit,
@@ -30,6 +31,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
   faArrowLeft,
+  faArrowRight,
   faBan,
   faCog,
   faEdit,

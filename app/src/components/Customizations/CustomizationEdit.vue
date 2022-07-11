@@ -73,7 +73,6 @@ export default {
     async submit() {
       if (!this.loading) {
         this.loading = true
-        this.aliasConflict = false
         try {
           if (await this.$refs.form.validate()) {
             if (this.customization) {

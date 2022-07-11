@@ -5,6 +5,8 @@ import AspectEdit from './components/Aspects/AspectEdit.vue'
 import AspectList from './components/Aspects/AspectList.vue'
 import CasteEdit from './components/Castes/CasteEdit.vue'
 import CasteList from './components/Castes/CasteList.vue'
+import CharacterEditStep1 from './components/Characters/CharacterEditStep1.vue'
+import CharacterList from './components/Characters/CharacterList.vue'
 import ClassEdit from './components/Classes/ClassEdit.vue'
 import ClassList from './components/Classes/ClassList.vue'
 import ConditionEdit from './components/Conditions/ConditionEdit.vue'
@@ -108,6 +110,17 @@ const router = new VueRouter({
       name: 'CasteEdit',
       path: '/castes/:id',
       component: CasteEdit
+    },
+    // Characters
+    {
+      name: 'CharacterList',
+      path: '/characters',
+      component: CharacterList
+    },
+    {
+      name: 'CharacterEditStep1',
+      path: '/characters/step/1',
+      component: CharacterEditStep1
     },
     // Classes
     {

@@ -1,17 +1,16 @@
 <template>
   <div>
     <b-row>
-      <name-field class="col" :id="id" label="race.names.label" placeholder="race.names.placeholder" :value="category" @input="$emit('renamed', $event)">
-        <template #append>
-          <icon-button v-if="status !== 'removed'" icon="trash-alt" text="actions.remove" variant="danger" @click="$emit('removed')" />
-          <icon-button v-if="status === 'removed'" icon="undo" text="actions.restore" variant="warning" @click="$emit('restored')" />
-        </template>
-      </name-field>
-      <form-field class="col" :id="`${id}_add`" label="race.names.add.label" placeholder="race.names.add.placeholder" v-model="name">
-        <template #append>
-          <icon-button :disabled="!name" icon="plus" variant="success" @click="addNames" />
-        </template>
-      </form-field>
+      <!-- TODO(fpion): append -->
+      <div class="col">
+        <name-field :id="id" label="race.names.label" placeholder="race.names.placeholder" :value="category" @input="$emit('renamed', $event)" />
+        <icon-button v-if="status !== 'removed'" icon="trash-alt" text="actions.remove" variant="danger" @click="$emit('removed')" />
+        <icon-button v-if="status === 'removed'" icon="undo" text="actions.restore" variant="warning" @click="$emit('restored')" />
+      </div>
+      <div class="col">
+        <form-field :id="`${id}_add`" label="race.names.add.label" placeholder="race.names.add.placeholder" v-model="name" />
+        <icon-button :disabled="!name" icon="plus" variant="success" @click="addNames" />
+      </div>
     </b-row>
     <tag-list label="race.names.tags" :tags="tags" @remove="$emit('nameRemoved', $event)" />
   </div>

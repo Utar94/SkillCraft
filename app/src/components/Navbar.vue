@@ -69,6 +69,11 @@
               <font-awesome-icon icon="cog" />
               {{ $t('classes.title') }}
             </b-nav-item>
+            <b-nav-item :to="{ name: 'CharacterList' }">
+              <!-- TODO(fpion): icon? -->
+              <font-awesome-icon icon="cog" />
+              {{ $t('characters.title') }}
+            </b-nav-item>
           </template>
         </b-navbar-nav>
 
