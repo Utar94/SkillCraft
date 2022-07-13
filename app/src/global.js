@@ -59,9 +59,9 @@ Vue.mixin({
     roll(roll) {
       let result = 0
       const parts = roll.split('+')
-      const dices = parts[0].split('d')
-      for (let i = 0; i < Number(dices[0]); i++) {
-        result += Math.floor(Math.random() * Number(dices[1])) + 1
+      const dice = parts[0].split('d')
+      for (let i = 0; i < Number(dice[0]); i++) {
+        result += Math.floor(Math.random() * Number(dice[1])) + 1
       }
       if (parts.length > 1) {
         result += Number(parts[1])
