@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-row>
-      <!-- TODO(fpion): append -->
       <div class="col">
         <name-field :id="id" label="race.names.label" placeholder="race.names.placeholder" :value="category" @input="$emit('renamed', $event)" />
         <icon-button v-if="status !== 'removed'" icon="trash-alt" text="actions.remove" variant="danger" @click="$emit('removed')" />

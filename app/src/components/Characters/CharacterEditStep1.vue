@@ -76,7 +76,7 @@
             v-model.number="attributeBases.vigor"
           />
         </b-row>
-        <p :class="{ 'text-success': remainingPoints === 0, 'text-danger': remainingPoints < 0 }">
+        <p :class="{ 'text-success': remainingPoints === 0, 'text-danger': remainingPoints !== 0 }">
           {{ $t('character.remainingPoints', { value: remainingPoints }) }}
         </p>
         <h2 v-t="'character.aspects'" />
@@ -146,9 +146,9 @@
           </b-row>
         </template>
         <div class="my-2">
-          <!-- TODO(fpion): confirm if hasChanges === true -->
-          <icon-submit class="mx-1" :disabled="Boolean(remainingPoints) || !hasChanges" icon="arrow-right" text="actions.next" variant="primary" />
-          <icon-button class="mx-1" icon="ban" text="actions.cancel" :to="{ name: 'CharacterList' }" />
+          <icon-submit class="mx-1" :disabled="remainingPoints !== 0 || !hasChanges" icon="arrow-right" text="actions.next" variant="primary" />
+          <icon-button class="mx-1" icon="ban" text="actions.cancel" @click="cancel" />
+          <!-- TODO(fpion): confirm cancel -->
         </div>
       </b-form>
     </validation-observer>
@@ -158,6 +158,7 @@
 <script>
 import AspectSelect from './AspectSelect.vue'
 import { getAspects } from '@/api/aspects'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
@@ -177,19 +178,28 @@ export default {
       vigor: 7
     },
     bestAttribute: null,
+    loaded: false,
     optionalAttribute1: null,
     optionalAttribute2: null,
     worstAttribute: null
   }),
   computed: {
+    ...mapState(['characterCreation']),
     hasChanges() {
       return Object.values(this.attributeBases).some(value => value !== 7) || this.aspect1 !== null || this.aspect2 !== null
     },
     mandatoryAttributes() {
+      const attributes = []
+      if (this.aspect1) {
+        attributes.push(this.aspect1.mandatoryAttribute1)
+        attributes.push(this.aspect1.mandatoryAttribute2)
+      }
+      if (this.aspect2) {
+        attributes.push(this.aspect2.mandatoryAttribute1)
+        attributes.push(this.aspect2.mandatoryAttribute2)
+      }
       return this.orderBy(
-        Array.from(
-          new Set([this.aspect1.mandatoryAttribute1, this.aspect1.mandatoryAttribute2, this.aspect2.mandatoryAttribute1, this.aspect2.mandatoryAttribute2])
-        ).map(attribute => ({
+        Array.from(new Set(attributes)).map(attribute => ({
           text: this.$i18n.t(`attribute.options.${attribute}`),
           value: attribute
         })),
@@ -197,23 +207,27 @@ export default {
       )
     },
     optionalAttributes() {
-      return this.orderBy(
-        [
-          { text: this.$i18n.t(`attribute.options.${this.aspect1.optionalAttribute1}`), value: `1_${this.aspect1.optionalAttribute1}` },
-          { text: this.$i18n.t(`attribute.options.${this.aspect1.optionalAttribute2}`), value: `1_${this.aspect1.optionalAttribute2}` },
-          { text: this.$i18n.t(`attribute.options.${this.aspect2.optionalAttribute1}`), value: `2_${this.aspect2.optionalAttribute1}` },
-          { text: this.$i18n.t(`attribute.options.${this.aspect2.optionalAttribute2}`), value: `2_${this.aspect2.optionalAttribute2}` }
-        ],
-        'text'
-      )
+      const attributes = []
+      if (this.aspect1) {
+        attributes.push({ text: this.$i18n.t(`attribute.options.${this.aspect1.optionalAttribute1}`), value: `1_${this.aspect1.optionalAttribute1}` })
+        attributes.push({ text: this.$i18n.t(`attribute.options.${this.aspect1.optionalAttribute2}`), value: `1_${this.aspect1.optionalAttribute2}` })
+      }
+      if (this.aspect2) {
+        attributes.push({ text: this.$i18n.t(`attribute.options.${this.aspect2.optionalAttribute1}`), value: `2_${this.aspect2.optionalAttribute1}` })
+        attributes.push({ text: this.$i18n.t(`attribute.options.${this.aspect2.optionalAttribute2}`), value: `2_${this.aspect2.optionalAttribute2}` })
+      }
+      return this.orderBy(attributes, 'text')
     },
     otherMandatoryAttributes() {
-      const attributes = [
-        this.aspect1.mandatoryAttribute1,
-        this.aspect1.mandatoryAttribute2,
-        this.aspect2.mandatoryAttribute1,
-        this.aspect2.mandatoryAttribute2
-      ]
+      const attributes = []
+      if (this.aspect1) {
+        attributes.push(this.aspect1.mandatoryAttribute1)
+        attributes.push(this.aspect1.mandatoryAttribute2)
+      }
+      if (this.aspect2) {
+        attributes.push(this.aspect2.mandatoryAttribute1)
+        attributes.push(this.aspect2.mandatoryAttribute2)
+      }
       const bestIndex = attributes.findIndex(attribute => attribute === this.bestAttribute)
       if (bestIndex >= 0) {
         attributes.splice(bestIndex, 1)
@@ -224,6 +238,21 @@ export default {
       }
       return this.orderBy(attributes)
     },
+    payload() {
+      return {
+        aspect1Id: this.aspect1?.id ?? null,
+        aspect2Id: this.aspect2?.id ?? null,
+        creation: {
+          attributeBases: { ...this.attributeBases },
+          bestAttribute: this.bestAttribute,
+          worstAttribute: this.worstAttribute,
+          mandatoryAttribute1: this.otherMandatoryAttributes[0] ?? null,
+          mandatoryAttribute2: this.otherMandatoryAttributes[1] ?? null,
+          optionalAttribute1: this.optionalAttribute1,
+          optionalAttribute2: this.optionalAttribute2
+        }
+      }
+    },
     remainingPoints() {
       return 7 * 7 + 8 - this.totalPoints
     },
@@ -232,25 +261,46 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['resetCharacterCreation', 'saveCharacterCreationStep1']),
+    cancel() {
+      this.resetCharacterCreation()
+      this.$router.push({ name: 'CharacterList' })
+    },
+    checkAspectAttributes() {
+      if (!this.mandatoryAttributes.find(({ value }) => value === this.bestAttribute)) {
+        this.bestAttribute = null
+      }
+      if (!this.mandatoryAttributes.find(({ value }) => value === this.worstAttribute)) {
+        this.worstAttribute = null
+      }
+      if (!this.optionalAttributes.find(({ value }) => value === this.optionalAttribute1)) {
+        this.optionalAttribute1 = null
+      }
+      if (!this.optionalAttributes.find(({ value }) => value === this.optionalAttribute2)) {
+        this.optionalAttribute2 = null
+      }
+    },
+    setModel(model) {
+      this.aspect1 = this.aspects.find(({ id }) => id === model.aspect1Id)
+      this.aspect2 = this.aspects.find(({ id }) => id === model.aspect2Id)
+      this.attributeBases.agility = model.creation.attributeBases.agility
+      this.attributeBases.coordination = model.creation.attributeBases.coordination
+      this.attributeBases.intellect = model.creation.attributeBases.intellect
+      this.attributeBases.mind = model.creation.attributeBases.mind
+      this.attributeBases.presence = model.creation.attributeBases.presence
+      this.attributeBases.sensitivity = model.creation.attributeBases.sensitivity
+      this.attributeBases.vigor = model.creation.attributeBases.vigor
+      this.bestAttribute = model.creation.bestAttribute
+      this.optionalAttribute1 = model.creation.optionalAttribute1
+      this.optionalAttribute2 = model.creation.optionalAttribute2
+      this.worstAttribute = model.creation.worstAttribute
+    },
     async submit() {
       if (!this.loading) {
         this.loading = true
         try {
           if (await this.$refs.form.validate()) {
-            const payload = {
-              aspect1Id: this.aspect1.id,
-              aspect2Id: this.aspect2.id,
-              creation: {
-                attributeBases: { ...this.attributeBases },
-                bestAttribute: this.bestAttribute,
-                worstAttribute: this.worstAttribute,
-                mandatoryAttribute1: this.otherMandatoryAttributes[0],
-                mandatoryAttribute2: this.otherMandatoryAttributes[1],
-                optionalAttribute1: this.optionalAttribute1.split('_')[1],
-                optionalAttribute2: this.optionalAttribute2.split('_')[1]
-              }
-            }
-            console.log(payload) // TODO(fpion): implement
+            this.$router.push({ name: 'CharacterEditStep2' })
           }
         } catch (e) {
           this.handleError(e)
@@ -264,8 +314,37 @@ export default {
     try {
       const { data } = await getAspects({ deleted: false, sort: 'Name' })
       this.aspects = data.items
+      if (this.characterCreation.step1) {
+        this.setModel(this.characterCreation.step1)
+      }
     } catch (e) {
       this.handleError(e)
+    }
+    this.loaded = true
+  },
+  watch: {
+    aspect1: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.checkAspectAttributes()
+      }
+    },
+    aspect2: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.checkAspectAttributes()
+      }
+    },
+    payload: {
+      deep: true,
+      immediate: true,
+      handler(payload) {
+        if (this.loaded) {
+          this.saveCharacterCreationStep1(payload)
+        }
+      }
     }
   }
 }

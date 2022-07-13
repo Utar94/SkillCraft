@@ -11,6 +11,10 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
+    characterCreation: {
+      step1: null,
+      step2: null
+    },
     locale: null,
     token: null,
     world: null
@@ -19,8 +23,18 @@ export default new Vuex.Store({
     changeWorld({ commit }, world) {
       commit('setWorld', world)
     },
+    resetCharacterCreation({ commit }) {
+      commit('setCharacterCreationStep1', null)
+      commit('setCharacterCreationStep2', null)
+    },
     resetWorld({ commit }) {
       commit('setWorld', null)
+    },
+    saveCharacterCreationStep1({ commit }, payload) {
+      commit('setCharacterCreationStep1', payload)
+    },
+    saveCharacterCreationStep2({ commit }, payload) {
+      commit('setCharacterCreationStep2', payload)
     },
     signIn({ commit }, token) {
       commit('setToken', token)
@@ -34,6 +48,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setCharacterCreationStep1(state, payload) {
+      state.characterCreation.step1 = payload
+    },
+    setCharacterCreationStep2(state, payload) {
+      state.characterCreation.step2 = payload
+    },
     setLocale(state, locale) {
       state.locale = locale
     },

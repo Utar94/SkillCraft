@@ -56,6 +56,18 @@ Vue.mixin({
     orderBy(items, key = null) {
       return key ? [...items].sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0)) : [...items].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
     },
+    roll(roll) {
+      let result = 0
+      const parts = roll.split('+')
+      const dices = parts[0].split('d')
+      for (let i = 0; i < Number(dices[0]); i++) {
+        result += Math.floor(Math.random() * Number(dices[1])) + 1
+      }
+      if (parts.length > 1) {
+        result += Number(parts[1])
+      }
+      return result
+    },
     shortify(text, length) {
       return text?.length > length ? text.substring(0, length - 1) + '…' : text
     },

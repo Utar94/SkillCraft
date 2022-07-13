@@ -9,9 +9,7 @@
     :rules="disabled ? null : rules"
     :value="value"
     @input="$emit('input', $event)"
-  >
-    <slot />
-  </form-select>
+  />
 </template>
 
 <script>
@@ -27,15 +25,15 @@ export default {
     },
     id: {
       type: String,
-      default: 'attribute'
+      default: 'otherBonus'
     },
     label: {
       type: String,
-      default: 'attribute.label'
+      default: 'character.bonuses.other.label'
     },
     placeholder: {
       type: String,
-      default: 'attribute.placeholder'
+      default: 'character.bonuses.other.placeholder'
     },
     required: {
       type: Boolean,
@@ -49,7 +47,7 @@ export default {
   },
   computed: {
     options() {
-      return Object.entries(this.$i18n.t('attribute.options'))
+      return Object.entries(this.$i18n.t('character.bonuses.other.options'))
         .filter(([value]) => !this.exclude.includes(value))
         .map(([value, text]) => ({ text, value }))
         .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))

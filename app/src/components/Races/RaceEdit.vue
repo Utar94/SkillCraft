@@ -176,17 +176,13 @@
                   </td>
                   <td v-text="shortify(trait.description, 100)" />
                   <td>
-                    <icon-button
-                      class="mx-1"
-                      :disabled="trait.status !== 'removed' && trait.status !== 'updated'"
-                      icon="undo"
-                      variant="warning"
-                      @click="restoreTrait(index)"
-                    />
-                    <icon-button class="mx-1" :disabled="trait.status === 'removed'" icon="edit" variant="primary" v-b-modal="`editTrait_${index}`" />
-                    <icon-button class="mx-1" :disabled="trait.status === 'removed'" icon="times" variant="danger" @click="removeTrait(index)" />
+                    <b-button-group>
+                      <icon-button v-if="trait.status === 'removed' || trait.status === 'updated'" icon="undo" variant="warning" @click="restoreTrait(index)" />
+                      <icon-button v-if="trait.status !== 'removed'" icon="edit" variant="primary" v-b-modal="`editTrait_${index}`" />
+                      <icon-button v-if="trait.status !== 'removed'" icon="times" variant="danger" @click="removeTrait(index)" />
+                    </b-button-group>
+                    <trait-edit-modal :id="`editTrait_${index}`" :trait="trait" @ok="updateTrait(index, $event)" />
                   </td>
-                  <trait-edit-modal :id="`editTrait_${index}`" :trait="trait" @ok="updateTrait(index, $event)" />
                 </tr>
               </tbody>
             </table>

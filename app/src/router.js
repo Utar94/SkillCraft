@@ -6,6 +6,7 @@ import AspectList from './components/Aspects/AspectList.vue'
 import CasteEdit from './components/Castes/CasteEdit.vue'
 import CasteList from './components/Castes/CasteList.vue'
 import CharacterEditStep1 from './components/Characters/CharacterEditStep1.vue'
+import CharacterEditStep2 from './components/Characters/CharacterEditStep2.vue'
 import CharacterList from './components/Characters/CharacterList.vue'
 import ClassEdit from './components/Classes/ClassEdit.vue'
 import ClassList from './components/Classes/ClassList.vue'
@@ -121,6 +122,11 @@ const router = new VueRouter({
       name: 'CharacterEditStep1',
       path: '/characters/step/1',
       component: CharacterEditStep1
+    },
+    {
+      name: 'CharacterEditStep2',
+      path: '/characters/step/2',
+      component: CharacterEditStep2
     },
     // Classes
     {

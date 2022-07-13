@@ -7,12 +7,14 @@
     "delete": "Delete",
     "edit": "Edit",
     "next": "Next",
+    "previous": "Previous",
     "refresh": "Refresh",
     "remove": "Remove",
     "restore": "Restore",
     "search": "Search",
     "save": "Save",
-    "view": "View"
+    "view": "View",
+    "write": "Write"
   },
   "aspect": {
     "attribute": {
@@ -86,12 +88,86 @@
         "title": "Optional Attributes"
       },
       "placeholder": "Select an attribute",
+      "remaining": "Remaining extra attributes: {value}",
       "worst": "Worst Attribute (+1)"
+    },
+    "bonuses": {
+      "attributes": "Attribute Bonuses",
+      "editTitle": "Edit bonus",
+      "empty": "No bonus to display.",
+      "newTitle": "New bonus",
+      "other": {
+        "label": "Other Bonus",
+        "options": {
+          "BloodAlcoholContent": "Blood Alcohol Content",
+          "Critical": "Critical",
+          "Intoxication": "Intoxication",
+          "Stamina": "Stamina",
+          "Vitality": "Vitality",
+          "WalkingSpeed": "Walking Speed"
+        },
+        "placeholder": "Select a bonus subtype"
+      },
+      "permanent": "Permanent",
+      "status": {
+        "added": "Added",
+        "removed": "Removed",
+        "updated": "Updated"
+      },
+      "target": "Subtype",
+      "title": "Bonuses",
+      "types": {
+        "Attribute": "Attribute",
+        "label": "Type",
+        "Other": "Other Bonus",
+        "placeholder": "Select a bonus type",
+        "Skill": "Skill",
+        "Statistic": "Statistic"
+      },
+      "value": "Value"
+    },
+    "languages": {
+      "add": "Add a language",
+      "racial": "Racial languages: {languages}",
+      "remaining": "Remaining languages: {value}",
+      "selected": "Selected languages",
+      "title": "Languages"
+    },
+    "name": {
+      "category": "Category",
+      "label": "Character Name",
+      "placeholder": "Enter a character name",
+      "selected": "Selected",
+      "title": "Name",
+      "values": "Names"
+    },
+    "physical": {
+      "age": {
+        "category": "Age Category",
+        "label": "Age (years)",
+        "title": "Age"
+      },
+      "size": "Size: {size}",
+      "stature": {
+        "label": "Stature (m)",
+        "title": "Stature"
+      },
+      "title": "Physical",
+      "weight": {
+        "category": "Weight Category (IMC)",
+        "label": "Weight (kg)",
+        "title": "Weight"
+      }
+    },
+    "race": {
+      "label": "Race",
+      "placeholder": "Select a race"
     },
     "remainingPoints": "Remaining points: {value}",
     "selectAspect": "Select an aspect",
     "title": {
-      "step1": "New character — Step #1"
+      "step1": "New character — Step #1",
+      "step2": "New character — Step #2"
     }
   },
   "characters": {
@@ -143,6 +219,7 @@
     },
     "title": "Classes"
   },
+  "cm": "cm",
   "condition": {
     "created": "Your condition has been created.",
     "maxLevel": {
@@ -487,6 +564,11 @@
     "success": "Your password has been reset. You may now click the button below to sign in.",
     "title": "Reset Password"
   },
+  "roll": {
+    "action": "Roll!",
+    "all": "Roll all!",
+    "format": "Roll: {roll}"
+  },
   "search": {
     "label": "Search",
     "placeholder": "Type something to search"
@@ -559,6 +641,19 @@
       "Swim": "Swim",
       "Walk": "Walk"
     }
+  },
+  "statistics": {
+    "label": "Statistic",
+    "options": {
+      "Constitution": "Constitution",
+      "Initiative": "Initiative",
+      "Learning": "Learning",
+      "Power": "Power",
+      "Precision": "Precision",
+      "Repute": "Constitution",
+      "Strength": "Strength"
+    },
+    "placeholder": "Select a statistic"
   },
   "statusDetail": {
     "createdAt": "Created at {date}",
