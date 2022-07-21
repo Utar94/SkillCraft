@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Infrastructure
@@ -20,6 +21,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Aspect> Aspects { get; private set; } = null!;
     public DbSet<Customization> Customizations { get; private set; } = null!;
     public DbSet<DbEvent> Events { get; private set; } = null!;
+    public DbSet<Nature> Natures { get; private set; } = null!;
     public DbSet<World> Worlds { get; private set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)

@@ -2,6 +2,7 @@
 using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Queriers;
 using SkillCraft.Infrastructure.Repositories;
@@ -24,6 +25,7 @@ namespace SkillCraft.Infrastructure
       return services
         .AddScoped<IAspectQuerier, AspectQuerier>()
         .AddScoped<ICustomizationQuerier, CustomizationQuerier>()
+        .AddScoped<INatureQuerier, NatureQuerier>()
         .AddScoped<IWorldQuerier, WorldQuerier>();
     }
 
@@ -32,6 +34,7 @@ namespace SkillCraft.Infrastructure
       return services
         .AddScoped<IRepository<Aspect>, Repository<Aspect>>()
         .AddScoped<IRepository<Customization>, Repository<Customization>>()
+        .AddScoped<IRepository<Nature>, Repository<Nature>>()
         .AddScoped<IRepository<World>, Repository<World>>();
     }
   }

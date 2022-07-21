@@ -1,6 +1,7 @@
 ﻿using Logitar;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds.Events;
 using SkillCraft.Core.Worlds.Payload;
 
@@ -28,6 +29,7 @@ namespace SkillCraft.Core.Worlds
 
     public List<Aspect> Aspects { get; private set; } = new();
     public List<Customization> Customizations { get; private set; } = new();
+    public List<Nature> Natures { get; private set; } = new();
 
     public void Delete(Guid userId) => ApplyChange(new DeletedEvent(userId));
     public void Update(UpdateWorldPayload payload, Guid userId) => ApplyChange(new UpdatedEvent(payload, userId));

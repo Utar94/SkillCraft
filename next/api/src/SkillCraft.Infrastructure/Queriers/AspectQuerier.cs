@@ -16,7 +16,7 @@ namespace SkillCraft.Infrastructure.Queriers
     public async Task<Aspect?> GetAsync(Guid id, bool readOnly, CancellationToken cancellationToken)
     {
       return await _aspects.ApplyTracking(readOnly)
-       .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<PagedList<Aspect>> GetPagedAsync(int worldSid, string? search,

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 using System.Reflection;
 
@@ -18,6 +19,7 @@ namespace SkillCraft.Core
         .AddValidatorsFromAssembly(assembly, includeInternalTypes: true)
         .AddScoped<IAspectService, AspectService>()
         .AddScoped<ICustomizationService, CustomizationService>()
+        .AddScoped<INatureService, NatureService>()
         .AddScoped<IWorldService, WorldService>();
     }
   }

@@ -16,7 +16,7 @@ namespace SkillCraft.Infrastructure.Queriers
     public async Task<Customization?> GetAsync(Guid id, bool readOnly, CancellationToken cancellationToken)
     {
       return await _customizations.ApplyTracking(readOnly)
-       .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<PagedList<Customization>> GetPagedAsync(int worldSid, string? search, CustomizationType? type,
