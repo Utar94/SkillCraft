@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SkillCraft.Core;
+using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Queriers;
 using SkillCraft.Infrastructure.Repositories;
@@ -20,12 +21,14 @@ namespace SkillCraft.Infrastructure
     private static IServiceCollection AddQueriers(this IServiceCollection services)
     {
       return services
+        .AddScoped<ICustomizationQuerier, CustomizationQuerier>()
         .AddScoped<IWorldQuerier, WorldQuerier>();
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
       return services
+        .AddScoped<IRepository<Customization>, Repository<Customization>>()
         .AddScoped<IRepository<World>, Repository<World>>();
     }
   }

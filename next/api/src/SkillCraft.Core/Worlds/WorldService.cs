@@ -28,7 +28,7 @@ namespace SkillCraft.Core.Worlds
       _validator = validator;
     }
 
-    public async Task<WorldModel> CreateAsync(CreateWorldPayload payload, CancellationToken cancellationToken = default)
+    public async Task<WorldModel> CreateAsync(CreateWorldPayload payload, CancellationToken cancellationToken)
     {
       ArgumentNullException.ThrowIfNull(payload);
 
@@ -45,7 +45,7 @@ namespace SkillCraft.Core.Worlds
       return _mapper.Map<WorldModel>(world);
     }
 
-    public async Task<WorldModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<WorldModel> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
       World world = await _querier.GetAsync(id, readOnly: false, cancellationToken)
         ?? throw new EntityNotFoundException<World>(id);
@@ -61,7 +61,7 @@ namespace SkillCraft.Core.Worlds
       return _mapper.Map<WorldModel>(world);
     }
 
-    public async Task<WorldModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<WorldModel?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
       World? world = await _querier.GetAsync(id, readOnly: true, cancellationToken);
       if (world == null)
@@ -76,10 +76,10 @@ namespace SkillCraft.Core.Worlds
       return _mapper.Map<WorldModel>(world);
     }
 
-    public async Task<ListModel<WorldModel>> GetAsync(string? search = null,
-      WorldSort? sort = null, bool desc = false,
-      int? index = null, int? count = null,
-      CancellationToken cancellationToken = default)
+    public async Task<ListModel<WorldModel>> GetAsync(string? search,
+      WorldSort? sort, bool desc,
+      int? index, int? count,
+      CancellationToken cancellationToken)
     {
       PagedList<World> worlds = await _querier.GetPagedAsync(_userContext.Id, search,
         sort, desc,
@@ -89,7 +89,7 @@ namespace SkillCraft.Core.Worlds
       return ListModel<WorldModel>.From(worlds, _mapper);
     }
 
-    public async Task<WorldModel> UpdateAsync(Guid id, UpdateWorldPayload payload, CancellationToken cancellationToken = default)
+    public async Task<WorldModel> UpdateAsync(Guid id, UpdateWorldPayload payload, CancellationToken cancellationToken)
     {
       ArgumentNullException.ThrowIfNull(payload);
 

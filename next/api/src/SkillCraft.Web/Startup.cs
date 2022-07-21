@@ -1,6 +1,7 @@
 ﻿using SkillCraft.Core;
 using SkillCraft.Infrastructure;
 using SkillCraft.Web.Filters;
+using SkillCraft.Web.Middlewares;
 using System.Text.Json.Serialization;
 
 namespace SkillCraft.Web
@@ -36,6 +37,7 @@ namespace SkillCraft.Web
         application.UseHttpsRedirection();
         application.UseCors();
         application.UseAuthentication();
+        application.UseMiddleware<WorldMiddleware>();
         application.UseAuthorization();
         application.MapControllers();
       }
