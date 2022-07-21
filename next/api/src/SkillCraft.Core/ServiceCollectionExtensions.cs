@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Worlds;
 using System.Reflection;
@@ -15,6 +16,7 @@ namespace SkillCraft.Core
       return services
         .AddAutoMapper(assembly)
         .AddValidatorsFromAssembly(assembly, includeInternalTypes: true)
+        .AddScoped<IAspectService, AspectService>()
         .AddScoped<ICustomizationService, CustomizationService>()
         .AddScoped<IWorldService, WorldService>();
     }

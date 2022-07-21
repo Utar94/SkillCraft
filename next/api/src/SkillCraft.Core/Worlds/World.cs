@@ -1,4 +1,5 @@
 ﻿using Logitar;
+using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Worlds.Events;
 using SkillCraft.Core.Worlds.Payload;
@@ -25,6 +26,7 @@ namespace SkillCraft.Core.Worlds
     public string Name { get; private set; } = null!;
     public string? Description { get; private set; }
 
+    public List<Aspect> Aspects { get; private set; } = new();
     public List<Customization> Customizations { get; private set; } = new();
 
     public void Delete(Guid userId) => ApplyChange(new DeletedEvent(userId));
