@@ -4,6 +4,7 @@ using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
+using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Queriers;
@@ -29,6 +30,7 @@ namespace SkillCraft.Infrastructure
         .AddScoped<ICasteQuerier, CasteQuerier>()
         .AddScoped<ICustomizationQuerier, CustomizationQuerier>()
         .AddScoped<IEducationQuerier, EducationQuerier>()
+        .AddScoped<ILanguageQuerier, LanguageQuerier>()
         .AddScoped<INatureQuerier, NatureQuerier>()
         .AddScoped<IWorldQuerier, WorldQuerier>();
     }
@@ -40,6 +42,7 @@ namespace SkillCraft.Infrastructure
         .AddScoped<IRepository<Caste>, Repository<Caste>>()
         .AddScoped<IRepository<Customization>, Repository<Customization>>()
         .AddScoped<IRepository<Education>, Repository<Education>>()
+        .AddScoped<IRepository<Language>, Repository<Language>>()
         .AddScoped<IRepository<Nature>, Repository<Nature>>()
         .AddScoped<IRepository<World>, Repository<World>>();
     }

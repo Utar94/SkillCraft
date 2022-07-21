@@ -36,17 +36,7 @@ namespace SkillCraft.Core.Natures
     {
       ArgumentNullException.ThrowIfNull(payload);
 
-      Customization? feat = null;
-      if (payload.FeatId.HasValue)
-      {
-        feat = await _customizationQuerier.GetAsync(payload.FeatId.Value, readOnly: false, cancellationToken)
-          ?? throw new EntityNotFoundException<Customization>(payload.FeatId.Value, nameof(payload.FeatId));
-
-        if (feat.WorldSid != _userContext.World.Sid)
-        {
-          throw new ForbiddenException<Customization>(feat, _userContext.Id);
-        }
-      }
+      Customization? feat = await GetFeatAsync(payload, cancellationToken);
 
       var nature = new Nature(payload, _userContext.Id, _userContext.World, feat);
       _validator.ValidateAndThrow(nature);
@@ -104,17 +94,7 @@ namespace SkillCraft.Core.Natures
     {
       ArgumentNullException.ThrowIfNull(payload);
 
-      Customization? feat = null;
-      if (payload.FeatId.HasValue)
-      {
-        feat = await _customizationQuerier.GetAsync(payload.FeatId.Value, readOnly: false, cancellationToken)
-          ?? throw new EntityNotFoundException<Customization>(payload.FeatId.Value, nameof(payload.FeatId));
-
-        if (feat.WorldSid != _userContext.World.Sid)
-        {
-          throw new ForbiddenException<Customization>(feat, _userContext.Id);
-        }
-      }
+      Customization? feat = await GetFeatAsync(payload, cancellationToken);
 
       Nature nature = await _querier.GetAsync(id, readOnly: false, cancellationToken)
         ?? throw new EntityNotFoundException<Nature>(id);
@@ -128,6 +108,22 @@ namespace SkillCraft.Core.Natures
       await _repository.SaveAsync(nature, cancellationToken);
 
       return _mapper.Map<NatureModel>(nature);
+    }
+
+    private async Task<Customization?> GetFeatAsync(SaveNaturePayload payload, CancellationToken cancellationToken)
+    {
+      if (payload.FeatId.HasValue)
+      {
+        Customization feat = await _customizationQuerier.GetAsync(payload.FeatId.Value, readOnly: false, cancellationToken)
+          ?? throw new EntityNotFoundException<Customization>(payload.FeatId.Value, nameof(payload.FeatId));
+
+        if (feat.WorldSid != _userContext.World.Sid)
+        {
+          throw new ForbiddenException<Customization>(feat, _userContext.Id);
+        }
+      }
+
+      return null;
     }
   }
 }

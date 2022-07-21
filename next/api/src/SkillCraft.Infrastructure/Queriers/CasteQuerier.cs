@@ -27,10 +27,6 @@ namespace SkillCraft.Infrastructure.Queriers
       IQueryable<Caste> query = _castes.ApplyTracking(readOnly)
         .Where(x => x.WorldSid == worldSid);
 
-      if (skill.HasValue)
-      {
-        query = query.Where(x => x.Skill == skill.Value);
-      }
       if (search != null)
       {
         foreach (string term in search.Split())
@@ -39,6 +35,10 @@ namespace SkillCraft.Infrastructure.Queriers
 
           query = query.Where(x => EF.Functions.ILike(x.Name, pattern));
         }
+      }
+      if (skill.HasValue)
+      {
+        query = query.Where(x => x.Skill == skill.Value);
       }
 
       long total = await query.LongCountAsync(cancellationToken);

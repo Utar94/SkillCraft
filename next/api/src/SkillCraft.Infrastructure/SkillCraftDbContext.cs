@@ -5,6 +5,7 @@ using SkillCraft.Core.Aspects;
 using SkillCraft.Core.Castes;
 using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
+using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 
@@ -25,6 +26,7 @@ namespace SkillCraft.Infrastructure
     public DbSet<Customization> Customizations { get; private set; } = null!;
     public DbSet<Education> Educations { get; private set; } = null!;
     public DbSet<DbEvent> Events { get; private set; } = null!;
+    public DbSet<Language> Languages { get; private set; } = null!;
     public DbSet<Nature> Natures { get; private set; } = null!;
     public DbSet<World> Worlds { get; private set; } = null!;
 
