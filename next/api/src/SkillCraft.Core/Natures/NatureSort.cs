@@ -3,7 +3,6 @@
   public enum NatureSort
   {
     UpdatedAt = 0,
-    Name = 1,
-    Attribute = 2
+    Name = 1
   }
 }

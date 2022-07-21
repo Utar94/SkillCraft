@@ -12,7 +12,12 @@ namespace SkillCraft.Web
     {
       base.ConfigureServices(services);
 
-      services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
+      services
+        .AddControllers(options =>
+        {
+          options.Filters.Add<ApiExceptionFilterAttribute>();
+          options.Filters.Add<ValidationExceptionFilterAttribute>();
+        })
         .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       services.AddCors();
       services.AddHttpContextAccessor();

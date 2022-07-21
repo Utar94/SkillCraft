@@ -10,6 +10,7 @@ namespace SkillCraft.Web.Filters
     {
       if (context.Exception is ApiException exception)
       {
+        context.ExceptionHandled = true;
         if (exception.Value == null)
         {
           context.Result = new StatusCodeResult((int)exception.StatusCode);
@@ -21,8 +22,6 @@ namespace SkillCraft.Web.Filters
             StatusCode = (int)exception.StatusCode
           };
         }
-
-        context.ExceptionHandled = true;
       }
     }
   }

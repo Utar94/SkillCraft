@@ -50,9 +50,6 @@ namespace SkillCraft.Infrastructure.Queriers
       {
         query = sort.Value switch
         {
-          NatureSort.Attribute => desc
-            ? query.OrderByDescending(x => x.Attribute).ThenBy(x => x.Name)
-            : query.OrderBy(x => x.Attribute).ThenBy(x => x.Name),
           NatureSort.Name => desc ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name),
           NatureSort.UpdatedAt => desc ? query.OrderByDescending(x => x.UpdatedAt ?? x.CreatedAt) : query.OrderBy(x => x.UpdatedAt ?? x.CreatedAt),
           _ => throw new ArgumentException($"The nature sort '{sort}' is not valid.", nameof(sort)),

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SkillCraft.Core;
 using SkillCraft.Core.Aspects;
+using SkillCraft.Core.Castes;
 using SkillCraft.Core.Customizations;
+using SkillCraft.Core.Educations;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Queriers;
@@ -24,7 +26,9 @@ namespace SkillCraft.Infrastructure
     {
       return services
         .AddScoped<IAspectQuerier, AspectQuerier>()
+        .AddScoped<ICasteQuerier, CasteQuerier>()
         .AddScoped<ICustomizationQuerier, CustomizationQuerier>()
+        .AddScoped<IEducationQuerier, EducationQuerier>()
         .AddScoped<INatureQuerier, NatureQuerier>()
         .AddScoped<IWorldQuerier, WorldQuerier>();
     }
@@ -33,7 +37,9 @@ namespace SkillCraft.Infrastructure
     {
       return services
         .AddScoped<IRepository<Aspect>, Repository<Aspect>>()
+        .AddScoped<IRepository<Caste>, Repository<Caste>>()
         .AddScoped<IRepository<Customization>, Repository<Customization>>()
+        .AddScoped<IRepository<Education>, Repository<Education>>()
         .AddScoped<IRepository<Nature>, Repository<Nature>>()
         .AddScoped<IRepository<World>, Repository<World>>();
     }
