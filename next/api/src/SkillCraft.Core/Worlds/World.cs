@@ -5,6 +5,7 @@ using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Powers;
 using SkillCraft.Core.Races;
 using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds.Events;
@@ -38,6 +39,7 @@ namespace SkillCraft.Core.Worlds
     public List<Education> Educations { get; private set; } = new();
     public List<Language> Languages { get; private set; } = new();
     public List<Nature> Natures { get; private set; } = new();
+    public List<Power> Powers { get; private set; } = new();
     public List<Race> Races { get; private set; } = new();
     public List<Talent> Talents { get; private set; } = new();
 
