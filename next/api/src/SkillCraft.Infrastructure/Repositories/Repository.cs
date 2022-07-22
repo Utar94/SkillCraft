@@ -1,4 +1,5 @@
 ﻿using SkillCraft.Core;
+using SkillCraft.Infrastructure.Entities;
 
 namespace SkillCraft.Infrastructure.Repositories
 {

@@ -14,7 +14,7 @@ namespace SkillCraft.Core.Castes
         .MaximumLength(1000);
 
       RuleFor(x => x.WealthRoll)
-        .Matches("\\d{1,2}d\\d{1,2}(\\+\\d{1,3})?");
+        .Matches(Constants.RollPattern);
     }
   }
 }

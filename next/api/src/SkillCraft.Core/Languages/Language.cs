@@ -1,6 +1,7 @@
 ﻿using Logitar;
 using SkillCraft.Core.Languages.Events;
 using SkillCraft.Core.Languages.Payload;
+using SkillCraft.Core.Races;
 using SkillCraft.Core.Worlds;
 
 namespace SkillCraft.Core.Languages
@@ -27,6 +28,8 @@ namespace SkillCraft.Core.Languages
     public bool IsExotic { get; private set; }
     public string? Script { get; private set; }
     public string? TypicalSpeakers { get; private set; }
+
+    public List<Race> Races { get; private set; } = new();
 
     public void Delete(Guid userId) => ApplyChange(new DeletedEvent(userId));
     public void Update(UpdateLanguagePayload payload, Guid userId) => ApplyChange(new UpdatedEvent(payload, userId));

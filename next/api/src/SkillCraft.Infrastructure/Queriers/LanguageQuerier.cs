@@ -19,6 +19,15 @@ namespace SkillCraft.Infrastructure.Queriers
         .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<IEnumerable<Language>> GetAsync(int worldSid, IEnumerable<Guid> ids, bool readOnly, CancellationToken cancellationToken)
+    {
+      ArgumentNullException.ThrowIfNull(ids);
+
+      return await _languages.ApplyTracking(readOnly)
+        .Where(x => x.WorldSid == worldSid && ids.Contains(x.Id))
+        .ToArrayAsync(cancellationToken);
+    }
+
     public async Task<PagedList<Language>> GetPagedAsync(int worldSid, bool? isExotic, string? search,
       LanguageSort? sort, bool desc,
       int? index, int? count,

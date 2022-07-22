@@ -5,6 +5,7 @@ using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Races;
 using SkillCraft.Core.Worlds.Events;
 using SkillCraft.Core.Worlds.Payload;
 
@@ -36,6 +37,7 @@ namespace SkillCraft.Core.Worlds
     public List<Education> Educations { get; private set; } = new();
     public List<Language> Languages { get; private set; } = new();
     public List<Nature> Natures { get; private set; } = new();
+    public List<Race> Races { get; private set; } = new();
 
     public void Delete(Guid userId) => ApplyChange(new DeletedEvent(userId));
     public void Update(UpdateWorldPayload payload, Guid userId) => ApplyChange(new UpdatedEvent(payload, userId));

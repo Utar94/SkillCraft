@@ -1,7 +1,7 @@
 ﻿using SkillCraft.Core;
 using System.Text.Json;
 
-namespace SkillCraft.Infrastructure
+namespace SkillCraft.Infrastructure.Entities
 {
   internal class DbEvent
   {
@@ -23,11 +23,11 @@ namespace SkillCraft.Infrastructure
 
     public static IEnumerable<DbEvent> FromChanges(Aggregate aggregate)
     {
-      Type aggregateType = aggregate?.GetType() ?? throw new ArgumentNullException(nameof(aggregate));
+      var aggregateType = aggregate?.GetType() ?? throw new ArgumentNullException(nameof(aggregate));
 
       return aggregate.Changes.Select(change =>
       {
-        Type eventType = change.GetType();
+        var eventType = change.GetType();
 
         return new DbEvent
         {

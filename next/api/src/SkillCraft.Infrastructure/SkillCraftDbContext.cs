@@ -7,7 +7,9 @@ using SkillCraft.Core.Customizations;
 using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
+using SkillCraft.Core.Races;
 using SkillCraft.Core.Worlds;
+using SkillCraft.Infrastructure.Entities;
 
 namespace SkillCraft.Infrastructure
 {
@@ -28,6 +30,9 @@ namespace SkillCraft.Infrastructure
     public DbSet<DbEvent> Events { get; private set; } = null!;
     public DbSet<Language> Languages { get; private set; } = null!;
     public DbSet<Nature> Natures { get; private set; } = null!;
+    public DbSet<RaceLanguage> RaceLanguages { get; private set; } = null!;
+    public DbSet<Race> Races { get; private set; } = null!;
+    public DbSet<RacialTrait> RacialTraits { get; private set; } = null!;
     public DbSet<World> Worlds { get; private set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
