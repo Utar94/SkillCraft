@@ -7,6 +7,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using System.Reflection;
 
@@ -28,6 +29,7 @@ namespace SkillCraft.Core
         .AddScoped<ILanguageService, LanguageService>()
         .AddScoped<INatureService, NatureService>()
         .AddScoped<IRaceService, RaceService>()
+        .AddScoped<ITalentService, TalentService>()
         .AddScoped<IWorldService, WorldService>();
     }
   }

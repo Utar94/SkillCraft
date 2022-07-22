@@ -8,6 +8,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Entities;
 
@@ -33,6 +34,8 @@ namespace SkillCraft.Infrastructure
     public DbSet<RaceLanguage> RaceLanguages { get; private set; } = null!;
     public DbSet<Race> Races { get; private set; } = null!;
     public DbSet<RacialTrait> RacialTraits { get; private set; } = null!;
+    public DbSet<TalentOption> TalentOptions { get; private set; } = null!;
+    public DbSet<Talent> Talents { get; private set; } = null!;
     public DbSet<World> Worlds { get; private set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)

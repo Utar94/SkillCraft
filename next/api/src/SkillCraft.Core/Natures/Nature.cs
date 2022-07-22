@@ -12,10 +12,11 @@ namespace SkillCraft.Core.Natures
     {
       ApplyChange(new CreatedEvent(payload, userId));
 
-      Feat = feat;
-      FeatSid = feat?.Sid;
       World = world ?? throw new ArgumentNullException(nameof(world));
       WorldSid = world.Sid;
+
+      Feat = feat;
+      FeatSid = feat?.Sid;
     }
     private Nature()
     {

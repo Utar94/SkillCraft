@@ -7,6 +7,7 @@ using SkillCraft.Core.Educations;
 using SkillCraft.Core.Languages;
 using SkillCraft.Core.Natures;
 using SkillCraft.Core.Races;
+using SkillCraft.Core.Talents;
 using SkillCraft.Core.Worlds;
 using SkillCraft.Infrastructure.Queriers;
 using SkillCraft.Infrastructure.Repositories;
@@ -34,6 +35,7 @@ namespace SkillCraft.Infrastructure
         .AddScoped<ILanguageQuerier, LanguageQuerier>()
         .AddScoped<INatureQuerier, NatureQuerier>()
         .AddScoped<IRaceQuerier, RaceQuerier>()
+        .AddScoped<ITalentQuerier, TalentQuerier>()
         .AddScoped<IWorldQuerier, WorldQuerier>();
     }
 
@@ -47,6 +49,7 @@ namespace SkillCraft.Infrastructure
         .AddScoped<IRepository<Language>, Repository<Language>>()
         .AddScoped<IRepository<Nature>, Repository<Nature>>()
         .AddScoped<IRepository<Race>, Repository<Race>>()
+        .AddScoped<IRepository<Talent>, Repository<Talent>>()
         .AddScoped<IRepository<World>, Repository<World>>();
     }
   }
